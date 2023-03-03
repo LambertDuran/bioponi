@@ -1,37 +1,10 @@
-//import React from "react";
+import Sidebar from "./sidebar";
 import "./App.css";
-import logo from "./assets/logo.png";
 
 function App() {
   return (
     <div className="container">
-      <div className="sidebar">
-        <ul>
-          <li>
-            <img src={logo} className="logo"></img>
-          </li>
-          <li>
-            <i className="fas fa-home"></i>
-            <a href="#">Tableau de bord</a>
-          </li>
-          <li>
-            <i className="fas fa-cog"></i>
-            <a href="#">Paramétrage</a>
-          </li>
-          <li>
-            <i className="fas fa-book"></i>
-            <a href="#">Journal</a>
-          </li>
-          <li>
-            <i className="fas fa-balance-scale"></i>
-            <a href="#">Bilan</a>
-          </li>
-          <li>
-            <i className="fas fa-calendar"></i>
-            <a href="#">Fiche journalière</a>
-          </li>
-        </ul>
-      </div>
+      <Sidebar />
       <div className="content">
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel
