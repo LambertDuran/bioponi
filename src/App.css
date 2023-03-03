@@ -17,6 +17,10 @@
   transition: all 0.3s ease-out;
 }
 
+.logo{
+  cursor: pointer;
+}
+
 .sidebar ul {
   list-style: none;
   top: 0;
@@ -26,10 +30,17 @@
 
 .sidebar li{
   margin: 10px 0;
+  display: flex;
 }
 
 .sidebar li{
   height: 3em;
+}
+
+.sidebar i{
+  color: white;
+  margin: 1em 0.5em 1em 1em;
+  width: 10px;
 }
 
 .sidebar li a {
@@ -37,11 +48,11 @@
   padding: 10px;
   text-decoration: none;
   color: white;
+  flex-grow: 1;
 }
 
-.sidebar li a:hover {
+.sidebar li:hover:not(:first-child) {
   background-color: #7991bd;
-  height: 25px;
   border-radius: 10px;
 }
 
