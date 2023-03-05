@@ -21,13 +21,24 @@
     margin: 0;
   }
   
-  .sidebar li{
+  .sidebar_inactive{
     cursor: pointer;
     margin: 10px 0;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 3em;
+  }
+
+  .sidebar_active{
+    cursor: pointer;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3em;
+    background-color: #7991bd;
+    border-radius: 10px;
   }
   
   .sidebar i{
