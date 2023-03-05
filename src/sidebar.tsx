@@ -8,27 +8,27 @@ const Sidebar = () => {
       <ul>
         <li>
           <img src={logo} className="logo"></img>
+          <NavLink to={"/tableau-de-bord"} />
         </li>
         <li>
           <i className="fas fa-home"></i>
-          <a href="#">Tableau de bord</a>
+          <NavLink to={"/tableau-de-bord"}>Tableau de bord</NavLink>
         </li>
         <li>
           <i className="fas fa-cog"></i>
           <NavLink to={"/parametrage"}>Paramétrage</NavLink>
-          {/* <a href="#">Paramétrage</a> */}
         </li>
         <li>
           <i className="fas fa-book"></i>
-          <a href="#">Journal</a>
+          <NavLink to={"/journal"}>Journal</NavLink>
         </li>
         <li>
           <i className="fas fa-balance-scale"></i>
-          <a href="#">Bilan</a>
+          <NavLink to={"/bilan"}>Bilan</NavLink>
         </li>
         <li>
           <i className="fas fa-calendar"></i>
-          <a href="#">Fiche journalière</a>
+          <NavLink to={"/fiche-journalière"}>Fiche Journalière</NavLink>
         </li>
       </ul>
     </div>
