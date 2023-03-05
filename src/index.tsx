@@ -5,7 +5,7 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 import App from "./App";
-import ErrorPage from "./error-page";
+import ErrorPage from "./pages/error-page";
 
 const router = createBrowserRouter([
   {
