@@ -7,28 +7,34 @@ const Sidebar = () => {
     <div className="sidebar">
       <ul>
         <li>
-          <img src={logo} className="logo"></img>
-          <NavLink to={"/tableau-de-bord"} />
+          <NavLink to={"/tableau-de-bord"}>
+            <img src={logo} className="logo"></img>
+          </NavLink>
         </li>
         <li>
-          <i className="fas fa-home"></i>
-          <NavLink to={"/tableau-de-bord"}>Tableau de bord</NavLink>
+          <NavLink to={"/tableau-de-bord"}>
+            <i className="fas fa-home"></i>Tableau de bord
+          </NavLink>
         </li>
         <li>
-          <i className="fas fa-cog"></i>
-          <NavLink to={"/parametrage"}>Paramétrage</NavLink>
+          <NavLink to={"/parametrage"}>
+            <i className="fas fa-cog"></i>Paramétrage
+          </NavLink>
         </li>
         <li>
-          <i className="fas fa-book"></i>
-          <NavLink to={"/journal"}>Journal</NavLink>
+          <NavLink to={"/journal"}>
+            <i className="fas fa-book"></i>Journal
+          </NavLink>
         </li>
         <li>
-          <i className="fas fa-balance-scale"></i>
-          <NavLink to={"/bilan"}>Bilan</NavLink>
+          <NavLink to={"/bilan"}>
+            <i className="fas fa-balance-scale"></i>Bilan
+          </NavLink>
         </li>
         <li>
-          <i className="fas fa-calendar"></i>
-          <NavLink to={"/fiche-journalière"}>Fiche Journalière</NavLink>
+          <NavLink to={"/fiche-journalière"}>
+            <i className="fas fa-calendar"></i>Fiche Journalière
+          </NavLink>
         </li>
       </ul>
     </div>

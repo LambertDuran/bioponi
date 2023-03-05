@@ -10,7 +10,8 @@
   }
   
   .logo{
-    cursor: pointer;
+    margin-top: 1em;
+    width: 40%;
   }
   
   .sidebar ul {
@@ -21,17 +22,17 @@
   }
   
   .sidebar li{
+    cursor: pointer;
     margin: 10px 0;
     display: flex;
-  }
-  
-  .sidebar li{
+    align-items: center;
+    justify-content: center;
     height: 3em;
   }
   
   .sidebar i{
     color: white;
-    margin: 1em 0.5em 1em 1em;
+    margin: 1em 1em 1em 1em;
     width: 10px;
   }
   
