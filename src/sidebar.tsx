@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import logo from "./assets/logo.png";
 import "./sidebar.css";
 
@@ -14,7 +15,8 @@ const Sidebar = () => {
         </li>
         <li>
           <i className="fas fa-cog"></i>
-          <a href="#">Paramétrage</a>
+          <NavLink to={"/parametrage"}>Paramétrage</NavLink>
+          {/* <a href="#">Paramétrage</a> */}
         </li>
         <li>
           <i className="fas fa-book"></i>
