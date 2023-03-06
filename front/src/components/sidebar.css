@@ -58,6 +58,8 @@
   .sidebar li:hover:not(:first-child) {
     background-color: #7991bd;
     border-radius: 10px;
+    scale: 1.1;
+    transition: all 0.3s ease-out;
   }
   
   .content {

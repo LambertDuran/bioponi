@@ -5,6 +5,11 @@
 /.pnp
 .pnp.js
 
+# database
+back/prisma/migrations
+back/prisma/bioponi.db
+back/prisma/bioponi.db-journal
+
 # testing
 /coverage
 
