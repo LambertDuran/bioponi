@@ -35,7 +35,7 @@ interface ISidebarItem {
 
 const SidebarItem = ({ path, icon, name, onClick, isActive }: ISidebarItem) => {
   return (
-    <li className={`sidebar_${isActive ? "active" : "inactive"}`}>
+    <li className={`${isActive ? "active" : "inactive"}_item`}>
       <NavLink to={path} onClick={onClick}>
         <i className={icon}></i>
         {name}
@@ -46,28 +46,36 @@ const SidebarItem = ({ path, icon, name, onClick, isActive }: ISidebarItem) => {
 
 const Sidebar = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [sidebarStyle, setSidebarStyle] = useState("sidebar");
+
   return (
-    <div className="sidebar">
-      <ul>
-        <li>
-          <NavLink to={"/tableau-de-bord"}>
-            <img alt="bioponi-logo" src={logo} className="logo"></img>
-          </NavLink>
-        </li>
-        {paths.map((path, index) => (
-          <SidebarItem
-            path={path}
-            icon={icons[index]}
-            name={names[index]}
-            key={index}
-            onClick={() => {
-              console.log(activeIndex);
-              setActiveIndex(index);
-            }}
-            isActive={activeIndex === index}
-          />
-        ))}
-      </ul>
+    <div onBlur={() => setSidebarStyle("sidebar")}>
+      <i
+        className="fas fa-bars hamburger"
+        onClick={() => setSidebarStyle("sidebar_show")}
+      ></i>
+      <div className={sidebarStyle}>
+        <ul>
+          <li>
+            <NavLink to={"/tableau-de-bord"}>
+              <img alt="bioponi-logo" src={logo} className="logo"></img>
+            </NavLink>
+          </li>
+          {paths.map((path, index) => (
+            <SidebarItem
+              path={path}
+              icon={icons[index]}
+              name={names[index]}
+              key={index}
+              onClick={() => {
+                setSidebarStyle("sidebar");
+                setActiveIndex(index);
+              }}
+              isActive={activeIndex === index}
+            />
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

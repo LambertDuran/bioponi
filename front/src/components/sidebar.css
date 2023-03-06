@@ -1,3 +1,4 @@
+  .sidebar_show,
   .sidebar {
     background-color: midnightblue;
     width: 250px;
@@ -8,12 +9,19 @@
     overflow-x: hidden;
     transition: all 0.3s ease-out;
   }
+
+  .hamburger{
+    position: absolute;
+    left: -100px;
+    cursor: pointer;
+  }
   
   .logo{
     margin-top: 1em;
     width: 40%;
   }
   
+  .sidebar_show ul,
   .sidebar ul {
     list-style: none;
     top: 0;
@@ -21,7 +29,7 @@
     margin: 0;
   }
   
-  .sidebar_inactive{
+  .inactive_item{
     cursor: pointer;
     margin: 10px 0;
     display: flex;
@@ -30,7 +38,7 @@
     height: 3em;
   }
 
-  .sidebar_active{
+  .active_item{
     cursor: pointer;
     margin: 10px 0;
     display: flex;
@@ -41,12 +49,14 @@
     border-radius: 10px;
   }
   
+  .sidebar_show i,
   .sidebar i{
     color: white;
     margin: 1em 1em 1em 1em;
     width: 10px;
   }
   
+  .sidebar_show li a,
   .sidebar li a {
     display: block;
     padding: 10px;
@@ -55,6 +65,8 @@
     flex-grow: 1;
   }
   
+
+  .sidebar_show li:hover:not(:first-child), 
   .sidebar li:hover:not(:first-child) {
     background-color: #7991bd;
     border-radius: 10px;
@@ -70,6 +82,11 @@
   @media only screen and (max-width: 768px) {
     .sidebar {
       transform: translateX(-100%);
+    }
+
+    .hamburger{
+      left: 0;
+      margin: 1em;
     }
     
     .content {
