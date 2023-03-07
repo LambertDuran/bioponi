@@ -1,3 +1,15 @@
+.species{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.species_margin{
+    margin: 1em;
+}
+
 .new_species_button{
-    margin-bottom: 1em;
+    margin: 1em;
 }

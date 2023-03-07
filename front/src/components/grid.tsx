@@ -17,7 +17,7 @@ export default function Grid({ col1, col2, col1Name, col2Name }: IGrid) {
     {
       field: "col1",
       headerName: col1Name,
-      width: 150,
+      width: 85,
       sortable: false,
       disableColumnMenu: true,
       renderHeader(params) {
@@ -29,7 +29,7 @@ export default function Grid({ col1, col2, col1Name, col2Name }: IGrid) {
     {
       field: "col2",
       headerName: col2Name,
-      width: 150,
+      width: 85,
       sortable: false,
       disableColumnMenu: true,
       renderHeader(params) {
@@ -41,7 +41,7 @@ export default function Grid({ col1, col2, col1Name, col2Name }: IGrid) {
   ];
 
   return (
-    <div style={{ height: 250, width: "310px" }}>
+    <div style={{ height: 250, width: "175px" }}>
       <DataGrid
         rows={muiRows}
         columns={colHeaders}
