@@ -23,13 +23,13 @@ ChartJS.register(
   Legend
 );
 
-interface ISpeciesCard {
+export interface ISpecies {
   title: string;
   weeks: number[];
   weights: number[];
 }
 
-export default function SpeciesCard({ title, weeks, weights }: ISpeciesCard) {
+export default function SpeciesCard({ title, weeks, weights }: ISpecies) {
   const data = {
     labels: weeks.map((w) => w.toString()),
     datasets: [
