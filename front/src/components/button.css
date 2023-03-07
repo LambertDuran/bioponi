@@ -1,0 +1,24 @@
+.bioponi_button{
+    background-color: #fd7702;
+    border: none;
+    color: black;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 550;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.bioponi_button i{
+    padding-right: 1em;
+}
+
+.bioponi_button:hover{
+    background-color: #ff8e00;
+    color: black;
+    border-radius: 8px;
+}

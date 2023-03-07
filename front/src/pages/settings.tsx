@@ -1,7 +1,13 @@
+import Button from "../components/button";
+
 export default function Settings() {
   return (
     <div>
-      <h1>Settings</h1>
+      <Button
+        title="Nouvelle espèce"
+        onClick={() => console.log("clicked")}
+        children={<i className="fas fa-fish"></i>}
+      ></Button>
     </div>
   );
 }
