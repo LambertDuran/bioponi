@@ -1,3 +1,4 @@
+import validateFood from "../controllers/food";
 import { Request, Response, NextFunction } from "express";
 const express = require("express");
 const router = express.Router();
@@ -6,15 +7,24 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
-  console.log("req received!");
-
+  console.log("GET received!");
   const food = await prisma.food.findMany();
-
   res.json(food);
 });
 
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
-  console.log("req received!");
+  console.log("POST received!");
+
+  const { error } = validateFood(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  const existingFood = await prisma.food.findFirst({
+    where: {
+      name: req.body.name,
+    },
+  });
+  if (existingFood) return res.status(400).send("Food already exists!");
+
   const food = await prisma.food.create({
     data: {
       name: req.body.name,
