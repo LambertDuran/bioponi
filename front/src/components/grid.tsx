@@ -41,7 +41,7 @@ export default function Grid({ col1, col2, col1Name, col2Name }: IGrid) {
   ];
 
   return (
-    <div style={{ height: 300, width: "310px" }}>
+    <div style={{ height: 250, width: "310px" }}>
       <DataGrid
         rows={muiRows}
         columns={colHeaders}

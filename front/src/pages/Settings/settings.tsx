@@ -1,5 +1,6 @@
 import Button from "../../components/button";
-import Grid from "../../components/grid";
+import SpeciesCard from "./speciesCard";
+import "./settings.css";
 
 const weeks: number[] = [
   4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 82, 86,
@@ -11,18 +12,15 @@ const weights: number[] = [
 
 export default function Settings() {
   return (
-    <div style={{ height: 300, width: "320px" }}>
-      <Grid
-        col1={weeks}
-        col2={weights}
-        col1Name="Semaine"
-        col2Name="Masse(g)"
-      />
-      <Button
-        title="Nouvelle espèce"
-        onClick={() => console.log("clicked")}
-        children={<i className="fas fa-fish"></i>}
-      ></Button>
-    </div>
+    <>
+      <div className="new_species_button">
+        <Button
+          title="Nouvelle espèce"
+          onClick={() => console.log("clicked")}
+          children={<i className="fas fa-fish"></i>}
+        />
+      </div>
+      <SpeciesCard title="TAEC" weeks={weeks} weights={weights} />
+    </>
   );
 }
