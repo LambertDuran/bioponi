@@ -13,4 +13,23 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   res.json(food);
 });
 
+router.post("/", async (req: Request, res: Response, next: NextFunction) => {
+  console.log("req received!");
+  const food = await prisma.food.create({
+    data: {
+      name: req.body.name,
+      froms: req.body.froms,
+      tos: req.body.tos,
+      ranges: req.body.ranges,
+      sizes: req.body.sizes,
+      foodRates: req.body.foodRates,
+      prices: req.body.prices,
+      distribution: req.body.distribution,
+    },
+  });
+
+  if (!food) return res.status(400).send("Bad request!");
+  res.json(food);
+});
+
 module.exports = router;
