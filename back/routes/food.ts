@@ -9,6 +9,7 @@ const prisma = new PrismaClient();
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   console.log("GET received!");
   const food = await prisma.food.findMany();
+  if (!food) return res.status(404).send("Aucun aliment trouvé!");
   res.json(food);
 });
 
