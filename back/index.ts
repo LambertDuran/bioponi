@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use("/api/food", require("./routes/food"));
 
 const PORT = process.env.PORT || 3000;
