@@ -2,7 +2,8 @@ import { useState } from "react";
 import Button from "../../components/button";
 import ModalDialog from "../../components/modalDialog";
 import SpeciesCard, { ISpecies } from "./speciesCard";
-import FoodCard, { IFood } from "./foodCard";
+import IFood from "../../interfaces/food";
+import FoodCard from "./foodCard";
 import "./settings.css";
 
 const species: ISpecies[] = [
@@ -70,9 +71,8 @@ export default function Settings() {
         <Button
           title="Nouvel aliment"
           onClick={() => setOpen(true)}
-          children={<i className="fas fa-fish"></i>}
+          children={<i className="fas fa-cheese"></i>}
           color="blue"
-          isModal={true}
         />
       </div>
       <div className="species">
@@ -83,31 +83,11 @@ export default function Settings() {
           </div>
         ))}
         {/* Afficher les aliments */}
-        {foods.map(
-          ({
-            title,
-            froms,
-            tos,
-            ranges,
-            sizes,
-            foodRates,
-            prices,
-            foodTimeRates,
-          }) => (
-            <div className="species_margin">
-              <FoodCard
-                title={title}
-                froms={froms}
-                tos={tos}
-                ranges={ranges}
-                sizes={sizes}
-                foodRates={foodRates}
-                prices={prices}
-                foodTimeRates={foodTimeRates}
-              />
-            </div>
-          )
-        )}
+        {foods.map((f) => (
+          <div className="species_margin">
+            <FoodCard food={f} />
+          </div>
+        ))}
       </div>
     </>
   );
