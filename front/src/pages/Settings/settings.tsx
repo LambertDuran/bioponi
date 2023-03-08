@@ -48,10 +48,21 @@ const foods: IFood[] = [
   },
 ];
 
+const iFood0: IFood = {
+  title: "Nouvel aliment",
+  froms: [10],
+  tos: [100],
+  ranges: ["NEO CDC CF 20"],
+  sizes: [5.5],
+  foodRates: [1.55],
+  prices: [2100],
+  foodTimeRates: [100],
+};
+
 export default function Settings() {
   const [open, setOpen] = useState(false);
-
   const handleClose = () => setOpen(false);
+  const [selectedFood, setSelectedFood] = useState<IFood | null>(null);
 
   return (
     <>
@@ -60,6 +71,7 @@ export default function Settings() {
         title="Création d'un nouvel aliment"
         open={open}
         onClose={handleClose}
+        selectedFood={selectedFood ?? iFood0}
       />
       {/* Créer une nouvelle espèce de poisson */}
       <div className="new_species_button">
@@ -70,7 +82,10 @@ export default function Settings() {
         />
         <Button
           title="Nouvel aliment"
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            setSelectedFood(iFood0);
+            setOpen(true);
+          }}
           children={<i className="fas fa-cheese"></i>}
           color="blue"
         />
