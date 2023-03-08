@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../components/button";
 import ModalDialog from "./foodModalDialog";
 import SpeciesCard, { ISpecies } from "./speciesCard";
 import IFood from "../../interfaces/food";
 import FoodCard from "./foodCard";
+import { getAllFood } from "../../services/food";
 import "./settings.css";
 
 const species: ISpecies[] = [
@@ -23,30 +24,30 @@ const species: ISpecies[] = [
   },
 ];
 
-const foods: IFood[] = [
-  {
-    title: "Aliment TAEC",
-    froms: [
-      10, 100, 150, 200, 400, 500, 1000, 1500, 1600, 1800, 2000, 2500, 3000,
-      3500, 4000, 5000,
-    ],
-    tos: [
-      100, 150, 200, 400, 500, 1000, 1500, 1600, 1800, 2000, 2500, 3000, 3500,
-      4000, 5000, 6000,
-    ],
-    ranges: Array(16).fill("NEO CDC CF 20"),
-    sizes: [
-      5.5, 5.5, 5.5, 5.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5,
-      7.5,
-    ],
-    foodRates: [
-      1.55, 1.55, 1.46, 1.33, 1.23, 1.12, 0.97, 0.97, 0.97, 0.97, 0.97, 0.97,
-      0.97, 0.97, 0.97, 0.97,
-    ],
-    prices: Array(16).fill(2100),
-    foodTimeRates: Array(16).fill(100),
-  },
-];
+// const foods: IFood[] = [
+//   {
+//     title: "Aliment TAEC",
+//     froms: [
+//       10, 100, 150, 200, 400, 500, 1000, 1500, 1600, 1800, 2000, 2500, 3000,
+//       3500, 4000, 5000,
+//     ],
+//     tos: [
+//       100, 150, 200, 400, 500, 1000, 1500, 1600, 1800, 2000, 2500, 3000, 3500,
+//       4000, 5000, 6000,
+//     ],
+//     ranges: Array(16).fill("NEO CDC CF 20"),
+//     sizes: [
+//       5.5, 5.5, 5.5, 5.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5,
+//       7.5,
+//     ],
+//     foodRates: [
+//       1.55, 1.55, 1.46, 1.33, 1.23, 1.12, 0.97, 0.97, 0.97, 0.97, 0.97, 0.97,
+//       0.97, 0.97, 0.97, 0.97,
+//     ],
+//     prices: Array(16).fill(2100),
+//     foodTimeRates: Array(16).fill(100),
+//   },
+// ];
 
 const iFood0: IFood = {
   title: "Nouvel aliment",
@@ -63,6 +64,17 @@ export default function Settings() {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [selectedFood, setSelectedFood] = useState<IFood | null>(null);
+
+  const [foods, setFoods] = useState<IFood[]>([]);
+
+  useEffect(() => {
+    async function getFoods() {
+      const allFood = await getAllFood();
+      // setFoods(allFood);
+      // console.log("allFood: ", allFood);
+    }
+    getFoods();
+  }, []);
 
   return (
     <>
