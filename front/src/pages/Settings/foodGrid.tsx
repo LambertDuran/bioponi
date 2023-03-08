@@ -70,6 +70,7 @@ export default function FoodGrid({ food }: IFoodGrid) {
       foodTimeRate: foodTimeRates[i],
     };
   });
+  console.log(muiRows);
   return (
     <DataGrid
       rows={muiRows}

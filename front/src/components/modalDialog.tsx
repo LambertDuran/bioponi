@@ -11,6 +11,8 @@ interface IModal {
   selectedFood: IFood;
 }
 
+const p1 = { padding: "1em" };
+
 export default function ModalDialog({
   title,
   open,
@@ -18,15 +20,24 @@ export default function ModalDialog({
   selectedFood,
 }: IModal) {
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} maxWidth="lg">
       <DialogTitle>{title}</DialogTitle>
-      <FoodGrid food={selectedFood} />
-      <Button
-        title="Valider"
-        onClick={onClose}
-        color="blue"
-        children={<i className="fas fa-cheese"></i>}
-      />
+      <div
+        style={{
+          padding: "1em",
+          height: `${50 + selectedFood.froms.length * 32}px`,
+        }}
+      >
+        <FoodGrid food={selectedFood} />
+      </div>
+      <div style={p1}>
+        <Button
+          title="Valider"
+          onClick={onClose}
+          color="blue"
+          children={<i className="fas fa-cheese"></i>}
+        />
+      </div>
     </Dialog>
   );
 }
