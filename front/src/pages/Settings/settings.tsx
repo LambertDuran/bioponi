@@ -1,9 +1,9 @@
+import { useState } from "react";
 import Button from "../../components/button";
 import ModalDialog from "../../components/modalDialog";
 import SpeciesCard, { ISpecies } from "./speciesCard";
 import FoodCard, { IFood } from "./foodCard";
 import "./settings.css";
-import { useEffect } from "react";
 
 const species: ISpecies[] = [
   {
@@ -48,25 +48,18 @@ const foods: IFood[] = [
 ];
 
 export default function Settings() {
-  // Gérer l'affichage du dialogu modal
-  useEffect(() => {
-    const modal = document.querySelector(".modal");
-    document
-      .querySelector(".open-modal")
-      ?.addEventListener("click", function () {
-        modal?.classList.add("show");
-      });
-    document
-      .querySelector(".close-modal")
-      ?.addEventListener("click", function () {
-        modal?.classList.remove("show");
-      });
-  }, []);
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => setOpen(false);
 
   return (
     <>
       {/* Dialogue pour l'ajout d'une nouvelle espèce de poisson ou d'un aliment */}
-      <ModalDialog title="Création d'un nouvel aliment" />
+      <ModalDialog
+        title="Création d'un nouvel aliment"
+        open={open}
+        onClose={handleClose}
+      />
       {/* Créer une nouvelle espèce de poisson */}
       <div className="new_species_button">
         <Button
@@ -76,7 +69,7 @@ export default function Settings() {
         />
         <Button
           title="Nouvel aliment"
-          onClick={() => console.log("clicked")}
+          onClick={() => setOpen(true)}
           children={<i className="fas fa-fish"></i>}
           color="blue"
           isModal={true}
