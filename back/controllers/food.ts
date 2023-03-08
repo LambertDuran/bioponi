@@ -24,5 +24,31 @@ export default function validateFood(food: any) {
     distribution: Joi.array().items(Joi.number().min(0).max(1000)).required(),
   });
 
-  return schema.validate(food);
+  const err = schema.validate(food);
+  console.log("err", err);
+  if (err.error) return err;
+
+  if (
+    food.froms.length !== food.tos.length ||
+    food.froms.length !== food.ranges.length ||
+    food.froms.length !== food.sizes.length ||
+    food.froms.length !== food.foodRates.length ||
+    food.froms.length !== food.prices.length ||
+    food.froms.length !== food.distribution.length
+  )
+    return {
+      error: {
+        details: [{ message: "arrays have different lengths!" }],
+      },
+    };
+
+  for (let i = 0; i < food.froms.length; i++)
+    if (food.froms[i] > food.tos[i])
+      return {
+        error: {
+          details: [{ message: "froms must be smaller than tos!" }],
+        },
+      };
+
+  return { error: null };
 }
