@@ -1,7 +1,7 @@
 import "./button.css";
 
 interface IButton {
-  title: string;
+  title?: string;
   onClick: () => void;
   children?: React.ReactElement;
   color?: string;
@@ -11,7 +11,7 @@ export default function Button({ title, onClick, children, color }: IButton) {
   return (
     <button className={`bioponi_button_${color ?? "orange"}`} onClick={onClick}>
       <div>{children}</div>
-      <p>{title}</p>
+      {title && <p style={{ paddingLeft: "0.75em" }}>{title}</p>}
     </button>
   );
 }

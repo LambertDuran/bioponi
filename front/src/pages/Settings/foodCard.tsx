@@ -11,7 +11,7 @@ export default function FoodCard({ food }: IFoodCard) {
     <div className="foodCard">
       <div className="foodCard_title">{food.title}</div>
       <div className="foodCard_body">
-        <FoodGrid food={food} />
+        <FoodGrid food={food} editable={false} />
       </div>
     </div>
   );

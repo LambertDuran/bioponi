@@ -1,0 +1,25 @@
+.modal_plus{
+    border: none;
+    background-color: #7991bd;
+    color: black;
+    font-size: 14px;
+    margin: 8px 2px;
+    padding: 0.3em;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.modal_moins{
+    border: none;
+    background-color: #e06464;
+    color: black;
+    font-size: 14px;
+    margin: 8px 2px;
+    padding: 0.3em;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.modal_validate_button{
+    padding: 0.75em;
+}

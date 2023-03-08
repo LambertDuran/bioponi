@@ -2,7 +2,7 @@
 .bioponi_button_blue{
     border: none;
     color: black;
-    padding: 0em 1em;
+    padding: 0em 0.5em;
     text-align: center;
     text-decoration: none;
     font-weight: 550;
@@ -24,7 +24,7 @@
 
 .bioponi_button_blue i,
 .bioponi_button_orange i{
-    padding-right: 0.5em;
+    padding-top: 0.2em;
 }
 
 .bioponi_button_orange:hover{
