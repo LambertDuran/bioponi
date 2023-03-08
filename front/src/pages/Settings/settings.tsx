@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "../../components/button";
-import ModalDialog from "../../components/modalDialog";
+import ModalDialog from "./foodModalDialog";
 import SpeciesCard, { ISpecies } from "./speciesCard";
 import IFood from "../../interfaces/food";
 import FoodCard from "./foodCard";

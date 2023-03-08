@@ -1,10 +1,10 @@
 import { useState } from "react";
-import IFood from "../interfaces/food";
-import Button from "./button";
-import FoodGrid from "../pages/Settings/foodGrid";
+import IFood from "../../interfaces/food";
+import Button from "../../components/button";
+import FoodGrid from "./foodGrid";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
-import "./modalDialog.css";
+import "./foodModalDialog.css";
 
 interface IModal {
   open: boolean;
