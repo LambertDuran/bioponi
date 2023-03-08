@@ -1,6 +1,5 @@
 import { useState } from "react";
 import IFood from "../interfaces/food";
-import useArray from "../hooks/useArray";
 import Button from "./button";
 import FoodGrid from "../pages/Settings/foodGrid";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -23,28 +22,44 @@ export default function ModalDialog({
   const [food, setFood] = useState<IFood>(selectedFood);
   const gridStyle = {
     padding: "0 1em 2em 1em",
-    height: `${50 + selectedFood.froms.length * 32}px`,
+    height: `${50 + food.froms.length * 25}px`,
   };
+  console.log("food", food);
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg">
       <DialogTitle>{title}</DialogTitle>
       <div style={gridStyle}>
-        <FoodGrid food={selectedFood} editable={true} />
+        <FoodGrid food={food} editable={true} />
         <button
           className="modal_plus"
           onClick={() => {
-            selectedFood.froms.push(0);
-            selectedFood.tos.push(0);
-            selectedFood.ranges.push("");
-            selectedFood.sizes.push(0);
-            selectedFood.foodRates.push(0);
-            selectedFood.prices.push(0);
-            selectedFood.foodTimeRates.push(0);
+            let newFood = { ...food };
+            newFood.froms.push(food.tos.slice(-1)[0]);
+            newFood.tos.push(food.tos.slice(-1)[0] + 100);
+            newFood.ranges.push(food.ranges.slice(-1)[0]);
+            newFood.sizes.push(food.sizes.slice(-1)[0]);
+            newFood.foodRates.push(food.foodRates.slice(-1)[0]);
+            newFood.prices.push(food.prices.slice(-1)[0]);
+            newFood.foodTimeRates.push(food.foodTimeRates.slice(-1)[0]);
+            setFood(newFood);
           }}
         >
           <i className="fas fa-plus"></i>
         </button>
-        <button className="modal_moins">
+        <button
+          className="modal_moins"
+          onClick={() => {
+            let newFood = { ...food };
+            newFood.froms.pop();
+            newFood.tos.pop();
+            newFood.ranges.pop();
+            newFood.sizes.pop();
+            newFood.foodRates.pop();
+            newFood.prices.pop();
+            newFood.foodTimeRates.pop();
+            setFood(newFood);
+          }}
+        >
           <i className="fas fa-minus"></i>
         </button>
       </div>

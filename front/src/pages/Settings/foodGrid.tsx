@@ -85,6 +85,7 @@ export default function FoodGrid({ food, editable }: IFoodGrid) {
       hideFooter={true}
       showColumnVerticalBorder={true}
       showCellVerticalBorder={true}
+      processRowUpdate={(e) => console.log(e)}
     />
   );
 }
