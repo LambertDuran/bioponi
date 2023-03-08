@@ -1,24 +1,36 @@
-.bioponi_button{
-    background-color: #fd7702;
+.bioponi_button_orange,
+.bioponi_button_blue{
     border: none;
     color: black;
-    padding: 15px 20px;
+    padding: 0em 1em;
     text-align: center;
     text-decoration: none;
     font-weight: 550;
-    display: inline-block;
+    display: flex;
+    align-items: center;
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 8px;
 }
 
-.bioponi_button i{
-    padding-right: 1em;
+.bioponi_button_blue{
+    background-color: #7991bd;
 }
 
-.bioponi_button:hover{
+.bioponi_button_orange{
+    background-color: #fd7702;
+}
+
+.bioponi_button_blue i,
+.bioponi_button_orange i{
+    padding-right: 0.5em;
+}
+
+.bioponi_button_orange:hover{
     background-color: #ff8e00;
-    color: black;
-    border-radius: 8px;
+}
+
+.bioponi_button_blue:hover{
+    background-color: #94a3c0;
 }

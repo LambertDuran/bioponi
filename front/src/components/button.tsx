@@ -4,13 +4,14 @@ interface IButton {
   title: string;
   onClick: () => void;
   children?: React.ReactElement;
+  color?: string;
 }
 
-export default function Button({ title, onClick, children }: IButton) {
+export default function Button({ title, onClick, children, color }: IButton) {
   return (
-    <button className="bioponi_button" onClick={onClick}>
-      {children}
-      {title}
+    <button className={`bioponi_button_${color ?? "orange"}`} onClick={onClick}>
+      <div>{children}</div>
+      <p>{title}</p>
     </button>
   );
 }

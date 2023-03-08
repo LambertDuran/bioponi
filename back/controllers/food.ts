@@ -25,7 +25,6 @@ export default function validateFood(food: any) {
   });
 
   const err = schema.validate(food);
-  console.log("err", err);
   if (err.error) return err;
 
   if (

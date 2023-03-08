@@ -48,6 +48,20 @@ const foods: IFood[] = [
 export default function Settings() {
   return (
     <>
+      {/* Créer une nouvelle espèce de poisson */}
+      <div className="new_species_button">
+        <Button
+          title="Nouvelle espèce"
+          onClick={() => console.log("clicked")}
+          children={<i className="fas fa-fish"></i>}
+        />
+        <Button
+          title="Nouvel aliment"
+          onClick={() => console.log("clicked")}
+          children={<i className="fas fa-fish"></i>}
+          color="blue"
+        />
+      </div>
       <div className="species">
         {/* Afficher les espèces de poissons*/}
         {species.map(({ title, weeks, weights }) => (
@@ -81,14 +95,6 @@ export default function Settings() {
             </div>
           )
         )}
-      </div>
-      {/* Créer une nouvelle espèce de poisson */}
-      <div className="new_species_button">
-        <Button
-          title="Nouvelle espèce"
-          onClick={() => console.log("clicked")}
-          children={<i className="fas fa-fish"></i>}
-        />
       </div>
     </>
   );
