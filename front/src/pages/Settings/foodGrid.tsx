@@ -8,9 +8,10 @@ const renderHeader = (params: any) => (
 interface IFoodGrid {
   food: IFood;
   editable: boolean;
+  onEditCell?: (food: IFood) => void;
 }
 
-export default function FoodGrid({ food, editable }: IFoodGrid) {
+export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
   const { froms, tos, ranges, sizes, foodRates, prices, foodTimeRates } = food;
   const muiRows: GridRowsProp = froms.map((f, i) => {
     return {
@@ -85,7 +86,19 @@ export default function FoodGrid({ food, editable }: IFoodGrid) {
       hideFooter={true}
       showColumnVerticalBorder={true}
       showCellVerticalBorder={true}
-      processRowUpdate={(e) => console.log(e)}
+      processRowUpdate={(e: any) => {
+        if (onEditCell === undefined) return;
+        let newFood = { ...food };
+        newFood.froms[e.id] = parseInt(e.from);
+        newFood.tos[e.id] = parseInt(e.to);
+        newFood.ranges[e.id] = e.range;
+        newFood.sizes[e.id] = parseFloat(e.size);
+        newFood.foodRates[e.id] = parseFloat(e.foodRate);
+        newFood.prices[e.id] = parseInt(e.price);
+        newFood.foodTimeRates[e.id] = parseInt(e.foodTimeRate);
+        onEditCell(newFood!);
+        return newFood;
+      }}
     />
   );
 }

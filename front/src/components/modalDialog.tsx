@@ -22,14 +22,13 @@ export default function ModalDialog({
   const [food, setFood] = useState<IFood>(selectedFood);
   const gridStyle = {
     padding: "0 1em 2em 1em",
-    height: `${50 + food.froms.length * 25}px`,
+    height: `${58 + food.froms.length * 25}px`,
   };
-  console.log("food", food);
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg">
       <DialogTitle>{title}</DialogTitle>
       <div style={gridStyle}>
-        <FoodGrid food={food} editable={true} />
+        <FoodGrid food={food} editable={true} onEditCell={setFood} />
         <button
           className="modal_plus"
           onClick={() => {
