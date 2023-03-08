@@ -5,11 +5,23 @@ interface IButton {
   onClick: () => void;
   children?: React.ReactElement;
   color?: string;
+  isModal?: boolean;
 }
 
-export default function Button({ title, onClick, children, color }: IButton) {
+export default function Button({
+  title,
+  onClick,
+  children,
+  color,
+  isModal,
+}: IButton) {
   return (
-    <button className={`bioponi_button_${color ?? "orange"}`} onClick={onClick}>
+    <button
+      className={`${isModal ? "open-modal" : ""} bioponi_button_${
+        color ?? "orange"
+      }`}
+      onClick={onClick}
+    >
       <div>{children}</div>
       <p>{title}</p>
     </button>
