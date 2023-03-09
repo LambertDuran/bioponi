@@ -39,7 +39,7 @@ export default function ModalDialog({
             newFood.sizes.push(food.sizes.slice(-1)[0]);
             newFood.foodRates.push(food.foodRates.slice(-1)[0]);
             newFood.prices.push(food.prices.slice(-1)[0]);
-            newFood.foodTimeRates.push(food.foodTimeRates.slice(-1)[0]);
+            newFood.distributions.push(food.distributions.slice(-1)[0]);
             setFood(newFood);
           }}
         >
@@ -55,7 +55,7 @@ export default function ModalDialog({
             newFood.sizes.pop();
             newFood.foodRates.pop();
             newFood.prices.pop();
-            newFood.foodTimeRates.pop();
+            newFood.distributions.pop();
             setFood(newFood);
           }}
         >

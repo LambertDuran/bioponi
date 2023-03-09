@@ -45,11 +45,12 @@ const species: ISpecies[] = [
 //       0.97, 0.97, 0.97, 0.97,
 //     ],
 //     prices: Array(16).fill(2100),
-//     foodTimeRates: Array(16).fill(100),
+//     distributions: Array(16).fill(100),
 //   },
 // ];
 
 const iFood0: IFood = {
+  id: -1,
   title: "Nouvel aliment",
   froms: [10],
   tos: [100],
@@ -57,7 +58,7 @@ const iFood0: IFood = {
   sizes: [5.5],
   foodRates: [1.55],
   prices: [2100],
-  foodTimeRates: [100],
+  distributions: [100],
 };
 
 export default function Settings() {
@@ -70,8 +71,9 @@ export default function Settings() {
   useEffect(() => {
     async function getFoods() {
       const allFood = await getAllFood();
-      // setFoods(allFood);
-      // console.log("allFood: ", allFood);
+      if (allFood && allFood.data) {
+        setFoods(allFood.data);
+      }
     }
     getFoods();
   }, []);

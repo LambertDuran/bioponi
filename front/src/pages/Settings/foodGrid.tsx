@@ -12,7 +12,8 @@ interface IFoodGrid {
 }
 
 export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
-  const { froms, tos, ranges, sizes, foodRates, prices, foodTimeRates } = food;
+  console.log("food", food);
+  const { froms, tos, ranges, sizes, foodRates, prices, distributions } = food;
   const muiRows: GridRowsProp = froms.map((f, i) => {
     return {
       id: i,
@@ -22,9 +23,10 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
       size: sizes[i],
       foodRate: foodRates[i],
       price: prices[i],
-      foodTimeRate: foodTimeRates[i],
+      distribution: distributions[i],
     };
   });
+  console.log("test");
   const colHeaders: GridColDef[] = [
     {
       field: "from",
@@ -71,7 +73,7 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
       editable: editable,
     },
     {
-      field: "foodTimeRate",
+      field: "distribution",
       headerName: "Distribution(g/min)",
       width: 200,
       renderHeader,
@@ -95,9 +97,8 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
         newFood.sizes[e.id] = parseFloat(e.size);
         newFood.foodRates[e.id] = parseFloat(e.foodRate);
         newFood.prices[e.id] = parseInt(e.price);
-        newFood.foodTimeRates[e.id] = parseInt(e.foodTimeRate);
-        onEditCell(newFood!);
-        return newFood;
+        newFood.distributions[e.id] = parseInt(e.distribution);
+        onEditCell(newFood);
       }}
     />
   );

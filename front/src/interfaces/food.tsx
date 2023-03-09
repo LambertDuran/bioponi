@@ -1,4 +1,5 @@
 export default interface IFood {
+  id: number;
   title: string;
   froms: number[];
   tos: number[];
@@ -6,5 +7,7 @@ export default interface IFood {
   sizes: number[];
   foodRates: number[];
   prices: number[];
-  foodTimeRates: number[];
+  distributions: number[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
