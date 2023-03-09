@@ -7,7 +7,7 @@ interface IButton {
   color?: string;
 }
 
-export default function Button({ title, onClick, children, color }: IButton) {
+export default function Button({ title, children, color, onClick }: IButton) {
   return (
     <button className={`bioponi_button_${color ?? "orange"}`} onClick={onClick}>
       <div>{children}</div>

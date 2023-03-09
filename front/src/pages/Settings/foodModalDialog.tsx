@@ -1,9 +1,11 @@
 import { useState } from "react";
 import IFood from "../../interfaces/food";
+import validateFood from "./validateFood";
 import Button from "../../components/button";
 import FoodGrid from "./foodGrid";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
+import { toast } from "react-toastify";
 import "./foodModalDialog.css";
 
 interface IModal {
@@ -24,6 +26,18 @@ export default function ModalDialog({
     padding: "0 1em 2em 1em",
     height: `${58 + food.froms.length * 25}px`,
   };
+
+  const handleSubmit = () => {
+    console.log("food", food);
+    const { error } = validateFood(food);
+    console.log("error", error);
+    if (error) {
+      toast.error(`Format des données incorrect : ${error.details[0].message}`);
+      return;
+    }
+    onClose();
+  };
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg">
       <DialogTitle>{title}</DialogTitle>
@@ -65,7 +79,7 @@ export default function ModalDialog({
       <div className="modal_validate_button">
         <Button
           title="Valider"
-          onClick={onClose}
+          onClick={handleSubmit}
           color="blue"
           children={<i className="fas fa-cheese"></i>}
         />
