@@ -1,5 +1,6 @@
 import IFood from "../../interfaces/food";
 import FoodGrid from "./foodGrid";
+import Chip from "@mui/material/Chip";
 import "./foodCard.css";
 
 interface IFoodCard {
@@ -9,7 +10,9 @@ interface IFoodCard {
 export default function FoodCard({ food }: IFoodCard) {
   return (
     <div className="foodCard">
-      <div className="foodCard_title">{food.name}</div>
+      <div className="foodCard_title">
+        {<Chip label={food.name} style={{ backgroundColor: "#94a3c0" }}></Chip>}
+      </div>
       <div className="foodCard_body">
         <FoodGrid food={food} editable={false} />
       </div>

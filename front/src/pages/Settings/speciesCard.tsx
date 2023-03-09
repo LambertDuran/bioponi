@@ -12,6 +12,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import Chip from "@mui/material/Chip";
 
 ChartJS.register(
   CategoryScale,
@@ -45,7 +46,9 @@ export default function SpeciesCard({ title, weeks, weights }: ISpecies) {
 
   return (
     <div className="species_card">
-      <h1 className="species_card_title">{title}</h1>
+      <div className="species_card_title">
+        {<Chip label={title} style={{ backgroundColor: "#fb9b50" }}></Chip>}
+      </div>
       <div className="species_card_body">
         <Grid
           col1={weeks}
