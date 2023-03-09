@@ -12,7 +12,6 @@ interface IFoodGrid {
 }
 
 export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
-  console.log("food", food);
   const { froms, tos, ranges, sizes, foodRates, prices, distributions } = food;
   const muiRows: GridRowsProp = froms.map((f, i) => {
     return {
@@ -26,7 +25,6 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
       distribution: distributions[i],
     };
   });
-  console.log("test");
   const colHeaders: GridColDef[] = [
     {
       field: "from",

@@ -51,7 +51,7 @@ const species: ISpecies[] = [
 
 const iFood0: IFood = {
   id: -1,
-  title: "Nouvel aliment",
+  name: "Nouvel aliment",
   froms: [10],
   tos: [100],
   ranges: ["NEO CDC CF 20"],

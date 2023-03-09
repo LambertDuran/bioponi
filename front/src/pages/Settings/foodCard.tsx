@@ -9,7 +9,7 @@ interface IFoodCard {
 export default function FoodCard({ food }: IFoodCard) {
   return (
     <div className="foodCard">
-      <div className="foodCard_title">{food.title}</div>
+      <div className="foodCard_title">{food.name}</div>
       <div className="foodCard_body">
         <FoodGrid food={food} editable={false} />
       </div>

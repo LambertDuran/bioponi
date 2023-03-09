@@ -1,6 +1,6 @@
 export default interface IFood {
   id: number;
-  title: string;
+  name: string;
   froms: number[];
   tos: number[];
   ranges: string[];
