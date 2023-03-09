@@ -21,7 +21,7 @@ export default function validateFood(food: any) {
     prices: Joi.array()
       .items(Joi.number().min(0).max(20000).required())
       .required(),
-    distribution: Joi.array().items(Joi.number().min(0).max(1000)).required(),
+    distributions: Joi.array().items(Joi.number().min(0).max(1000)).required(),
   });
 
   const err = schema.validate(food);
@@ -33,7 +33,7 @@ export default function validateFood(food: any) {
     food.froms.length !== food.sizes.length ||
     food.froms.length !== food.foodRates.length ||
     food.froms.length !== food.prices.length ||
-    food.froms.length !== food.distribution.length
+    food.froms.length !== food.distributions.length
   )
     return {
       error: {

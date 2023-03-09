@@ -13,17 +13,17 @@ model Pool {
 }
 
 model Food {
-  id           Int      @id @default(autoincrement())
-  name         String   @unique
-  froms        Int[]
-  tos          Int[]
-  ranges       String[]
-  sizes        Float[]
-  foodRates    Float[]
-  prices       Int[]
-  distribution Int[]
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  name          String   @unique
+  froms         Int[]
+  tos           Int[]
+  ranges        String[]
+  sizes         Float[]
+  foodRates     Float[]
+  prices        Int[]
+  distributions Int[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 generator client {

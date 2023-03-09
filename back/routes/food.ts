@@ -7,6 +7,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+  res.header("Access-Control-Allow-Origin", "*");
   console.log("GET received!");
   const food = await prisma.food.findMany();
   if (!food) return res.status(404).send("Aucun aliment trouvé!");
@@ -35,7 +36,7 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
       sizes: req.body.sizes,
       foodRates: req.body.foodRates,
       prices: req.body.prices,
-      distribution: req.body.distribution,
+      distributions: req.body.distributions,
     },
   });
 
