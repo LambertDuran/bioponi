@@ -1,7 +1,10 @@
+import { Request, Response, NextFunction } from "express";
 const express = require("express");
 const app = express();
 const food = require("./routes/food");
+const cors = require("./middlewares/cor");
 
+app.use(cors);
 app.use(express.json());
 app.use("/api/food", food);
 
