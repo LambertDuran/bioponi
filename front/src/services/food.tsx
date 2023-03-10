@@ -1,7 +1,6 @@
 import IFood from "../interfaces/food";
 import http from "./httpServices";
 import apiUrls from "../config.json";
-import { AxiosResponse } from "axios";
 
 async function getAllFood() {
   const allFood = await http.get(apiUrls.foodEndpoint);

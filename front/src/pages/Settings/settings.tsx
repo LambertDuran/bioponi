@@ -51,7 +51,7 @@ const species: ISpecies[] = [
 
 const iFood0: IFood = {
   id: -1,
-  name: "Nouvel aliment",
+  name: "",
   froms: [10],
   tos: [100],
   ranges: ["NEO CDC CF 20"],
@@ -82,7 +82,7 @@ export default function Settings() {
     <>
       {/* Dialogue pour l'ajout d'une nouvelle espèce de poisson ou d'un aliment */}
       <ModalDialog
-        title="Création d'un nouvel aliment"
+        title="Création d'un nouvel aliment :"
         open={open}
         onClose={handleClose}
         selectedFood={selectedFood ?? iFood0}
