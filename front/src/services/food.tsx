@@ -1,6 +1,7 @@
 import IFood from "../interfaces/food";
 import http from "./httpServices";
 import apiUrls from "../config.json";
+import { AxiosResponse } from "axios";
 
 async function getAllFood() {
   const allFood = await http.get(apiUrls.foodEndpoint);
@@ -8,8 +9,17 @@ async function getAllFood() {
 }
 
 async function postFood(food: IFood) {
-  const newFood = await http.post(apiUrls.foodEndpoint, food);
-  return newFood;
+  let newFood: IFood | null = null;
+  let error = "";
+  return http
+    .post(apiUrls.foodEndpoint, food)
+    .then((res) => {
+      return { food: res.data, error: error };
+    })
+    .catch((err) => {
+      error = err.response.data;
+      return { food: newFood, error: error };
+    });
 }
 
 export { getAllFood, postFood };

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import IFood from "../../interfaces/food";
 import validateFood from "./validateFood";
+import { postFood } from "../../services/food";
 import Button from "../../components/button";
 import FoodGrid from "./foodGrid";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -27,16 +28,18 @@ export default function ModalDialog({
     height: `${58 + food.froms.length * 25}px`,
   };
 
-  const handleSubmit = () => {
-    console.log("food", food);
+  async function handleSubmit() {
     const { error } = validateFood(food);
-    console.log("error", error);
     if (error) {
       toast.error(`Format des données incorrect : ${error.details[0].message}`);
       return;
     }
+
+    const { food: newFood, error: error2 } = await postFood(food);
+    if (newFood) toast.success("Nouvel aliment créé");
+    else toast.error(error2);
     onClose();
-  };
+  }
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg">

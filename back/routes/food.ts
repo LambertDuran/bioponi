@@ -7,24 +7,28 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
-  console.log("GET received!");
   const food = await prisma.food.findMany();
   if (!food) return res.status(404).send("Aucun aliment trouvé!");
   res.json(food);
 });
 
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
-  console.log("POST received!");
-
   const { error } = validateFood(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) {
+    console.log("error", error.details[0].message);
+    return res.status(400).send(error.details[0].message);
+  }
+
+  console.log("1");
 
   const existingFood = await prisma.food.findFirst({
     where: {
       name: req.body.name,
     },
   });
+  console.log("2");
   if (existingFood) return res.status(400).send("Food already exists!");
+  console.log("3");
 
   const food = await prisma.food.create({
     data: {
@@ -38,8 +42,10 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
       distributions: req.body.distributions,
     },
   });
+  console.log("4");
 
-  if (!food) return res.status(400).send("Bad request!");
+  if (!food) return res.status(400).send("Prisma error creation!");
+  console.log("5");
   res.json(food);
 });
 
