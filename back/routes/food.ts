@@ -14,21 +14,14 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   const { error } = validateFood(req.body);
-  if (error) {
-    console.log("error", error.details[0].message);
-    return res.status(400).send(error.details[0].message);
-  }
-
-  console.log("1");
+  if (error) return res.status(400).send(error.details[0].message);
 
   const existingFood = await prisma.food.findFirst({
     where: {
       name: req.body.name,
     },
   });
-  console.log("2");
   if (existingFood) return res.status(400).send("Food already exists!");
-  console.log("3");
 
   const food = await prisma.food.create({
     data: {
@@ -42,10 +35,8 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
       distributions: req.body.distributions,
     },
   });
-  console.log("4");
 
   if (!food) return res.status(400).send("Prisma error creation!");
-  console.log("5");
   res.json(food);
 });
 
