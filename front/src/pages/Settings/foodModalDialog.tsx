@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import IFood from "../../interfaces/food";
 import validateFood from "./validateFood";
 import { postFood } from "../../services/food";
@@ -54,8 +54,6 @@ export default function ModalDialog({
       }
     }, 0);
   }, [open]);
-
-  console.log("ModalDialog", food);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg">

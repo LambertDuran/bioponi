@@ -75,7 +75,6 @@ export default function Settings() {
 
   const handleEditClick = (food: IFood) => {
     setSelectedFood({ ...food });
-    console.log("handleEditClick", food);
     setOpen(true);
   };
 
