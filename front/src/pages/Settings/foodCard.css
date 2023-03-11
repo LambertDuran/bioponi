@@ -13,10 +13,18 @@
     font-size: 24px;
     font-weight: bold;
     padding: 0.5em 0 0.5em 1em;
-    display: inline-block;
+    display: flex;
+    justify-content: space-between;
 }
 
 .foodCard_body {
     padding-left: 1em;
     width: 920px;
+  }
+
+  .foodCard_modify_but{
+    color:#7991bd;
+    font-size: 18px;
+    padding-right: 1em;
+    cursor: pointer;
   }

@@ -64,14 +64,19 @@ const iFood0: IFood = {
 
 export default function Settings() {
   const [open, setOpen] = useState(false);
-  const handleClose = () => setOpen(false);
 
-  const [selectedFood, setSelectedFood] = useState<IFood | null>(null);
+  const [selectedFood, setSelectedFood] = useState<IFood>(iFood0);
   const [foods, setFoods] = useState<IFood[]>([]);
   // const { push } = useArray<IFood>(foods);
 
   const handleCreatedFood = (newFood: IFood) => {
     setFoods([...foods, newFood]);
+  };
+
+  const handleEditClick = (food: IFood) => {
+    setSelectedFood({ ...food });
+    console.log("handleEditClick", food);
+    setOpen(true);
   };
 
   useEffect(() => {
@@ -90,11 +95,12 @@ export default function Settings() {
       <ModalDialog
         title="Création d'un nouvel aliment :"
         open={open}
-        onClose={handleClose}
-        selectedFood={selectedFood ?? iFood0}
+        onClose={() => setOpen(false)}
+        food={selectedFood}
+        setFood={setSelectedFood}
         onCreatedFood={handleCreatedFood}
       />
-      {/* Créer une nouvelle espèce de poisson */}
+      {/* Créer une nouvelle espèce de poisson ou d'aliment*/}
       <div className="new_species_button">
         <Button
           title="Nouvelle espèce"
@@ -121,7 +127,7 @@ export default function Settings() {
         {/* Afficher les aliments */}
         {foods.map((f) => (
           <div className="species_margin">
-            <FoodCard food={f} />
+            <FoodCard food={f} onEditClick={handleEditClick} />
           </div>
         ))}
       </div>

@@ -13,7 +13,8 @@ interface IModal {
   open: boolean;
   title: string;
   onClose: () => void;
-  selectedFood: IFood;
+  food: IFood;
+  setFood: (food: IFood) => void;
   onCreatedFood: (food: IFood) => void;
 }
 
@@ -21,10 +22,10 @@ export default function ModalDialog({
   title,
   open,
   onClose,
-  selectedFood,
+  food,
+  setFood,
   onCreatedFood,
 }: IModal) {
-  const [food, setFood] = useState<IFood>(selectedFood);
   const gridStyle = {
     padding: "0 1em 2em 1em",
     height: `${58 + food.froms.length * 25}px`,
@@ -53,6 +54,8 @@ export default function ModalDialog({
       }
     }, 0);
   }, [open]);
+
+  console.log("ModalDialog", food);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg">
