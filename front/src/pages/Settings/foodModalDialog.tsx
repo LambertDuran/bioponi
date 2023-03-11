@@ -14,6 +14,7 @@ interface IModal {
   title: string;
   onClose: () => void;
   selectedFood: IFood;
+  onCreatedFood: (food: IFood) => void;
 }
 
 export default function ModalDialog({
@@ -21,6 +22,7 @@ export default function ModalDialog({
   open,
   onClose,
   selectedFood,
+  onCreatedFood,
 }: IModal) {
   const [food, setFood] = useState<IFood>(selectedFood);
   const gridStyle = {
@@ -38,6 +40,7 @@ export default function ModalDialog({
     const { food: newFood, error: error2 } = await postFood(food);
     if (newFood) {
       toast.success("Nouvel aliment créé");
+      onCreatedFood(newFood);
       onClose();
     } else toast.error(error2);
   }

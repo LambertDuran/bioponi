@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+// import useArray from "../../hooks/useArray";
 import Button from "../../components/button";
 import ModalDialog from "./foodModalDialog";
 import SpeciesCard, { ISpecies } from "./speciesCard";
@@ -64,9 +65,14 @@ const iFood0: IFood = {
 export default function Settings() {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
-  const [selectedFood, setSelectedFood] = useState<IFood | null>(null);
 
+  const [selectedFood, setSelectedFood] = useState<IFood | null>(null);
   const [foods, setFoods] = useState<IFood[]>([]);
+  // const { push } = useArray<IFood>(foods);
+
+  const handleCreatedFood = (newFood: IFood) => {
+    setFoods([...foods, newFood]);
+  };
 
   useEffect(() => {
     async function getFoods() {
@@ -86,6 +92,7 @@ export default function Settings() {
         open={open}
         onClose={handleClose}
         selectedFood={selectedFood ?? iFood0}
+        onCreatedFood={handleCreatedFood}
       />
       {/* Créer une nouvelle espèce de poisson */}
       <div className="new_species_button">
