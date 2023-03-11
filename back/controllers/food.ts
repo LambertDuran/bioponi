@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 export default function validateFood(food: any) {
   const schema = Joi.object({
-    id: Joi.number(),
+    id: Joi.number().min(0),
     name: Joi.string().min(3).max(50).required(),
     froms: Joi.array()
       .items(Joi.number().min(0).max(10000).required())

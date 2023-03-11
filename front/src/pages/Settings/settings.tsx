@@ -51,7 +51,7 @@ const species: ISpecies[] = [
 // ];
 
 const iFood0: IFood = {
-  id: -1,
+  id: 0,
   name: "",
   froms: [10],
   tos: [100],
