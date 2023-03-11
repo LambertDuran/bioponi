@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import IFood from "../../interfaces/food";
+import IFood, { addRow, removeRow } from "../../interfaces/food";
 import validateFood from "./validateFood";
 import { postFood } from "../../services/food";
 import Button from "../../components/button";
@@ -74,17 +74,7 @@ export default function ModalDialog({
         <div className="modal_plus_moins">
           <button
             className="modal_plus"
-            onClick={() => {
-              let newFood = { ...food };
-              newFood.froms.push(food.tos.slice(-1)[0]);
-              newFood.tos.push(food.tos.slice(-1)[0] + 100);
-              newFood.ranges.push(food.ranges.slice(-1)[0]);
-              newFood.sizes.push(food.sizes.slice(-1)[0]);
-              newFood.foodRates.push(food.foodRates.slice(-1)[0]);
-              newFood.prices.push(food.prices.slice(-1)[0]);
-              newFood.distributions.push(food.distributions.slice(-1)[0]);
-              setFood(newFood);
-            }}
+            onClick={() => setFood(addRow({ ...food }))}
           >
             <i className="fas fa-plus"></i>
           </button>
@@ -92,15 +82,7 @@ export default function ModalDialog({
             className="modal_moins"
             onClick={() => {
               if (food.froms.length < 2) return;
-              let newFood = { ...food };
-              newFood.froms.pop();
-              newFood.tos.pop();
-              newFood.ranges.pop();
-              newFood.sizes.pop();
-              newFood.foodRates.pop();
-              newFood.prices.pop();
-              newFood.distributions.pop();
-              setFood(newFood);
+              setFood(removeRow({ ...food }));
             }}
           >
             <i className="fas fa-minus"></i>
