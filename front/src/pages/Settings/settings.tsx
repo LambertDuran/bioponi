@@ -67,14 +67,22 @@ export default function Settings() {
 
   const [selectedFood, setSelectedFood] = useState<IFood>(iFood0);
   const [foods, setFoods] = useState<IFood[]>([]);
+  const [isCreation, setIsCreation] = useState(true);
   // const { push } = useArray<IFood>(foods);
 
-  const handleCreatedFood = (newFood: IFood) => {
-    setFoods([...foods, newFood]);
+  const handleFood = (newFood: IFood) => {
+    if (isCreation) setFoods([...foods, newFood]);
+    else {
+      const newFoods = foods.map((food) =>
+        food.id === newFood.id ? newFood : food
+      );
+      setFoods(newFoods);
+    }
   };
 
   const handleEditClick = (food: IFood) => {
     setSelectedFood(food);
+    setIsCreation(false);
     setOpen(true);
   };
 
@@ -92,12 +100,17 @@ export default function Settings() {
     <>
       {/* Dialogue pour l'ajout d'une nouvelle espèce de poisson ou d'un aliment */}
       <ModalDialog
-        title="Création d'un nouvel aliment :"
+        title={
+          isCreation
+            ? "Création d'un nouvel aliment :"
+            : "Modification d'un aliment :"
+        }
         open={open}
         onClose={() => setOpen(false)}
         food={selectedFood}
         setFood={setSelectedFood}
-        onCreatedFood={handleCreatedFood}
+        onModificationFood={handleFood}
+        isCreation={isCreation}
       />
       {/* Créer une nouvelle espèce de poisson ou d'aliment*/}
       <div className="new_species_button">
@@ -110,6 +123,7 @@ export default function Settings() {
           title="Nouvel aliment"
           onClick={() => {
             setSelectedFood(iFood0);
+            setIsCreation(true);
             setOpen(true);
           }}
           children={<i className="fas fa-cheese"></i>}

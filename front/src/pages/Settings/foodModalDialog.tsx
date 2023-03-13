@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import IFood, { addRow, removeRow } from "../../interfaces/food";
 import validateFood from "./validateFood";
-import { postFood } from "../../services/food";
+import { postFood, putFood } from "../../services/food";
 import Button from "../../components/button";
 import FoodGrid from "./foodGrid";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -15,7 +15,8 @@ interface IModal {
   onClose: () => void;
   food: IFood;
   setFood: (food: IFood) => void;
-  onCreatedFood: (food: IFood) => void;
+  onModificationFood: (food: IFood) => void;
+  isCreation: boolean;
 }
 
 export default function ModalDialog({
@@ -24,7 +25,8 @@ export default function ModalDialog({
   onClose,
   food,
   setFood,
-  onCreatedFood,
+  onModificationFood,
+  isCreation,
 }: IModal) {
   const [copyFood, setCopyFood] = useState<IFood>(food);
 
@@ -34,18 +36,36 @@ export default function ModalDialog({
   };
 
   async function handleSubmit() {
-    const { error } = validateFood(copyFood);
-    if (error) {
-      toast.error(`Format des données incorrect : ${error.details[0].message}`);
+    const { joiError } = validateFood(copyFood);
+    if (joiError) {
+      toast.error(
+        `Format des données incorrect : ${joiError.details[0].message}`
+      );
       return;
     }
-    const { food: newFood, error: error2 } = await postFood(copyFood);
+
+    let newFood: IFood;
+    let prismaError: string;
+
+    if (isCreation) {
+      const data = await postFood(copyFood);
+      newFood = data.food;
+      prismaError = data.error;
+    } else {
+      const data = await putFood(copyFood);
+      console.log("data", data);
+      newFood = data.food;
+      prismaError = data.error;
+    }
+
     if (newFood) {
-      toast.success("Nouvel aliment créé");
-      onCreatedFood(newFood);
+      toast.success(
+        `Aliment ${newFood.name} ${isCreation ? " créé" : " modifié"}`
+      );
+      onModificationFood(newFood);
       setFood(newFood);
       onClose();
-    } else toast.error(error2);
+    } else toast.error(prismaError);
   }
 
   const inputElement = useRef<HTMLInputElement>(null);

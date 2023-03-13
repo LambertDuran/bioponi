@@ -40,4 +40,28 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   res.json(food);
 });
 
+router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
+  const { error } = validateFood(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  const food = await prisma.food.update({
+    where: {
+      id: parseInt(req.params.id),
+    },
+    data: {
+      name: req.body.name,
+      froms: req.body.froms,
+      tos: req.body.tos,
+      ranges: req.body.ranges,
+      sizes: req.body.sizes,
+      foodRates: req.body.foodRates,
+      prices: req.body.prices,
+      distributions: req.body.distributions,
+    },
+  });
+
+  if (!food) return res.status(404).send("Food not found!");
+  res.json(food);
+});
+
 module.exports = router;

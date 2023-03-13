@@ -21,4 +21,18 @@ async function postFood(food: IFood) {
     });
 }
 
-export { getAllFood, postFood };
+async function putFood(food: IFood) {
+  let newFood: IFood | null = null;
+  let error = "";
+  return http
+    .put(apiUrls.foodEndpoint + `/${food.id}`, food)
+    .then((res) => {
+      return { food: res.data, error: error };
+    })
+    .catch((err) => {
+      error = err.response.data;
+      return { food: newFood, error: error };
+    });
+}
+
+export { getAllFood, postFood, putFood };
