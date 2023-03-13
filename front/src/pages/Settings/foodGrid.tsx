@@ -96,6 +96,8 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
         newFood.foodRates[e.id] = parseFloat(e.foodRate);
         newFood.prices[e.id] = parseInt(e.price);
         newFood.distributions[e.id] = parseInt(e.distribution);
+        console.log("e : ", e);
+        // console.log("newFood.distribution : ", newFood.distributions);
         onEditCell(newFood);
       }}
     />

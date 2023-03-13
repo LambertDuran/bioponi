@@ -15,7 +15,7 @@ interface IModal {
   onClose: () => void;
   food: IFood;
   setFood: (food: IFood) => void;
-  onModificationFood: (food: IFood) => void;
+  onFoodModification: (food: IFood) => void;
   isCreation: boolean;
 }
 
@@ -25,7 +25,7 @@ export default function ModalDialog({
   onClose,
   food,
   setFood,
-  onModificationFood,
+  onFoodModification,
   isCreation,
 }: IModal) {
   const [copyFood, setCopyFood] = useState<IFood>(food);
@@ -36,6 +36,7 @@ export default function ModalDialog({
   };
 
   async function handleSubmit() {
+    console.log("handleSubmit");
     const { joiError } = validateFood(copyFood);
     if (joiError) {
       toast.error(
@@ -44,28 +45,17 @@ export default function ModalDialog({
       return;
     }
 
-    let newFood: IFood;
-    let prismaError: string;
-
-    if (isCreation) {
-      const data = await postFood(copyFood);
-      newFood = data.food;
-      prismaError = data.error;
-    } else {
-      const data = await putFood(copyFood);
-      console.log("data", data);
-      newFood = data.food;
-      prismaError = data.error;
-    }
-
-    if (newFood) {
+    let data: { food: IFood | null; error: string };
+    if (isCreation) data = await postFood(copyFood);
+    else data = await putFood(copyFood);
+    if (data.food) {
       toast.success(
-        `Aliment ${newFood.name} ${isCreation ? " créé" : " modifié"}`
+        `Aliment ${data.food.name} ${isCreation ? " créé" : " modifié"}`
       );
-      onModificationFood(newFood);
-      setFood(newFood);
+      onFoodModification(data.food);
+      setFood(data.food);
       onClose();
-    } else toast.error(prismaError);
+    } else toast.error(data.error);
   }
 
   const inputElement = useRef<HTMLInputElement>(null);

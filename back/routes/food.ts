@@ -61,6 +61,7 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
   });
 
   if (!food) return res.status(404).send("Food not found!");
+  console.log(food.distributions);
   res.json(food);
 });
 

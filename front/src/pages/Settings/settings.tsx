@@ -70,7 +70,7 @@ export default function Settings() {
   const [isCreation, setIsCreation] = useState(true);
   // const { push } = useArray<IFood>(foods);
 
-  const handleFood = (newFood: IFood) => {
+  const handleFoodModification = (newFood: IFood) => {
     if (isCreation) setFoods([...foods, newFood]);
     else {
       const newFoods = foods.map((food) =>
@@ -109,7 +109,7 @@ export default function Settings() {
         onClose={() => setOpen(false)}
         food={selectedFood}
         setFood={setSelectedFood}
-        onModificationFood={handleFood}
+        onFoodModification={handleFoodModification}
         isCreation={isCreation}
       />
       {/* Créer une nouvelle espèce de poisson ou d'aliment*/}
