@@ -74,7 +74,7 @@ export default function Settings() {
   };
 
   const handleEditClick = (food: IFood) => {
-    setSelectedFood({ ...food });
+    setSelectedFood(food);
     setOpen(true);
   };
 

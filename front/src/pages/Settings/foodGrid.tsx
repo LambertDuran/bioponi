@@ -87,7 +87,7 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
       showColumnVerticalBorder={true}
       showCellVerticalBorder={true}
       processRowUpdate={(e: any) => {
-        if (onEditCell === undefined) return;
+        if (!editable || onEditCell === undefined) return;
         let newFood = { ...food };
         newFood.froms[e.id] = parseInt(e.from);
         newFood.tos[e.id] = parseInt(e.to);

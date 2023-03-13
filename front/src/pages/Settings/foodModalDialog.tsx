@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import IFood, { addRow, removeRow } from "../../interfaces/food";
 import validateFood from "./validateFood";
 import { postFood } from "../../services/food";
@@ -26,22 +26,24 @@ export default function ModalDialog({
   setFood,
   onCreatedFood,
 }: IModal) {
+  const [copyFood, setCopyFood] = useState<IFood>(food);
+
   const gridStyle = {
     padding: "0 1em 2em 1em",
-    height: `${58 + food.froms.length * 25}px`,
+    height: `${58 + copyFood.froms.length * 25}px`,
   };
 
   async function handleSubmit() {
-    const { error } = validateFood(food);
+    const { error } = validateFood(copyFood);
     if (error) {
       toast.error(`Format des données incorrect : ${error.details[0].message}`);
       return;
     }
-
-    const { food: newFood, error: error2 } = await postFood(food);
+    const { food: newFood, error: error2 } = await postFood(copyFood);
     if (newFood) {
       toast.success("Nouvel aliment créé");
       onCreatedFood(newFood);
+      setFood(newFood);
       onClose();
     } else toast.error(error2);
   }
@@ -55,6 +57,10 @@ export default function ModalDialog({
     }, 0);
   }, [open]);
 
+  useEffect(() => {
+    setCopyFood(food);
+  }, [food]);
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg">
       <DialogTitle>
@@ -63,26 +69,26 @@ export default function ModalDialog({
           ref={inputElement}
           type="text"
           id="food_name"
-          value={food.name}
-          onChange={(e) => setFood({ ...food, name: e.target.value })}
+          value={copyFood.name}
+          onChange={(e) => setCopyFood({ ...copyFood, name: e.target.value })}
           className="modal_name"
           autoFocus
         />
       </DialogTitle>
       <div style={gridStyle}>
-        <FoodGrid food={food} editable={true} onEditCell={setFood} />
+        <FoodGrid food={copyFood} editable={true} onEditCell={setCopyFood} />
         <div className="modal_plus_moins">
           <button
             className="modal_plus"
-            onClick={() => setFood(addRow({ ...food }))}
+            onClick={() => setCopyFood(addRow({ ...copyFood }))}
           >
             <i className="fas fa-plus"></i>
           </button>
           <button
             className="modal_moins"
             onClick={() => {
-              if (food.froms.length < 2) return;
-              setFood(removeRow({ ...food }));
+              if (copyFood.froms.length < 2) return;
+              setCopyFood(removeRow({ ...copyFood }));
             }}
           >
             <i className="fas fa-minus"></i>
