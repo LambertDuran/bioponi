@@ -3,7 +3,7 @@ import IFish, { addRow, removeRow } from "../../interfaces/fish";
 // import validateFood from "./validateFood";
 // import { postFood, putFood } from "../../services/food";
 import Button from "../../components/button";
-// import FoodGrid from "./foodGrid";
+import FishGrid from "./fishGrid";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 // import { toast } from "react-toastify";
@@ -65,7 +65,7 @@ IModal) {
         />
       </DialogTitle>
       <div style={gridStyle}>
-        {/* <FoodGrid food={copyFish} editable={true} onEditCell={setCopyFish} /> */}
+        <FishGrid fish={copyFish} editable={true} onEditCell={setCopyFish} />
         <div className="modal_plus_moins">
           <button
             className="modal_plus"

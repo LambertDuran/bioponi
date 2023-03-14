@@ -84,8 +84,6 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
       columns={colHeaders}
       rowHeight={25}
       hideFooter={true}
-      showColumnVerticalBorder={true}
-      showCellVerticalBorder={true}
       processRowUpdate={(e: any) => {
         if (!editable || onEditCell === undefined) return;
         let newFood = { ...food };
