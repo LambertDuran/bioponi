@@ -1,0 +1,54 @@
+.fishModal_plus{
+    border: none;
+    background-color: #ff8e00;
+    color: black;
+    font-size: 14px;
+    margin: 8px 2px;
+    padding: 0.3em;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.fishModal_moins{
+    border: none;
+    background-color: #e06464;
+    color: black;
+    font-size: 14px;
+    margin: 8px 2px;
+    padding: 0.3em;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.fishModal_validate_button{
+    padding: 0.75em;
+}
+
+.fishModal_plus_moins{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.fishModal_name{
+    font-size: 16px;
+    margin-left: 1em;
+    padding: 0.25em 0 0.25em 0 0.5em;
+    display: inline-block;
+}
+
+.fishModal_dialog{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5em 0 0.5em 0;
+}
+
+.fishModal_test{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5em 0 0.5em 0;
+}

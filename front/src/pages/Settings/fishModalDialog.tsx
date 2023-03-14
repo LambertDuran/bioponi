@@ -7,7 +7,7 @@ import FishGrid from "./fishGrid";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 // import { toast } from "react-toastify";
-import "./foodModalDialog.css";
+import "./fishModalDialog.css";
 
 interface IModal {
   open: boolean;
@@ -33,6 +33,7 @@ IModal) {
   const gridStyle = {
     padding: "0 1em 2em 1em",
     height: `${58 + copyFish.weeks.length * 25}px`,
+    width: "210px",
   };
 
   async function handleSubmit() {}
@@ -52,44 +53,45 @@ IModal) {
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg">
-      <DialogTitle>
-        {title}
-        <input
-          ref={inputElement}
-          type="text"
-          id="food_name"
-          value={copyFish.name}
-          onChange={(e) => setCopyFish({ ...copyFish, name: e.target.value })}
-          className="modal_name"
-          autoFocus
-        />
-      </DialogTitle>
-      <div style={gridStyle}>
-        <FishGrid fish={copyFish} editable={true} onEditCell={setCopyFish} />
-        <div className="modal_plus_moins">
-          <button
-            className="modal_plus"
-            onClick={() => setCopyFish(addRow({ ...copyFish }))}
-          >
-            <i className="fas fa-plus"></i>
-          </button>
-          <button
-            className="modal_moins"
-            onClick={() => {
-              if (copyFish.weeks.length < 2) return;
-              setCopyFish(removeRow({ ...copyFish }));
-            }}
-          >
-            <i className="fas fa-minus"></i>
-          </button>
+      <div className="fishModal_dialog">
+        <DialogTitle>
+          {title}
+          <input
+            ref={inputElement}
+            type="text"
+            id="food_name"
+            value={copyFish.name}
+            onChange={(e) => setCopyFish({ ...copyFish, name: e.target.value })}
+            className="fishModal_name"
+            autoFocus
+          />
+        </DialogTitle>
+        <div style={gridStyle}>
+          <FishGrid fish={copyFish} editable={true} onEditCell={setCopyFish} />
+          <div className="fishModal_plus_moins">
+            <button
+              className="fishModal_plus"
+              onClick={() => setCopyFish(addRow({ ...copyFish }))}
+            >
+              <i className="fas fa-plus"></i>
+            </button>
+            <button
+              className="fishModal_moins"
+              onClick={() => {
+                if (copyFish.weeks.length < 2) return;
+                setCopyFish(removeRow({ ...copyFish }));
+              }}
+            >
+              <i className="fas fa-minus"></i>
+            </button>
+          </div>
         </div>
       </div>
-      <div className="modal_validate_button">
+      <div className="fishModal_validate_button">
         <Button
           title="Valider"
           onClick={handleSubmit}
-          color="blue"
-          children={<i className="fas fa-cheese"></i>}
+          children={<i className="fas fa-fish"></i>}
         />
       </div>
     </Dialog>

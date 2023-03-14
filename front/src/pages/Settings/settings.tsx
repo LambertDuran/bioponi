@@ -128,11 +128,7 @@ export default function Settings() {
       />
       {/* Dialogue pour l'ajout d'une nouvelle espèce de poisson */}
       <FishModalDialog
-        title={
-          isCreation
-            ? "Création d'une nouvelle espèce :"
-            : "Modification d'une espèce :"
-        }
+        title={isCreation ? "Nouvelle espèce :" : "Modification d'espèce :"}
         open={openFish}
         onClose={() => setOpenFish(false)}
         fish={selectedFish}
