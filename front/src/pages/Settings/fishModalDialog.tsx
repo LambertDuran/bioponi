@@ -17,7 +17,7 @@ interface IModal {
   fish: IFish;
   setFish: (fish: IFish) => void;
   foods: IFood[];
-  //   onFoodModification: (food: IFood) => void;
+  onFishModification: (fish: IFish) => void;
   isCreation: boolean;
 }
 
@@ -29,8 +29,8 @@ export default function FishModalDialog({
   foods,
   setFish,
   isCreation,
-}: //   onFoodModification,
-IModal) {
+  onFishModification,
+}: IModal) {
   const [copyFish, setCopyFish] = useState<IFish>(fish);
 
   const gridStyle = {
@@ -41,7 +41,6 @@ IModal) {
 
   async function handleSubmit() {
     console.log("handleSubmit");
-    console.log("copyFish", copyFish);
     const { joiError } = validateFish(copyFish);
     if (joiError) {
       toast.error(
@@ -57,6 +56,8 @@ IModal) {
       toast.success(
         `Poisson ${data.fish.name} ${isCreation ? " créé" : " modifié"}`
       );
+      console.log("data.fish", data.fish);
+      onFishModification(data.fish);
       setFish(data.fish);
       onClose();
     } else toast.error(data.error);

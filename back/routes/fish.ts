@@ -22,8 +22,6 @@ router.post("/", async (req: Request, res: Response) => {
   });
   if (existingFish) return res.status(400).send("Fish already exists!");
 
-  console.log("food", req.body.food);
-
   const existingFood = await prisma.food.findFirst({
     where: {
       name: req.body.food.name,
@@ -36,11 +34,14 @@ router.post("/", async (req: Request, res: Response) => {
       name: req.body.name,
       weeks: req.body.weeks,
       weights: req.body.weights,
-      Food: {
+      food: {
         connect: {
           id: existingFood.id,
         },
       },
+    },
+    include: {
+      food: true,
     },
   });
 

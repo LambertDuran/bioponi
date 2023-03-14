@@ -6,6 +6,7 @@ export default interface IFish {
   weeks: number[];
   weights: number[];
   food: IFood;
+  foodId: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -24,7 +24,7 @@ model Food {
   distributions Int[]
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  Fish          Fish[]
+  fish          Fish[]
 }
 
 model Fish {
@@ -34,7 +34,7 @@ model Fish {
   weights   Int[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Food      Food     @relation(fields: [foodId], references: [id])
+  food      Food     @relation(fields: [foodId], references: [id])
   foodId    Int
 }
 

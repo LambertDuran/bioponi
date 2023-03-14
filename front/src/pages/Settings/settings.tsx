@@ -59,6 +59,7 @@ const species: IFish[] = [
     ],
     id: 1,
     food: iFood0,
+    foodId: 1,
   },
   {
     name: "Saumon de fontaine",
@@ -68,6 +69,7 @@ const species: IFish[] = [
     ],
     id: 2,
     food: iFood0,
+    foodId: 1,
   },
 ];
 
@@ -91,6 +93,16 @@ export default function Settings() {
         food.id === newFood.id ? newFood : food
       );
       setFoods(newFoods);
+    }
+  };
+
+  const handleFishModification = (newFish: IFish) => {
+    if (isCreation) setFishes([...fishes, newFish]);
+    else {
+      const newFishes = fishes.map((fish) =>
+        fish.id === newFish.id ? newFish : fish
+      );
+      setFishes(newFishes);
     }
   };
 
@@ -130,9 +142,10 @@ export default function Settings() {
         open={openFish}
         onClose={() => setOpenFish(false)}
         fish={selectedFish}
-        foods={foods}
         setFish={setSelectedFish}
+        foods={foods}
         isCreation={isCreation}
+        onFishModification={handleFishModification}
       />
       {/* Créer une nouvelle espèce de poisson ou d'aliment*/}
       <div className="new_species_button">
