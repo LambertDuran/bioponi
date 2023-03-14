@@ -1,4 +1,4 @@
-.modal_plus{
+.foodModal_plus{
     border: none;
     background-color: #7991bd;
     color: black;
@@ -9,7 +9,7 @@
     border-radius: 8px;
 }
 
-.modal_moins{
+.foodModal_moins{
     border: none;
     background-color: #e06464;
     color: black;
@@ -20,17 +20,17 @@
     border-radius: 8px;
 }
 
-.modal_validate_button{
+.foodModal_validate_button{
     padding: 0.75em;
 }
 
-.modal_plus_moins{
+.foodModal_plus_moins{
     display: flex;
     justify-content: flex-end;
     align-items: center;
 }
 
-.modal_name{
+.foodModal_name{
     font-size: 16px;
     margin-left: 1em;
     padding: 0.25em 0 0.25em 0 0.5em;

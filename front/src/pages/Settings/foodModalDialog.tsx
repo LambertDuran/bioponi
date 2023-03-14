@@ -81,21 +81,21 @@ export default function FoodModalDialog({
           id="food_name"
           value={copyFood.name}
           onChange={(e) => setCopyFood({ ...copyFood, name: e.target.value })}
-          className="modal_name"
+          className="foodModal_name"
           autoFocus
         />
       </DialogTitle>
       <div style={gridStyle}>
         <FoodGrid food={copyFood} editable={true} onEditCell={setCopyFood} />
-        <div className="modal_plus_moins">
+        <div className="foodModal_plus_moins">
           <button
-            className="modal_plus"
+            className="foodModal_plus"
             onClick={() => setCopyFood(addRow({ ...copyFood }))}
           >
             <i className="fas fa-plus"></i>
           </button>
           <button
-            className="modal_moins"
+            className="foodModal_moins"
             onClick={() => {
               if (copyFood.froms.length < 2) return;
               setCopyFood(removeRow({ ...copyFood }));
@@ -105,7 +105,7 @@ export default function FoodModalDialog({
           </button>
         </div>
       </div>
-      <div className="modal_validate_button">
+      <div className="foodModal_validate_button">
         <Button
           title="Valider"
           onClick={handleSubmit}
