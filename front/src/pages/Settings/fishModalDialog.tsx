@@ -70,7 +70,7 @@ IModal) {
         />
       </DialogTitle>
       <div className="fishModal_food">
-        <p style={{ marginLeft: "4em" }}>
+        <label>
           Aliment :
           <select
             className="fishModal_select"
@@ -81,8 +81,14 @@ IModal) {
                 food: foods.find((food) => food.name === e.target.value)!,
               })
             }
-          />
-        </p>
+          >
+            {foods.map((food) => (
+              <option key={food.name} value={food.name}>
+                {food.name}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
       <div className="fishModal_dialog">
         <div style={gridStyle}>

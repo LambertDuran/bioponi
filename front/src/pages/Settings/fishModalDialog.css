@@ -46,7 +46,8 @@
 }
 
 .fishModal_food{
-    margin-left: 1.25em;
+    margin-left: 5.25em;
+    padding: 0.5em 0 0.5em 0;
     font-family: "Roboto","Helvetica","Arial",sans-serif;
     font-weight: 500;
     font-size: 1.25rem;
@@ -57,7 +58,8 @@
 }
 
 .fishModal_select{
-    padding-left: 1em;
-    margin-left: 1.25em;
+    font-size: 16px;
+    margin-left: 17px;
     width: 203px;
+    height: 24px;
 }
