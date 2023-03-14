@@ -24,6 +24,18 @@ model Food {
   distributions Int[]
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  Fish          Fish[]
+}
+
+model Fish {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  froms     Int[]
+  tos       Int[]
+  Food      Food     @relation(fields: [foodId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  foodId    Int
 }
 
 generator client {
