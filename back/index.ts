@@ -4,11 +4,13 @@ const app = express();
 const cors = require("./middlewares/cor");
 const logger = require("./middlewares/logger");
 const food = require("./routes/food");
+const fish = require("./routes/fish");
 
 app.use(cors);
 app.use(express.json());
 app.use(logger);
 app.use("/api/food", food);
+app.use("/api/fish", fish);
 
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {

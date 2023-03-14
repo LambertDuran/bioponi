@@ -32,9 +32,9 @@ model Fish {
   name      String   @unique
   weeks     Int[]
   weights   Int[]
-  Food      Food     @relation(fields: [foodId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Food      Food     @relation(fields: [foodId], references: [id])
   foodId    Int
 }
 

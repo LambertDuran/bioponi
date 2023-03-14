@@ -9,7 +9,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 // import { toast } from "react-toastify";
 import "./fishModalDialog.css";
-import { margin } from "@mui/system";
 
 interface IModal {
   open: boolean;
