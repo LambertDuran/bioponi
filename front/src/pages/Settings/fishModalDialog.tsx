@@ -99,7 +99,11 @@ export default function FishModalDialog({
           autoFocus
         />
       </DialogTitle>
-      <div className="fishModal_food">
+      <div
+        className={
+          isCreation ? "fishModal_food_creation" : "fishModal_food_modif"
+        }
+      >
         <label>
           Aliment :
           <select
