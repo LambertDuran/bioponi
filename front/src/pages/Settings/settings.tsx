@@ -48,15 +48,6 @@ const iFood0: IFood = {
   distributions: [100],
 };
 
-const iFish0: IFish = {
-  id: 1,
-  name: "",
-  weeks: [4],
-  weights: [5],
-  food: iFood0,
-  foodId: 1,
-};
-
 // const species: IFish[] = [
 //   {
 //     name: "TAEC",
@@ -88,7 +79,7 @@ export default function Settings() {
   const [selectedFood, setSelectedFood] = useState<IFood>(iFood0);
   const [foods, setFoods] = useState<IFood[]>([]);
 
-  const [selectedFish, setSelectedFish] = useState<IFish>(iFish0);
+  const [selectedFish, setSelectedFish] = useState<IFish | null>(null);
   const [fishes, setFishes] = useState<IFish[]>([]);
 
   // const { push } = useArray<IFood>(foods);
@@ -170,15 +161,25 @@ export default function Settings() {
       />
       {/* Créer une nouvelle espèce de poisson ou d'aliment*/}
       <div className="new_species_button">
-        <Button
-          title="Nouvelle espèce"
-          onClick={() => {
-            setSelectedFish(iFish0);
-            setIsCreation(true);
-            setOpenFish(true);
-          }}
-          children={<i className="fas fa-fish"></i>}
-        />
+        {foods.length && (
+          <Button
+            title="Nouvelle espèce"
+            onClick={() => {
+              const iFish0: IFish = {
+                id: 1,
+                name: "",
+                weeks: [4],
+                weights: [5],
+                food: foods[0],
+                foodId: foods[0].id,
+              };
+              setSelectedFish(iFish0);
+              setIsCreation(true);
+              setOpenFish(true);
+            }}
+            children={<i className="fas fa-fish"></i>}
+          />
+        )}
         <Button
           title="Nouvel aliment"
           onClick={() => {
@@ -198,7 +199,6 @@ export default function Settings() {
           </div>
         ))}
         {/* Afficher les aliments */}
-
         {foods.map((f) => (
           <div className="species_margin">
             <FoodCard food={f} onEditClick={handleEditClickFood} />

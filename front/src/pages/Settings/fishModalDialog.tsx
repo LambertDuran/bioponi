@@ -14,7 +14,7 @@ interface IModal {
   open: boolean;
   title: string;
   onClose: () => void;
-  fish: IFish;
+  fish: IFish | null;
   setFish: (fish: IFish) => void;
   foods: IFood[];
   onFishModification: (fish: IFish) => void;
@@ -31,16 +31,18 @@ export default function FishModalDialog({
   isCreation,
   onFishModification,
 }: IModal) {
-  const [copyFish, setCopyFish] = useState<IFish>(fish);
+  const [copyFish, setCopyFish] = useState<IFish | null>(fish);
 
+  const nbRows = copyFish ? copyFish.weeks.length * 25 : 0;
   const gridStyle = {
     padding: "0 1em 2em 1em",
-    height: `${58 + copyFish.weeks.length * 25}px`,
+    height: `${58 + nbRows * 25}px`,
     width: "210px",
   };
 
   async function handleSubmit() {
     console.log("handleSubmit");
+    if (!copyFish) return;
     const { joiError } = validateFish(copyFish);
     if (joiError) {
       toast.error(
@@ -56,7 +58,6 @@ export default function FishModalDialog({
       toast.success(
         `Poisson ${data.fish.name} ${isCreation ? " créé" : " modifié"}`
       );
-      console.log("data.fish", data.fish);
       onFishModification(data.fish);
       setFish(data.fish);
       onClose();
@@ -74,7 +75,17 @@ export default function FishModalDialog({
 
   useEffect(() => {
     setCopyFish(fish);
+    console.log("fish", fish);
   }, [fish]);
+
+  // useEffect(() => {
+  //   if (copyFish.food.name === "") {
+  //     setCopyFish({
+  //       ...copyFish,
+  //       food: foods[0],
+  //     });
+  //   }
+  // }, [copyFish, foods]);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg">
@@ -84,8 +95,8 @@ export default function FishModalDialog({
           ref={inputElement}
           type="text"
           id="food_name"
-          value={copyFish.name}
-          onChange={(e) => setCopyFish({ ...copyFish, name: e.target.value })}
+          value={copyFish?.name}
+          onChange={(e) => setCopyFish({ ...copyFish!, name: e.target.value })}
           className="fishModal_name"
           autoFocus
         />
@@ -95,10 +106,10 @@ export default function FishModalDialog({
           Aliment :
           <select
             className="fishModal_select"
-            value={copyFish.food.name}
+            value={copyFish?.food.name}
             onChange={(e) =>
               setCopyFish({
-                ...copyFish,
+                ...copyFish!,
                 food: foods.find((food) => food.name === e.target.value)!,
               })
             }
@@ -113,19 +124,19 @@ export default function FishModalDialog({
       </div>
       <div className="fishModal_dialog">
         <div style={gridStyle}>
-          <FishGrid fish={copyFish} editable={true} onEditCell={setCopyFish} />
+          <FishGrid fish={copyFish!} editable={true} onEditCell={setCopyFish} />
           <div className="fishModal_plus_moins">
             <button
               className="fishModal_plus"
-              onClick={() => setCopyFish(addRow({ ...copyFish }))}
+              onClick={() => setCopyFish(addRow({ ...copyFish! }))}
             >
               <i className="fas fa-plus"></i>
             </button>
             <button
               className="fishModal_moins"
               onClick={() => {
-                if (copyFish.weeks.length < 2) return;
-                setCopyFish(removeRow({ ...copyFish }));
+                if (copyFish!.weeks.length < 2) return;
+                setCopyFish(removeRow({ ...copyFish! }));
               }}
             >
               <i className="fas fa-minus"></i>
