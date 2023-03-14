@@ -24,13 +24,18 @@ ChartJS.register(
   Legend
 );
 
-export default function SpeciesCard({ name, weeks, weights }: IFish) {
+interface IFishCard {
+  fish: IFish;
+  onEditClick: (fish: IFish) => void;
+}
+
+export default function SpeciesCard({ fish }: IFishCard) {
   const data = {
-    labels: weeks.map((w) => w.toString()),
+    labels: fish.weeks.map((w) => w.toString()),
     datasets: [
       {
-        label: `Croissance théorique de ${name}`,
-        data: weights,
+        label: `Croissance théorique de ${fish.name}`,
+        data: fish.weights,
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
@@ -41,12 +46,12 @@ export default function SpeciesCard({ name, weeks, weights }: IFish) {
   return (
     <div className="species_card">
       <div className="species_card_title">
-        {<Chip label={name} style={{ backgroundColor: "#fb9b50" }}></Chip>}
+        {<Chip label={fish.name} style={{ backgroundColor: "#fb9b50" }}></Chip>}
       </div>
       <div className="species_card_body">
         <Grid
-          col1={weeks}
-          col2={weights}
+          col1={fish.weeks}
+          col2={fish.weights}
           col1Name="Semaine"
           col2Name="Masse(g)"
         />

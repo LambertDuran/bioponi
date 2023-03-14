@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 // import useArray from "../../hooks/useArray";
 import Button from "../../components/button";
-
 import FoodModalDialog from "./foodModalDialog";
 import IFood from "../../interfaces/food";
 import FoodCard from "./foodCard";
 import { getAllFood } from "../../services/food";
-
 import FishModalDialog from "./fishModalDialog";
 import IFish from "../../interfaces/fish";
-
 import SpeciesCard from "./speciesCard";
+import { getAllFish } from "../../services/fish";
 import "./settings.css";
 
 // const foods: IFood[] = [
@@ -50,28 +48,37 @@ const iFood0: IFood = {
   distributions: [100],
 };
 
-const species: IFish[] = [
-  {
-    name: "TAEC",
-    weeks: [4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 82, 86],
-    weights: [
-      5, 20, 30, 50, 90, 110, 150, 210, 330, 400, 550, 650, 750, 2000, 2400,
-    ],
-    id: 1,
-    food: iFood0,
-    foodId: 1,
-  },
-  {
-    name: "Saumon de fontaine",
-    weeks: [4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 82, 86],
-    weights: [
-      7, 14, 28, 42, 56, 70, 84, 123, 162, 202, 360, 535, 672, 935, 1058,
-    ],
-    id: 2,
-    food: iFood0,
-    foodId: 1,
-  },
-];
+const iFish0: IFish = {
+  id: 1,
+  name: "",
+  weeks: [4],
+  weights: [5],
+  food: iFood0,
+  foodId: 1,
+};
+
+// const species: IFish[] = [
+//   {
+//     name: "TAEC",
+//     weeks: [4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 82, 86],
+//     weights: [
+//       5, 20, 30, 50, 90, 110, 150, 210, 330, 400, 550, 650, 750, 2000, 2400,
+//     ],
+//     id: 1,
+//     food: iFood0,
+//     foodId: 1,
+//   },
+//   {
+//     name: "Saumon de fontaine",
+//     weeks: [4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 82, 86],
+//     weights: [
+//       7, 14, 28, 42, 56, 70, 84, 123, 162, 202, 360, 535, 672, 935, 1058,
+//     ],
+//     id: 2,
+//     food: iFood0,
+//     foodId: 1,
+//   },
+// ];
 
 export default function Settings() {
   const [openFood, setOpenFood] = useState(false);
@@ -81,8 +88,8 @@ export default function Settings() {
   const [selectedFood, setSelectedFood] = useState<IFood>(iFood0);
   const [foods, setFoods] = useState<IFood[]>([]);
 
-  const [selectedFish, setSelectedFish] = useState<IFish>(species[0]);
-  const [fishes, setFishes] = useState<IFish[]>(species);
+  const [selectedFish, setSelectedFish] = useState<IFish>(iFish0);
+  const [fishes, setFishes] = useState<IFish[]>([]);
 
   // const { push } = useArray<IFood>(foods);
 
@@ -106,8 +113,14 @@ export default function Settings() {
     }
   };
 
-  const handleEditClick = (food: IFood) => {
+  const handleEditClickFood = (food: IFood) => {
     setSelectedFood(food);
+    setIsCreation(false);
+    setOpenFood(true);
+  };
+
+  const handleEditClickFish = (fish: IFish) => {
+    setSelectedFish(fish);
     setIsCreation(false);
     setOpenFood(true);
   };
@@ -118,6 +131,14 @@ export default function Settings() {
       if (allFood && allFood.data) setFoods(allFood.data);
     }
     getFoods();
+  }, []);
+
+  useEffect(() => {
+    async function getFishes() {
+      const allFish = await getAllFish();
+      if (allFish && allFish.data) setFishes(allFish.data);
+    }
+    getFishes();
   }, []);
 
   return (
@@ -152,7 +173,7 @@ export default function Settings() {
         <Button
           title="Nouvelle espèce"
           onClick={() => {
-            setSelectedFish(species[0]);
+            setSelectedFish(iFish0);
             setIsCreation(true);
             setOpenFish(true);
           }}
@@ -171,15 +192,16 @@ export default function Settings() {
       </div>
       <div className="species">
         {/* Afficher les espèces de poissons*/}
-        {/* {species.map(({ name, weeks, weights }) => (
+        {fishes.map((f) => (
           <div className="species_margin">
-            <SpeciesCard name={name} weeks={weeks} weights={weights} />
+            <SpeciesCard fish={f} onEditClick={handleEditClickFish} />
           </div>
-        ))} */}
+        ))}
         {/* Afficher les aliments */}
+
         {foods.map((f) => (
           <div className="species_margin">
-            <FoodCard food={f} onEditClick={handleEditClick} />
+            <FoodCard food={f} onEditClick={handleEditClickFood} />
           </div>
         ))}
       </div>
