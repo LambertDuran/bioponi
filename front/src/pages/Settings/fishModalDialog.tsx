@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import IFish, { addRow, removeRow } from "../../interfaces/fish";
 import IFood from "../../interfaces/food";
-// import validateFood from "./validateFood";
-// import { postFood, putFood } from "../../services/food";
+import validateFish from "./validateFish";
+import { postFish, putFish } from "../../services/fish";
 import Button from "../../components/button";
 import FishGrid from "./fishGrid";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "./fishModalDialog.css";
 
 interface IModal {
@@ -21,15 +21,15 @@ interface IModal {
   isCreation: boolean;
 }
 
-export default function FoodModalDialog({
+export default function FishModalDialog({
   title,
   open,
   onClose,
   fish,
   foods,
   setFish,
+  isCreation,
 }: //   onFoodModification,
-//   isCreation,
 IModal) {
   const [copyFish, setCopyFish] = useState<IFish>(fish);
 
@@ -39,7 +39,28 @@ IModal) {
     width: "210px",
   };
 
-  async function handleSubmit() {}
+  async function handleSubmit() {
+    console.log("handleSubmit");
+    console.log("copyFish", copyFish);
+    const { joiError } = validateFish(copyFish);
+    if (joiError) {
+      toast.error(
+        `Format des données incorrect : ${joiError.details[0].message}`
+      );
+      return;
+    }
+
+    let data: { fish: IFish | null; error: string };
+    if (isCreation) data = await postFish(copyFish);
+    else data = await putFish(copyFish);
+    if (data.fish) {
+      toast.success(
+        `Poisson ${data.fish.name} ${isCreation ? " créé" : " modifié"}`
+      );
+      setFish(data.fish);
+      onClose();
+    } else toast.error(data.error);
+  }
 
   const inputElement = useRef<HTMLInputElement>(null);
   useEffect(() => {
