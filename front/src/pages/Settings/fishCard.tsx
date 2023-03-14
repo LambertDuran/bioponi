@@ -12,7 +12,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import Chip from "@mui/material/Chip";
-import "./speciesCard.css";
+import "./fishCard.css";
 
 ChartJS.register(
   CategoryScale,
@@ -44,15 +44,15 @@ export default function SpeciesCard({ fish, onEditClick }: IFishCard) {
   const options = { responsive: true };
 
   return (
-    <div className="species_card">
-      <div className="species_card_title">
+    <div className="fish_card">
+      <div className="fish_card_title">
         <Chip label={fish.name} style={{ backgroundColor: "#fb9b50" }} />
         <i
-          className="fa fa-pen species_card_modify_but"
+          className="fa fa-pen fish_card_modify_but"
           onClick={() => onEditClick(fish)}
         ></i>
       </div>
-      <div className="species_card_body">
+      <div className="fish_card_body">
         <Grid
           col1={fish.weeks}
           col2={fish.weights}

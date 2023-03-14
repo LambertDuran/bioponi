@@ -1,4 +1,4 @@
-.species_card {
+.fish_card {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -8,7 +8,7 @@
     box-shadow: 10px 5px 5px #fb9b50;
   }
   
-.species_card_title {
+.fish_card_title {
   font-size: 24px;
   font-weight: bold;
   padding: 0.5em 0 0 1em;
@@ -16,13 +16,13 @@
   justify-content: space-between;
 }
 
-.species_card_body {
+.fish_card_body {
   padding: 1em;
   display: grid;
   grid-template-columns: 1fr 1fr;
 } 
 
-.species_card_modify_but{
+.fish_card_modify_but{
   color:#fb9b50;
     font-size: 18px;
     padding-right: 1em;

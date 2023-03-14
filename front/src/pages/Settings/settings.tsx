@@ -7,7 +7,7 @@ import FoodCard from "./foodCard";
 import { getAllFood } from "../../services/food";
 import FishModalDialog from "./fishModalDialog";
 import IFish from "../../interfaces/fish";
-import SpeciesCard from "./speciesCard";
+import SpeciesCard from "./fishCard";
 import { getAllFish } from "../../services/fish";
 import "./settings.css";
 
