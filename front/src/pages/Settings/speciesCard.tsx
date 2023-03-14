@@ -1,6 +1,5 @@
-import "./speciesCard.css";
+import IFish from "../../interfaces/fish";
 import Grid from "../../components/grid";
-
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,6 +12,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import Chip from "@mui/material/Chip";
+import "./speciesCard.css";
 
 ChartJS.register(
   CategoryScale,
@@ -24,18 +24,12 @@ ChartJS.register(
   Legend
 );
 
-export interface ISpecies {
-  title: string;
-  weeks: number[];
-  weights: number[];
-}
-
-export default function SpeciesCard({ title, weeks, weights }: ISpecies) {
+export default function SpeciesCard({ name, weeks, weights }: IFish) {
   const data = {
     labels: weeks.map((w) => w.toString()),
     datasets: [
       {
-        label: `Croissance théorique de ${title}`,
+        label: `Croissance théorique de ${name}`,
         data: weights,
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
@@ -47,7 +41,7 @@ export default function SpeciesCard({ title, weeks, weights }: ISpecies) {
   return (
     <div className="species_card">
       <div className="species_card_title">
-        {<Chip label={title} style={{ backgroundColor: "#fb9b50" }}></Chip>}
+        {<Chip label={name} style={{ backgroundColor: "#fb9b50" }}></Chip>}
       </div>
       <div className="species_card_body">
         <Grid
