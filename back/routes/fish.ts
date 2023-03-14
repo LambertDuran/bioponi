@@ -6,7 +6,11 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 router.get("/", async (req: Request, res: Response) => {
-  const fish = await prisma.fish.findMany();
+  const fish = await prisma.fish.findMany({
+    include: {
+      food: true,
+    },
+  });
   if (!fish) return res.status(404).send("Aucun poisson trouvé!");
   res.json(fish);
 });

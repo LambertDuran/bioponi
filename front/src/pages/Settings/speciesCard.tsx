@@ -46,7 +46,7 @@ export default function SpeciesCard({ fish }: IFishCard) {
   return (
     <div className="species_card">
       <div className="species_card_title">
-        {<Chip label={fish.name} style={{ backgroundColor: "#fb9b50" }}></Chip>}
+        <Chip label={fish.name} style={{ backgroundColor: "#fb9b50" }} />
       </div>
       <div className="species_card_body">
         <Grid
