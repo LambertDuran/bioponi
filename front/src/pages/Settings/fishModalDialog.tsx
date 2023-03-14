@@ -32,11 +32,9 @@ export default function FishModalDialog({
   onFishModification,
 }: IModal) {
   const [copyFish, setCopyFish] = useState<IFish | null>(fish);
-
-  const nbRows = copyFish ? copyFish.weeks.length * 25 : 0;
   const gridStyle = {
     padding: "0 1em 2em 1em",
-    height: `${58 + nbRows * 25}px`,
+    height: `${58 + (copyFish ? copyFish.weeks.length * 25 : 0)}px`,
     width: "210px",
   };
 

@@ -12,11 +12,19 @@
   font-size: 24px;
   font-weight: bold;
   padding: 0.5em 0 0 1em;
-  display: inline-block;
+  display: flex;
+  justify-content: space-between;
 }
 
 .species_card_body {
   padding: 1em;
   display: grid;
   grid-template-columns: 1fr 1fr;
-}  
+} 
+
+.species_card_modify_but{
+  color:#fb9b50;
+    font-size: 18px;
+    padding-right: 1em;
+    cursor: pointer;
+}

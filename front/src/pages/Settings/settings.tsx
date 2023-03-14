@@ -113,7 +113,7 @@ export default function Settings() {
   const handleEditClickFish = (fish: IFish) => {
     setSelectedFish(fish);
     setIsCreation(false);
-    setOpenFood(true);
+    setOpenFish(true);
   };
 
   useEffect(() => {

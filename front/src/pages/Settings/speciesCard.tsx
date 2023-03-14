@@ -29,7 +29,7 @@ interface IFishCard {
   onEditClick: (fish: IFish) => void;
 }
 
-export default function SpeciesCard({ fish }: IFishCard) {
+export default function SpeciesCard({ fish, onEditClick }: IFishCard) {
   const data = {
     labels: fish.weeks.map((w) => w.toString()),
     datasets: [
@@ -47,6 +47,10 @@ export default function SpeciesCard({ fish }: IFishCard) {
     <div className="species_card">
       <div className="species_card_title">
         <Chip label={fish.name} style={{ backgroundColor: "#fb9b50" }} />
+        <i
+          className="fa fa-pen species_card_modify_but"
+          onClick={() => onEditClick(fish)}
+        ></i>
       </div>
       <div className="species_card_body">
         <Grid
