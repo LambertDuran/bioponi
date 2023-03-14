@@ -73,17 +73,7 @@ export default function FishModalDialog({
 
   useEffect(() => {
     setCopyFish(fish);
-    console.log("fish", fish);
   }, [fish]);
-
-  // useEffect(() => {
-  //   if (copyFish.food.name === "") {
-  //     setCopyFish({
-  //       ...copyFish,
-  //       food: foods[0],
-  //     });
-  //   }
-  // }, [copyFish, foods]);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg">

@@ -1,5 +1,5 @@
 import IFish from "../../interfaces/fish";
-import Grid from "../../components/grid";
+import FishGgrid from "./fishGrid";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -43,6 +43,13 @@ export default function SpeciesCard({ fish, onEditClick }: IFishCard) {
   };
   const options = { responsive: true };
 
+  const nbRow = 58 + fish.weeks.length * 25;
+  const gridStyle = {
+    padding: "0 1em 1em 0em",
+    height: `${nbRow < 250 ? nbRow : 250}px`,
+    width: "210px",
+  };
+
   return (
     <div className="fish_card">
       <div className="fish_card_title">
@@ -53,12 +60,9 @@ export default function SpeciesCard({ fish, onEditClick }: IFishCard) {
         ></i>
       </div>
       <div className="fish_card_body">
-        <Grid
-          col1={fish.weeks}
-          col2={fish.weights}
-          col1Name="Semaine"
-          col2Name="Masse(g)"
-        />
+        <div style={gridStyle}>
+          <FishGgrid fish={fish} editable={false} />
+        </div>
         <div style={{ width: "500px" }}>
           <Line options={options} data={data} />
         </div>
