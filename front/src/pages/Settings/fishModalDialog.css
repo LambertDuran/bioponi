@@ -42,13 +42,22 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 0.5em 0 0.5em 0;
+    padding-top: 0.5em;
 }
 
-.fishModal_test{
+.fishModal_food{
+    margin-left: 1.25em;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 500;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    letter-spacing: 0.0075em;
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0.5em 0 0.5em 0;
+    justify-content: flex-start;
+}
+
+.fishModal_select{
+    padding-left: 1em;
+    margin-left: 1.25em;
+    width: 203px;
 }

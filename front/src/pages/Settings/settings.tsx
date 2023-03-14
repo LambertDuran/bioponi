@@ -39,7 +39,7 @@ import "./settings.css";
 // ];
 
 const iFood0: IFood = {
-  id: 0,
+  id: 1,
   name: "",
   froms: [10],
   tos: [100],
@@ -103,9 +103,7 @@ export default function Settings() {
   useEffect(() => {
     async function getFoods() {
       const allFood = await getAllFood();
-      if (allFood && allFood.data) {
-        setFoods(allFood.data);
-      }
+      if (allFood && allFood.data) setFoods(allFood.data);
     }
     getFoods();
   }, []);
@@ -132,6 +130,7 @@ export default function Settings() {
         open={openFish}
         onClose={() => setOpenFish(false)}
         fish={selectedFish}
+        foods={foods}
         setFish={setSelectedFish}
         isCreation={isCreation}
       />

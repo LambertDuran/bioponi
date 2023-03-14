@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import IFish, { addRow, removeRow } from "../../interfaces/fish";
+import IFood from "../../interfaces/food";
 // import validateFood from "./validateFood";
 // import { postFood, putFood } from "../../services/food";
 import Button from "../../components/button";
@@ -8,6 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 // import { toast } from "react-toastify";
 import "./fishModalDialog.css";
+import { margin } from "@mui/system";
 
 interface IModal {
   open: boolean;
@@ -15,6 +17,7 @@ interface IModal {
   onClose: () => void;
   fish: IFish;
   setFish: (fish: IFish) => void;
+  foods: IFood[];
   //   onFoodModification: (food: IFood) => void;
   isCreation: boolean;
 }
@@ -24,6 +27,7 @@ export default function FoodModalDialog({
   open,
   onClose,
   fish,
+  foods,
   setFish,
 }: //   onFoodModification,
 //   isCreation,
@@ -53,19 +57,34 @@ IModal) {
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg">
-      <div className="fishModal_dialog">
-        <DialogTitle>
-          {title}
-          <input
-            ref={inputElement}
-            type="text"
-            id="food_name"
-            value={copyFish.name}
-            onChange={(e) => setCopyFish({ ...copyFish, name: e.target.value })}
-            className="fishModal_name"
-            autoFocus
+      <DialogTitle style={{ paddingBottom: 0 }}>
+        {title}
+        <input
+          ref={inputElement}
+          type="text"
+          id="food_name"
+          value={copyFish.name}
+          onChange={(e) => setCopyFish({ ...copyFish, name: e.target.value })}
+          className="fishModal_name"
+          autoFocus
+        />
+      </DialogTitle>
+      <div className="fishModal_food">
+        <p style={{ marginLeft: "4em" }}>
+          Aliment :
+          <select
+            className="fishModal_select"
+            value={copyFish.food.name}
+            onChange={(e) =>
+              setCopyFish({
+                ...copyFish,
+                food: foods.find((food) => food.name === e.target.value)!,
+              })
+            }
           />
-        </DialogTitle>
+        </p>
+      </div>
+      <div className="fishModal_dialog">
         <div style={gridStyle}>
           <FishGrid fish={copyFish} editable={true} onEditCell={setCopyFish} />
           <div className="fishModal_plus_moins">
