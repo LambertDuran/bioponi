@@ -1,3 +1,4 @@
+import validateFish from "../controllers/fish";
 import { Request, Response } from "express";
 const express = require("express");
 const router = express.Router();
@@ -16,8 +17,8 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.post("/", async (req: Request, res: Response) => {
-  // const { error } = validateFish(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
+  const { error } = validateFish(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
   const existingFish = await prisma.fish.findFirst({
     where: {
@@ -50,6 +51,50 @@ router.post("/", async (req: Request, res: Response) => {
   });
 
   if (!fish) return res.status(400).send("Prisma error creation!");
+  res.json(fish);
+});
+
+router.put("/:id", async (req: Request, res: Response) => {
+  const { error } = validateFish(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  const existingFish = await prisma.fish.findFirst({
+    where: {
+      name: req.body.name,
+    },
+  });
+
+  if (!existingFish) return res.status(400).send("Fish doesn't exist!");
+  if (existingFish && existingFish.id !== parseInt(req.params.id))
+    return res.status(400).send("Fish already exists!");
+
+  const existingFood = await prisma.food.findFirst({
+    where: {
+      name: req.body.food.name,
+    },
+  });
+  if (!existingFood) return res.status(400).send("Food doesn't exist!");
+
+  const fish = await prisma.fish.update({
+    where: {
+      id: parseInt(req.params.id),
+    },
+    data: {
+      name: req.body.name,
+      weeks: req.body.weeks,
+      weights: req.body.weights,
+      food: {
+        connect: {
+          id: existingFood.id,
+        },
+      },
+    },
+    include: {
+      food: true,
+    },
+  });
+
+  if (!fish) return res.status(400).send("Prisma error update!");
   res.json(fish);
 });
 
