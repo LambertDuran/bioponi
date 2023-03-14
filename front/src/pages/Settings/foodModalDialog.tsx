@@ -19,7 +19,7 @@ interface IModal {
   isCreation: boolean;
 }
 
-export default function ModalDialog({
+export default function FoodModalDialog({
   title,
   open,
   onClose,

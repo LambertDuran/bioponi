@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 // import useArray from "../../hooks/useArray";
 import Button from "../../components/button";
-import ModalDialog from "./foodModalDialog";
+import FoodModalDialog from "./foodModalDialog";
 import SpeciesCard, { ISpecies } from "./speciesCard";
 import IFood from "../../interfaces/food";
 import FoodCard from "./foodCard";
@@ -99,7 +99,7 @@ export default function Settings() {
   return (
     <>
       {/* Dialogue pour l'ajout d'une nouvelle espèce de poisson ou d'un aliment */}
-      <ModalDialog
+      <FoodModalDialog
         title={
           isCreation
             ? "Création d'un nouvel aliment :"
