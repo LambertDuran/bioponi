@@ -143,7 +143,10 @@ export default function Settings() {
   }, []);
 
   useEffect(() => {
-    if (selectedFish) setSelectedFood(selectedFish.food);
+    if (selectedFish) {
+      if (selectedFish.id !== 0) setSelectedFood(selectedFish.food);
+      else setSelectedFood(null);
+    }
   }, [selectedFish]);
 
   return (
@@ -188,7 +191,6 @@ export default function Settings() {
             title="Nouvelle espèce"
             onClick={() => {
               setSelectedFish(iFish0);
-              setSelectedFood(null);
               setIsCreation(true);
               setOpenFish(true);
             }}
@@ -220,7 +222,7 @@ export default function Settings() {
 
       <div className="card_container">
         <div className="card_body_column">
-          {selectedFish && selectedFish.id && (
+          {selectedFish && selectedFish.id !== 0 && (
             <SpeciesCard
               fish={selectedFish}
               onEditClick={handleEditClickFish}
@@ -228,7 +230,7 @@ export default function Settings() {
           )}
         </div>
         <div className="card_body_column">
-          {selectedFood && selectedFood.id && (
+          {selectedFood && selectedFood.id !== 0 && (
             <FoodCard food={selectedFood} onEditClick={handleEditClickFood} />
           )}
         </div>
