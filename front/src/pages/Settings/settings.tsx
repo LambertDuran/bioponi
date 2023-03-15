@@ -10,7 +10,9 @@ import FishModalDialog from "./fishModalDialog";
 import IFish from "../../interfaces/fish";
 import SpeciesCard from "./fishCard";
 import { getAllFish } from "../../services/fish";
+import emptyList from "../../assets/emptyList.gif";
 import "./settings.css";
+import { display } from "@mui/system";
 
 // const foods: IFood[] = [
 //   {
@@ -177,7 +179,6 @@ export default function Settings() {
         onFishModification={handleFishModification}
       />
 
-      {/* <div className="species"> */}
       <div className="itemList_container">
         <ItemList
           title={"Espèces de poissons :"}
@@ -186,16 +187,24 @@ export default function Settings() {
           setSelectedItem={setSelectedFish}
           color="#fb9b50"
         />
-        {foods.length && (
-          <Button
-            title="Nouvelle espèce"
-            onClick={() => {
-              setSelectedFish(iFish0);
-              setIsCreation(true);
-              setOpenFish(true);
-            }}
-            children={<i className="fas fa-fish"></i>}
-          />
+        {fishes.length === 0 && (
+          <div className="nofish_container">
+            <p>(Vous devez définir une espèce de poisson)</p>
+            <img src={emptyList} alt="Vide" width={"75%"} />
+          </div>
+        )}
+        {foods.length !== 0 && (
+          <div style={{ marginLeft: "1em" }}>
+            <Button
+              title="Nouvelle espèce"
+              onClick={() => {
+                setSelectedFish(iFish0);
+                setIsCreation(true);
+                setOpenFish(true);
+              }}
+              children={<i className="fas fa-fish"></i>}
+            />
+          </div>
         )}
       </div>
 
@@ -207,17 +216,19 @@ export default function Settings() {
           setSelectedItem={setSelectedFood}
           color="#7991bd"
         />
-        <Button
-          title="Nouvel aliment"
-          onClick={() => {
-            setSelectedFood(iFood0);
-            setSelectedFish(null);
-            setIsCreation(true);
-            setOpenFood(true);
-          }}
-          children={<i className="fas fa-cheese"></i>}
-          color="blue"
-        />
+        <div style={{ marginLeft: "1em" }}>
+          <Button
+            title="Nouvel aliment"
+            onClick={() => {
+              setSelectedFood(iFood0);
+              setSelectedFish(null);
+              setIsCreation(true);
+              setOpenFood(true);
+            }}
+            children={<i className="fas fa-cheese"></i>}
+            color="blue"
+          />
+        </div>
       </div>
 
       <div className="card_container">

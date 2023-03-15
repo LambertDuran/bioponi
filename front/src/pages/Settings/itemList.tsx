@@ -19,13 +19,13 @@ export default function ItemList({
   const unselectedItemStyle = {
     border: `2px solid ${color}`,
     cursor: "pointer",
-    margin: "1em",
+    margin: "1em 0 1em 1em",
     backgroundColor: "transparent",
   };
   const selectedItemStyle = {
     backgroundColor: `${color}`,
     cursor: "pointer",
-    margin: "1em",
+    margin: "1em 0 1em 1em",
     border: "1px solid black",
   };
 
