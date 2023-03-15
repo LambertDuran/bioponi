@@ -30,7 +30,7 @@ export default function ItemList({
 
   return (
     <div className="itemList_container">
-      <h1>{title}</h1>
+      <h3>{title}</h3>
       {items.map((item: any) => (
         <Chip
           key={item.id}

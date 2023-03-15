@@ -147,7 +147,7 @@ export default function Settings() {
   }, [selectedFish]);
 
   return (
-    <>
+    <div className="settings_container">
       {/* Dialogue pour l'ajout d'une nouvelle espèce d'aliment */}
       <FoodModalDialog
         title={
@@ -174,7 +174,7 @@ export default function Settings() {
         onFishModification={handleFishModification}
       />
       {/* Créer une nouvelle espèce de poisson ou d'aliment*/}
-      <div className="new_species_button">
+      {/* <div className="new_species_button">
         {foods.length && (
           <Button
             title="Nouvelle espèce"
@@ -198,31 +198,31 @@ export default function Settings() {
           children={<i className="fas fa-cheese"></i>}
           color="blue"
         />
-      </div>
-      <div className="species">
-        <ItemList
-          title={"Espèces de poissons :"}
-          items={fishes}
-          selectedItem={selectedFish}
-          setSelectedItem={setSelectedFish}
-          color="#fb9b50"
-        />
-        <ItemList
-          title={"Aliments :"}
-          items={foods}
-          selectedItem={selectedFood}
-          setSelectedItem={setSelectedFood}
-          color="#7991bd"
-        />
-        {/* Afficher les espèces de poissons*/}
-        {selectedFish && selectedFish.id && (
-          <SpeciesCard fish={selectedFish} onEditClick={handleEditClickFish} />
-        )}
-        {/* Afficher les aliments */}
-        {selectedFood && selectedFood.id && (
-          <FoodCard food={selectedFood} onEditClick={handleEditClickFood} />
-        )}
-      </div>
-    </>
+      </div> */}
+      {/* <div className="species"> */}
+      <ItemList
+        title={"Espèces de poissons :"}
+        items={fishes}
+        selectedItem={selectedFish}
+        setSelectedItem={setSelectedFish}
+        color="#fb9b50"
+      />
+      <ItemList
+        title={"Aliments :"}
+        items={foods}
+        selectedItem={selectedFood}
+        setSelectedItem={setSelectedFood}
+        color="#7991bd"
+      />
+      {/* Afficher les espèces de poissons*/}
+      {selectedFish && selectedFish.id && (
+        <SpeciesCard fish={selectedFish} onEditClick={handleEditClickFish} />
+      )}
+      {/* Afficher les aliments */}
+      {selectedFood && selectedFood.id && (
+        <FoodCard food={selectedFood} onEditClick={handleEditClickFood} />
+      )}
+      {/* </div> */}
+    </div>
   );
 }
