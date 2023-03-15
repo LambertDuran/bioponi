@@ -1,12 +1,12 @@
 .fish_card {
     display: flex;
-    width: 100%;
+    width: 96%;
     flex-direction: column;
     justify-content: flex-start;
     border: 1px solid grey;
     border-radius: 4px;
     box-shadow: 10px 5px 5px #fb9b50;
-    padding: 0.5em
+    padding: 0.75em;
   }
   
 .fish_card_title {
