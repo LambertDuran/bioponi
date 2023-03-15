@@ -1,8 +1,8 @@
 .foodCard{
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 950px;
     border: 1px solid grey;
     border-radius: 4px;
     box-shadow: 10px 5px 5px #7991bd;
@@ -18,8 +18,7 @@
 }
 
 .foodCard_body {
-    padding-left: 1em;
-    width: 920px;
+    padding: 1em;
   }
 
   .foodCard_modify_but{

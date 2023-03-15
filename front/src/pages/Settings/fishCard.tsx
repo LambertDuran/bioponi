@@ -38,6 +38,7 @@ export default function SpeciesCard({ fish, onEditClick }: IFishCard) {
         data: fish.weights,
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
+        tension: 0.5,
       },
     ],
   };
@@ -47,7 +48,6 @@ export default function SpeciesCard({ fish, onEditClick }: IFishCard) {
   const gridStyle = {
     padding: "0 1em 1em 0em",
     height: `${nbRow < 250 ? nbRow : 250}px`,
-    width: "210px",
   };
 
   return (
@@ -59,13 +59,8 @@ export default function SpeciesCard({ fish, onEditClick }: IFishCard) {
           onClick={() => onEditClick(fish)}
         ></i>
       </div>
-      <div className="fish_card_body">
-        <div style={gridStyle}>
-          <FishGgrid fish={fish} editable={false} />
-        </div>
-        <div style={{ width: "500px" }}>
-          <Line options={options} data={data} />
-        </div>
+      <div className="fish_card_curve">
+        <Line options={options} data={data} />
       </div>
     </div>
   );

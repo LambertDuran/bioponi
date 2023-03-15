@@ -218,14 +218,22 @@ export default function Settings() {
         />
       </div>
 
-      {/* Afficher les espèces de poissons */}
-      {/* {selectedFish && selectedFish.id && (
-        <SpeciesCard fish={selectedFish} onEditClick={handleEditClickFish} />
-      )} */}
-      {/* Afficher les aliments */}
-      {/* {selectedFood && selectedFood.id && (
-        <FoodCard food={selectedFood} onEditClick={handleEditClickFood} />
-      )} */}
+      <div className="card_container">
+        <div style={{ display: "flex", width: "100%" }}>
+          {selectedFish && selectedFish.id && (
+            <SpeciesCard
+              fish={selectedFish}
+              onEditClick={handleEditClickFish}
+            />
+          )}
+        </div>
+
+        <div style={{ display: "flex", width: "100%", alignItems: "stretch" }}>
+          {selectedFood && selectedFood.id && (
+            <FoodCard food={selectedFood} onEditClick={handleEditClickFood} />
+          )}
+        </div>
+      </div>
     </div>
   );
 }

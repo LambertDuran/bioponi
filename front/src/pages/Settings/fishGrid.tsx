@@ -19,8 +19,8 @@ export default function FishGgrid({ fish, editable, onEditCell }: IFishGrid) {
   const colHeaders: GridColDef[] = [
     {
       field: "week",
-      headerName: "Semaines",
-      width: 85,
+      headerName: "T(S)",
+      width: 50,
       sortable: false,
       disableColumnMenu: true,
       renderHeader(params: any) {
@@ -31,8 +31,8 @@ export default function FishGgrid({ fish, editable, onEditCell }: IFishGrid) {
     },
     {
       field: "weight",
-      headerName: "Poids (g)",
-      width: 85,
+      headerName: "P(g)",
+      width: 70,
       sortable: false,
       disableColumnMenu: true,
       renderHeader(params: any) {

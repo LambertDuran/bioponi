@@ -11,7 +11,7 @@ interface IFoodCard {
 export default function FoodCard({ food, onEditClick }: IFoodCard) {
   return (
     <div className="foodCard">
-      <div className="foodCard_title">
+      {/* <div className="foodCard_title">
         <Chip label={food.name} style={{ backgroundColor: "#94a3c0" }} />
         <i
           className="fa fa-pen foodCard_modify_but"
@@ -23,7 +23,7 @@ export default function FoodCard({ food, onEditClick }: IFoodCard) {
         style={{ height: `${58 + food.froms.length * 25}px` }}
       >
         <FoodGrid food={food} editable={false} />
-      </div>
+      </div> */}
     </div>
   );
 }
