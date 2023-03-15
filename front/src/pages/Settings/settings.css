@@ -17,8 +17,18 @@
     border: 3px solid #7991bd;
 }
 
-@media only screen and (max-width: 768px) {
+.card_body_column{
+    display: flex;
+}
+
+@media only screen and (max-width: 1024px) {
     .card_container{
-        width: calc(100vw - 50px);
+        display: flex;
+        flex-direction: column;
+        width: calc(100vw - 70px);
+    }
+
+    .card_body_column{
+        margin-bottom: 1em;
     }
 }

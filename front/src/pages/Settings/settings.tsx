@@ -219,7 +219,7 @@ export default function Settings() {
       </div>
 
       <div className="card_container">
-        <div style={{ display: "flex", width: "100%" }}>
+        <div className="card_body_column">
           {selectedFish && selectedFish.id && (
             <SpeciesCard
               fish={selectedFish}
@@ -227,8 +227,7 @@ export default function Settings() {
             />
           )}
         </div>
-
-        <div style={{ display: "flex", width: "100%", alignItems: "stretch" }}>
+        <div className="card_body_column">
           {selectedFood && selectedFood.id && (
             <FoodCard food={selectedFood} onEditClick={handleEditClickFood} />
           )}
