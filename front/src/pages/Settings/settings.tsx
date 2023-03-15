@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 // import useArray from "../../hooks/useArray";
 import Button from "../../components/button";
+import ItemList from "./itemList";
 import FoodModalDialog from "./foodModalDialog";
 import IFood from "../../interfaces/food";
 import FoodCard from "./foodCard";
@@ -192,18 +193,25 @@ export default function Settings() {
         />
       </div>
       <div className="species">
+        <ItemList
+          title={"Espèces de poissons :"}
+          items={fishes}
+          selectedItem={selectedFish}
+          setSelectedItem={setSelectedFish}
+          color="#fb9b50"
+        />
         {/* Afficher les espèces de poissons*/}
-        {fishes.map((f) => (
+        {/* {fishes.map((f) => (
           <div className="species_margin">
             <SpeciesCard fish={f} onEditClick={handleEditClickFish} />
           </div>
-        ))}
+        ))} */}
         {/* Afficher les aliments */}
-        {foods.map((f) => (
+        {/* {foods.map((f) => (
           <div className="species_margin">
             <FoodCard food={f} onEditClick={handleEditClickFood} />
           </div>
-        ))}
+        ))} */}
       </div>
     </>
   );
