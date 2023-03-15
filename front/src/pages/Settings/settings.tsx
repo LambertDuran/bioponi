@@ -173,8 +173,16 @@ export default function Settings() {
         isCreation={isCreation}
         onFishModification={handleFishModification}
       />
-      {/* Créer une nouvelle espèce de poisson ou d'aliment*/}
-      {/* <div className="new_species_button">
+
+      {/* <div className="species"> */}
+      <div className="itemList_container">
+        <ItemList
+          title={"Espèces de poissons :"}
+          items={fishes}
+          selectedItem={selectedFish}
+          setSelectedItem={setSelectedFish}
+          color="#fb9b50"
+        />
         {foods.length && (
           <Button
             title="Nouvelle espèce"
@@ -187,6 +195,16 @@ export default function Settings() {
             children={<i className="fas fa-fish"></i>}
           />
         )}
+      </div>
+
+      <div className="itemList_container">
+        <ItemList
+          title={"Aliments :"}
+          items={foods}
+          selectedItem={selectedFood}
+          setSelectedItem={setSelectedFood}
+          color="#7991bd"
+        />
         <Button
           title="Nouvel aliment"
           onClick={() => {
@@ -198,31 +216,16 @@ export default function Settings() {
           children={<i className="fas fa-cheese"></i>}
           color="blue"
         />
-      </div> */}
-      {/* <div className="species"> */}
-      <ItemList
-        title={"Espèces de poissons :"}
-        items={fishes}
-        selectedItem={selectedFish}
-        setSelectedItem={setSelectedFish}
-        color="#fb9b50"
-      />
-      <ItemList
-        title={"Aliments :"}
-        items={foods}
-        selectedItem={selectedFood}
-        setSelectedItem={setSelectedFood}
-        color="#7991bd"
-      />
-      {/* Afficher les espèces de poissons*/}
-      {selectedFish && selectedFish.id && (
+      </div>
+
+      {/* Afficher les espèces de poissons */}
+      {/* {selectedFish && selectedFish.id && (
         <SpeciesCard fish={selectedFish} onEditClick={handleEditClickFish} />
-      )}
+      )} */}
       {/* Afficher les aliments */}
-      {selectedFood && selectedFood.id && (
+      {/* {selectedFood && selectedFood.id && (
         <FoodCard food={selectedFood} onEditClick={handleEditClickFood} />
-      )}
-      {/* </div> */}
+      )} */}
     </div>
   );
 }
