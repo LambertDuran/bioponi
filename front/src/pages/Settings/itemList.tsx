@@ -26,6 +26,7 @@ export default function ItemList({
     backgroundColor: `${color}`,
     cursor: "pointer",
     margin: "1em",
+    border: "1px solid black",
   };
 
   return (

@@ -23,7 +23,7 @@
     .card_container{
         display: flex;
         flex-direction: column;
-        width: calc(100vw - 75px);
+        width: calc(100vw - 80px);
     }
 
     .card_body_column{
