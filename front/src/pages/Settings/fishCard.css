@@ -2,17 +2,16 @@
     display: flex;
     width: 100%;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     border: 1px solid grey;
     border-radius: 4px;
     box-shadow: 10px 5px 5px #fb9b50;
-    padding: 0.5em 1em 0.5em 1em
+    padding: 0.5em
   }
   
 .fish_card_title {
   font-size: 24px;
   font-weight: bold;
-  padding: 0.5em 0 0 1em;
   display: flex;
   justify-content: space-between;
 }
@@ -20,10 +19,10 @@
 .fish_card_modify_but{
   color:#fb9b50;
     font-size: 18px;
-    padding-right: 1em;
     cursor: pointer;
 }
 
 .fish_card_curve{
+  margin: 1em;
   width: 99%
 }
