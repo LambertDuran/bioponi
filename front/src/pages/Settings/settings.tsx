@@ -77,7 +77,7 @@ export default function Settings() {
   const [openFish, setOpenFish] = useState(false);
   const [isCreation, setIsCreation] = useState(true);
 
-  const [selectedFood, setSelectedFood] = useState<IFood>(iFood0);
+  const [selectedFood, setSelectedFood] = useState<IFood | null>(null);
   const [foods, setFoods] = useState<IFood[]>([]);
 
   const [selectedFish, setSelectedFish] = useState<IFish | null>(null);

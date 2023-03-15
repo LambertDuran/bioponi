@@ -13,7 +13,7 @@ interface IModal {
   open: boolean;
   title: string;
   onClose: () => void;
-  food: IFood;
+  food: IFood | null;
   setFood: (food: IFood) => void;
   onFoodModification: (food: IFood) => void;
   isCreation: boolean;
@@ -28,15 +28,16 @@ export default function FoodModalDialog({
   onFoodModification,
   isCreation,
 }: IModal) {
-  const [copyFood, setCopyFood] = useState<IFood>(food);
+  const [copyFood, setCopyFood] = useState<IFood | null>(food);
 
   const gridStyle = {
     padding: "0 1em 2em 1em",
-    height: `${58 + copyFood.froms.length * 25}px`,
+    height: `${58 + (copyFood ? copyFood.froms.length * 25 : 0)}px`,
   };
 
   async function handleSubmit() {
     console.log("handleSubmit");
+    if (!copyFood) return;
     const { joiError } = validateFood(copyFood);
     if (joiError) {
       toast.error(
@@ -79,26 +80,26 @@ export default function FoodModalDialog({
           ref={inputElement}
           type="text"
           id="food_name"
-          value={copyFood.name}
-          onChange={(e) => setCopyFood({ ...copyFood, name: e.target.value })}
+          value={copyFood?.name}
+          onChange={(e) => setCopyFood({ ...copyFood!, name: e.target.value })}
           className="foodModal_name"
           autoFocus
         />
       </DialogTitle>
       <div style={gridStyle}>
-        <FoodGrid food={copyFood} editable={true} onEditCell={setCopyFood} />
+        <FoodGrid food={copyFood!} editable={true} onEditCell={setCopyFood} />
         <div className="foodModal_plus_moins">
           <button
             className="foodModal_plus"
-            onClick={() => setCopyFood(addRow({ ...copyFood }))}
+            onClick={() => setCopyFood(addRow({ ...copyFood! }))}
           >
             <i className="fas fa-plus"></i>
           </button>
           <button
             className="foodModal_moins"
             onClick={() => {
-              if (copyFood.froms.length < 2) return;
-              setCopyFood(removeRow({ ...copyFood }));
+              if (copyFood!.froms.length < 2) return;
+              setCopyFood(removeRow({ ...copyFood! }));
             }}
           >
             <i className="fas fa-minus"></i>
