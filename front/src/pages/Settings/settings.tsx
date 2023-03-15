@@ -133,6 +133,10 @@ export default function Settings() {
     getFishes();
   }, []);
 
+  useEffect(() => {
+    if (selectedFish) setSelectedFood(selectedFish.food);
+  }, [selectedFish]);
+
   return (
     <>
       {/* Dialogue pour l'ajout d'une nouvelle espèce d'aliment */}
@@ -200,18 +204,21 @@ export default function Settings() {
           setSelectedItem={setSelectedFish}
           color="#fb9b50"
         />
+        <ItemList
+          title={"Aliments :"}
+          items={foods}
+          selectedItem={selectedFood}
+          setSelectedItem={setSelectedFood}
+          color="#7991bd"
+        />
         {/* Afficher les espèces de poissons*/}
-        {/* {fishes.map((f) => (
-          <div className="species_margin">
-            <SpeciesCard fish={f} onEditClick={handleEditClickFish} />
-          </div>
-        ))} */}
+        {selectedFish && (
+          <SpeciesCard fish={selectedFish} onEditClick={handleEditClickFish} />
+        )}
         {/* Afficher les aliments */}
-        {/* {foods.map((f) => (
-          <div className="species_margin">
-            <FoodCard food={f} onEditClick={handleEditClickFood} />
-          </div>
-        ))} */}
+        {selectedFood && (
+          <FoodCard food={selectedFood} onEditClick={handleEditClickFood} />
+        )}
       </div>
     </>
   );
