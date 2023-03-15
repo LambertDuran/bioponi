@@ -73,6 +73,27 @@ export default function Settings() {
 
   // const { push } = useArray<IFood>(foods);
 
+  const iFood0: IFood = {
+    id: 0,
+    name: "",
+    froms: [10],
+    tos: [100],
+    ranges: ["NEO CDC CF 20"],
+    sizes: [5.5],
+    foodRates: [1.55],
+    prices: [2100],
+    distributions: [100],
+  };
+
+  const iFish0: IFish = {
+    id: 0,
+    name: "",
+    weeks: [4],
+    weights: [5],
+    food: foods.length ? foods[0] : iFood0,
+    foodId: foods.length ? foods[0].id : 0,
+  };
+
   const handleFoodModification = (newFood: IFood) => {
     if (isCreation) setFoods([...foods, newFood]);
     else {
@@ -124,27 +145,6 @@ export default function Settings() {
   useEffect(() => {
     if (selectedFish) setSelectedFood(selectedFish.food);
   }, [selectedFish]);
-
-  const iFood0: IFood = {
-    id: 0,
-    name: "",
-    froms: [10],
-    tos: [100],
-    ranges: ["NEO CDC CF 20"],
-    sizes: [5.5],
-    foodRates: [1.55],
-    prices: [2100],
-    distributions: [100],
-  };
-
-  const iFish0: IFish = {
-    id: 0,
-    name: "",
-    weeks: [4],
-    weights: [5],
-    food: foods ? foods[0] : iFood0,
-    foodId: foods ? foods[0].id : 0,
-  };
 
   return (
     <>
