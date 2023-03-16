@@ -54,8 +54,8 @@ export default function FishGgrid({ fish, editable, onEditCell }: IFishGrid) {
       processRowUpdate={(e: any) => {
         if (!editable || onEditCell === undefined) return;
         let newFish = { ...fish };
-        newFish.weeks[e.id] = parseInt(e.from);
-        newFish.weights[e.id] = parseInt(e.to);
+        newFish.weeks[e.id] = parseInt(e.week);
+        newFish.weights[e.id] = parseInt(e.weight);
         onEditCell(newFish);
       }}
     />
