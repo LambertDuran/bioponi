@@ -35,7 +35,7 @@ export default function FishModalDialog({
   const gridStyle = {
     padding: "0 1em 2em 1em",
     height: `${58 + (copyFish ? copyFish.weeks.length * 25 : 0)}px`,
-    width: "175px",
+    width: "90%",
   };
 
   async function handleSubmit() {

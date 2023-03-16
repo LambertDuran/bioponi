@@ -20,7 +20,7 @@ export default function FishGgrid({ fish, editable, onEditCell }: IFishGrid) {
     {
       field: "week",
       headerName: "Semaines",
-      width: 90,
+      flex: 1,
       sortable: false,
       disableColumnMenu: true,
       renderHeader(params: any) {
@@ -32,7 +32,7 @@ export default function FishGgrid({ fish, editable, onEditCell }: IFishGrid) {
     {
       field: "weight",
       headerName: "Poids(g)",
-      width: 80,
+      flex: 1,
       sortable: false,
       disableColumnMenu: true,
       renderHeader(params: any) {
