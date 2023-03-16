@@ -194,17 +194,15 @@ export default function Settings() {
           </div>
         )}
         {foods.length !== 0 && (
-          <div style={{ marginLeft: "1em" }}>
-            <Button
-              title="Nouvelle espèce"
-              onClick={() => {
-                setSelectedFish(iFish0);
-                setIsCreation(true);
-                setOpenFish(true);
-              }}
-              children={<i className="fas fa-fish"></i>}
-            />
-          </div>
+          <Button
+            title="Nouvelle espèce"
+            onClick={() => {
+              setSelectedFish(iFish0);
+              setIsCreation(true);
+              setOpenFish(true);
+            }}
+            children={<i className="fas fa-fish"></i>}
+          />
         )}
       </div>
 
@@ -216,19 +214,17 @@ export default function Settings() {
           setSelectedItem={setSelectedFood}
           color="#7991bd"
         />
-        <div style={{ marginLeft: "1em" }}>
-          <Button
-            title="Nouvel aliment"
-            onClick={() => {
-              setSelectedFood(iFood0);
-              setSelectedFish(null);
-              setIsCreation(true);
-              setOpenFood(true);
-            }}
-            children={<i className="fas fa-cheese"></i>}
-            color="blue"
-          />
-        </div>
+        <Button
+          title="Nouvel aliment"
+          onClick={() => {
+            setSelectedFood(iFood0);
+            setSelectedFish(null);
+            setIsCreation(true);
+            setOpenFood(true);
+          }}
+          children={<i className="fas fa-cheese"></i>}
+          color="blue"
+        />
       </div>
 
       <div className="card_container">
