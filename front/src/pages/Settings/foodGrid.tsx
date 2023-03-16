@@ -79,7 +79,7 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
     {
       field: "distribution",
       headerName: "Distribution(g/min)",
-      flex: 1,
+      flex: 2,
       // width: 200,
       renderHeader,
       editable: editable,

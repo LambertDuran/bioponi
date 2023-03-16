@@ -73,7 +73,7 @@ export default function FoodModalDialog({
   }, [food]);
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="lg">
+    <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth={true}>
       <DialogTitle>
         {title}
         <input

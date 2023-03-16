@@ -20,7 +20,7 @@ export default function FishGgrid({ fish, editable, onEditCell }: IFishGrid) {
     {
       field: "week",
       headerName: "Semaines",
-      width: 50,
+      width: 90,
       sortable: false,
       disableColumnMenu: true,
       renderHeader(params: any) {
