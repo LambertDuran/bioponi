@@ -35,8 +35,8 @@ export default function SpeciesCard({ fish, onEditClick }: IFishCard) {
       {
         label: `Croissance théorique de ${fish.name}`,
         data: fish.weights,
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        borderColor: "rgb(50, 205, 50)",
+        backgroundColor: "rgba(50, 205, 50, 0.5)",
         tension: 0.5,
       },
     ],
