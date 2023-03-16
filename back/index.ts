@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
+import { Application } from "express";
 const express = require("express");
-const app = express();
+const app: Application = express();
 const cors = require("./middlewares/cor");
 const logger = require("./middlewares/logger");
 const food = require("./routes/food");
