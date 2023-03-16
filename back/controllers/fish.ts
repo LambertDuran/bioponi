@@ -19,6 +19,26 @@ export default function validateFish(fish: any) {
   const err = schema.validate(fish);
   if (err.error) return err;
 
+  for (var i = 0; i < fish.weeks.length; i++) {
+    if (!Number.isInteger(fish.weeks[i]))
+      return {
+        error: {
+          details: [
+            { message: "Les semaines doivent être des nombres entiers" },
+          ],
+        },
+      };
+  }
+
+  for (var i = 0; i < fish.weights.length; i++) {
+    if (!Number.isInteger(fish.weights[i]))
+      return {
+        error: {
+          details: [{ message: "Les poids doivent être des nombres entiers" }],
+        },
+      };
+  }
+
   if (fish.weeks.length !== fish.weights.length)
     return {
       error: {

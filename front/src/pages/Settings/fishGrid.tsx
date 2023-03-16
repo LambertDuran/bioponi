@@ -23,6 +23,7 @@ export default function FishGgrid({ fish, editable, onEditCell }: IFishGrid) {
       flex: 1,
       sortable: false,
       disableColumnMenu: true,
+      editable: editable,
       renderHeader(params: any) {
         return (
           <strong className="colHeaderGrid">{params.colDef.headerName}</strong>
@@ -35,6 +36,7 @@ export default function FishGgrid({ fish, editable, onEditCell }: IFishGrid) {
       flex: 1,
       sortable: false,
       disableColumnMenu: true,
+      editable: editable,
       renderHeader(params: any) {
         return (
           <strong className="colHeaderGrid">{params.colDef.headerName}</strong>

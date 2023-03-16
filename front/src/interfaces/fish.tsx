@@ -18,8 +18,8 @@ const removeRow = (fish: IFish) => {
 };
 
 const addRow = (fish: IFish) => {
-  fish.weeks.push(Math.round(fish.weeks.slice(-1)[0] * 15) / 10);
-  fish.weights.push(Math.round(fish.weights.slice(-1)[0] * 15) / 10);
+  fish.weeks.push(Math.round(fish.weeks.slice(-1)[0] * 1.5));
+  fish.weights.push(Math.round(fish.weights.slice(-1)[0] * 1.5));
   return fish;
 };
 

@@ -29,7 +29,6 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
     {
       field: "from",
       headerName: "De",
-      // width: 50,
       flex: 1,
       renderHeader,
       editable: editable,
@@ -37,7 +36,6 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
     {
       field: "to",
       headerName: "À",
-      // width: 50,
       flex: 1,
       renderHeader,
       editable: editable,
@@ -45,7 +43,6 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
     {
       field: "range",
       headerName: "Gamme",
-      // width: 130,
       flex: 2,
       sortable: false,
       disableColumnMenu: true,
@@ -56,14 +53,12 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
       field: "size",
       headerName: "Taille(mm)",
       flex: 1,
-      // width: 80,
       renderHeader,
       editable: editable,
     },
     {
       field: "foodRate",
       headerName: "Taux de rationnement",
-      // width: 200,
       flex: 2,
       renderHeader,
       editable: editable,
@@ -71,7 +66,6 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
     {
       field: "price",
       headerName: "Prix(€/T)",
-      // width: 85,
       flex: 1,
       renderHeader,
       editable: editable,
@@ -80,7 +74,6 @@ export default function FoodGrid({ food, editable, onEditCell }: IFoodGrid) {
       field: "distribution",
       headerName: "Distribution(g/min)",
       flex: 2,
-      // width: 200,
       renderHeader,
       editable: editable,
     },
