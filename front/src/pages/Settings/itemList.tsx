@@ -27,11 +27,12 @@ export default function ItemList({
     cursor: "pointer",
     margin: "1em 0 1em 1em",
     border: "1px solid black",
+    fontWeight: "bold",
   };
 
   return (
     <div className="itemList_container">
-      <h3>{title}</h3>
+      <p style={{ fontSize: "1.25em" }}>{title}</p>
       {items.map((item: any) => (
         <Chip
           key={item.id}
