@@ -12,9 +12,4 @@ app.use(logger);
 app.use("/api/food", food);
 app.use("/api/fish", fish);
 
-const PORT = process.env.PORT || 3000;
-const server = app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}...`);
-});
-
-module.exports = server;
+module.exports = app;

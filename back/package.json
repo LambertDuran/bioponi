@@ -19,7 +19,8 @@
   "scripts": {
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
-    "test": "yarn docker:up && dotenv -e .env.test -- npx prisma migrate deploy && dotenv -e .env.test jest -i"
+    "test": "yarn docker:up && dotenv -e .env.test -- npx prisma migrate deploy && dotenv -e .env.test jest -i",
+    "studio_test": "dotenv -e .env.test -- npx prisma studio"
   },
   "author": "Lambert Duran",
   "license": "ISC",

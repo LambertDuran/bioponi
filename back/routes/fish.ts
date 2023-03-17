@@ -12,7 +12,7 @@ router.get("/", async (req: Request, res: Response) => {
       food: true,
     },
   });
-  if (!fish) return res.status(404).send("Aucun poisson trouvé!");
+  if (fish.length < 1) return res.status(404).send("Aucun poisson trouvé!");
   res.json(fish);
 });
 
