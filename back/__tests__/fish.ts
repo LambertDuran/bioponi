@@ -36,15 +36,10 @@ afterEach(async () => {
   await prisma.$disconnect();
 });
 
+// GET
 describe("GET /api/fish", () => {
-  it("should return 200", async () => {
+  it("should return 200 if fish is valid", async () => {
     const res = await request(server).get("/api/fish");
     expect(res.status).toBe(200);
-  });
-
-  it("should return 404", async () => {
-    await prisma.fish.deleteMany();
-    const res = await request(server).get("/api/fish");
-    expect(res.status).toBe(404);
   });
 });

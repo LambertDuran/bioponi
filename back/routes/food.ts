@@ -44,6 +44,14 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
   const { error } = validateFood(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  const existingFood = await prisma.food.findFirst({
+    where: {
+      name: req.body.name,
+    },
+  });
+  if (!existingFood || existingFood.id !== parseInt(req.params.id))
+    return res.status(404).send("Food doesn't exist!");
+
   const food = await prisma.food.update({
     where: {
       id: parseInt(req.params.id),
