@@ -128,7 +128,7 @@ export default function Settings() {
         onFishModification={handleFishModification}
       />
 
-      <div className="itemList_container">
+      <div className="itemList_container" style={{ paddingBottom: 0 }}>
         <ItemList
           title={"Espèces de poissons :"}
           items={fishes}
@@ -155,7 +155,7 @@ export default function Settings() {
         )}
       </div>
 
-      <div className="itemList_container">
+      <div className="itemList_container" style={{ paddingTop: 0 }}>
         <ItemList
           title={"Aliments :"}
           items={foods}
