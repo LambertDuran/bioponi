@@ -1,0 +1,8 @@
+.diary_container{
+    padding: 1em;
+}
+
+.diary_but_container{
+    display: flex;
+    justify-content: space-around;
+}

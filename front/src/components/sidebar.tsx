@@ -14,7 +14,7 @@ const icons = [
   "fas fa-home",
   "fas fa-cog",
   "fas fa-book",
-  "fas fa-balance-scale",
+  "fas fa-chart-line",
   "fas fa-calendar",
 ];
 const names = [

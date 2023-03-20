@@ -5,7 +5,7 @@ import "./index.css";
 import App from "./App";
 import ErrorPage from "./pages/error-page";
 import Settings from "./pages/Settings/settings";
-import Diary from "./pages/diary";
+import Diary from "./pages/Diary/diary";
 import Balance from "./pages/balance";
 import DailyCard from "./pages/dailyCard";
 import DashBoard from "./pages/dashBoard";
