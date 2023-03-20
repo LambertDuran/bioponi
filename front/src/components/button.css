@@ -1,12 +1,7 @@
-.bioponi_button_black,
-.bioponi_button_grey,
-.bioponi_button_orange,
-.bioponi_button_yellow,
-.bioponi_button_salmon,
-.bioponi_button_blue{
+.bioponi_button{
     border: none;
     width: var(--width);
-    color: black;
+    color: var(--textColor);
     padding: 0em 0.5em;
     text-align: center;
     text-decoration: none;
@@ -17,62 +12,13 @@
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 8px;
+    background-color: var(--color);
 }
 
-.bioponi_button_blue{
-    background-color: #7991bd;
-}
-
-.bioponi_button_black{
-    background-color: #020d21;
-    color: white;
-}
-
-.bioponi_button_yellow{
-    background-color: #f6bd41;
-}
-
-.bioponi_button_salmon{
-    background-color: #ff906a;
-}
-
-.bioponi_button_orange{
-    background-color: #fd7702;
-}
-
-.bioponi_button_grey{
-    background-color: #b9c6d7;
-}
-
-.bioponi_button_blue i,
-.bioponi_button_grey i,
-.bioponi_button_black i,
-.bioponi_button_salmon i,
-.bioponi_button_yellow i,
-.bioponi_button_orange i{
+.bioponi_button i{
     padding-top: 0.2em;
 }
 
-.bioponi_button_orange:hover{
-    background-color: #ff8e00;
-}
-
-.bioponi_button_salmon:hover{
-    background-color: #ff9e7a;
-}
-
-.bioponi_button_yellow:hover{
-    background-color: #f6c94a;
-}
-
-.bioponi_button_blue:hover{
-    background-color: #94a3c0;
-}
-
-.bioponi_button_grey:hover{
-    background-color: #94a3c0;
-}
-
-.bioponi_button_black:hover{
-    background-color: #28292b;
+.bioponi_button:hover{
+    background-color: var(--hoverColor);
 }
