@@ -11,6 +11,15 @@ const titles = [
   "Mortalité",
 ];
 
+const icons = [
+  "fas fa-sign-in-alt",
+  "fas fa-weight",
+  "fas fa-dollar-sign",
+  "fas fa-exchange-alt",
+  "fas fa-sign-out-alt",
+  "fas fa-skull",
+];
+
 export default function Diary() {
   return (
     <div className="diary_container">
@@ -21,8 +30,10 @@ export default function Diary() {
             title={titles[index]}
             color={color}
             onClick={() => console.log("click")}
-            width={"20%"}
-          ></Button>
+            width={"13%"}
+          >
+            <i className={icons[index]}></i>
+          </Button>
         ))}
       </div>
     </div>

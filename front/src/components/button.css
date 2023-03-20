@@ -7,6 +7,7 @@
     text-decoration: none;
     font-weight: 550;
     display: flex;
+    justify-content: center;
     align-items: center;
     font-size: 16px;
     margin: 4px 2px;
