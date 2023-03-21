@@ -78,9 +78,16 @@ describe("POST /api/food", () => {
 
 // PUT
 describe("PUT /api/food/:id", () => {
+  it("should return 404 if food not found", async () => {
+    const res = await request(server)
+      .put(`/api/food/${food.id + 1}`)
+      .send({ ...food, name: "autre aliment" });
+    expect(res.status).toBe(404);
+  });
+
   it("should return 400 if bad name", async () => {
     const res = await request(server)
-      .put("/api/food/1")
+      .put(`/api/food/${food.id}}`)
       .send({ ...food, name: "" });
     expect(res.status).toBe(400);
   });
@@ -99,15 +106,10 @@ describe("PUT /api/food/:id", () => {
     expect(res.status).toBe(400);
   });
 
-  it("should return 404 if food not found", async () => {
+  it("should return 200 if food is valid", async () => {
     const res = await request(server)
       .put(`/api/food/${food.id}`)
       .send({ ...food, name: "autre aliment" });
-    expect(res.status).toBe(404);
-  });
-
-  it("should return 200 if food is valid", async () => {
-    const res = await request(server).put(`/api/food/${food.id}`).send(food);
     expect(res.status).toBe(200);
   });
 });

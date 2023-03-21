@@ -46,11 +46,10 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
 
   const existingFood = await prisma.food.findFirst({
     where: {
-      name: req.body.name,
+      id: parseInt(req.params.id),
     },
   });
-  if (!existingFood || existingFood.id !== parseInt(req.params.id))
-    return res.status(404).send("Food doesn't exist!");
+  if (!existingFood) return res.status(404).send("Food doesn't exist!");
 
   const food = await prisma.food.update({
     where: {

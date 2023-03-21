@@ -17,7 +17,6 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.post("/", async (req: Request, res: Response) => {
-  console.log("0");
   const { error } = validateFish(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -42,7 +41,7 @@ router.post("/", async (req: Request, res: Response) => {
       weights: req.body.weights,
       food: {
         connect: {
-          id: existingFood.id,
+          name: existingFood.name,
         },
       },
     },
@@ -61,13 +60,10 @@ router.put("/:id", async (req: Request, res: Response) => {
 
   const existingFish = await prisma.fish.findFirst({
     where: {
-      name: req.body.name,
+      id: parseInt(req.params.id),
     },
   });
-
-  if (!existingFish) return res.status(400).send("Fish doesn't exist!");
-  if (existingFish && existingFish.id !== parseInt(req.params.id))
-    return res.status(400).send("Fish already exists!");
+  if (!existingFish) return res.status(404).send("Fish doesn't exist!");
 
   const existingFood = await prisma.food.findFirst({
     where: {
