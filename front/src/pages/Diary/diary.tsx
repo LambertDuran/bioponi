@@ -1,6 +1,23 @@
+import { useState } from "react";
 import Button from "../../components/button";
+import EntranceModalDialog from "./entranceModalDialog";
 import "./diary.css";
 
+const iEntrance = 0;
+const iWeighing = 1;
+const iSale = 2;
+const iTransfer = 3;
+const iExit = 4;
+const iMortality = 5;
+
+const actions = [
+  "Entrée du lot",
+  "Pesée",
+  "Vente",
+  "Transfert",
+  "Sortie définitive",
+  "Mortalité",
+];
 const colors = ["orange", "salmon", "yellow", "grey", "blue", "black"];
 const titles = [
   "Entrée du lot",
@@ -21,6 +38,7 @@ const icons = [
 ];
 
 export default function Diary() {
+  const [action, setAction] = useState("");
   return (
     <div className="diary_container">
       <div className="diary_but_container">
@@ -29,13 +47,19 @@ export default function Diary() {
             key={index}
             title={titles[index]}
             color={color}
-            onClick={() => console.log("click")}
+            onClick={() => setAction(actions[index])}
             width={"13%"}
           >
             <i className={icons[index]}></i>
           </Button>
         ))}
       </div>
+      <EntranceModalDialog
+        open={action === actions[iEntrance]}
+        title={actions[iEntrance]}
+        onClose={() => setAction("")}
+        isCreation={true}
+      />
     </div>
   );
 }
