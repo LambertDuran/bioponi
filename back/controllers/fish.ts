@@ -12,8 +12,8 @@ export default function validateFish(fish: any) {
     weights: Joi.array()
       .items(Joi.number().min(0).max(5000).required())
       .required(),
-    foodId: Joi.number().min(0).required(),
-    food: Joi.object(),
+    foodId: Joi.number().min(0),
+    food: Joi.object().required(),
   });
 
   const err = schema.validate(fish);

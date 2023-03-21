@@ -17,6 +17,7 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.post("/", async (req: Request, res: Response) => {
+  console.log("0");
   const { error } = validateFish(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
