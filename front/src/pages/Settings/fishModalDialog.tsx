@@ -137,11 +137,9 @@ export default function FishModalDialog({
         </div>
       </div>
       <div className="fishModal_validate_button">
-        <Button
-          title="Valider"
-          onClick={handleSubmit}
-          children={<i className="fas fa-fish"></i>}
-        />
+        <Button title="Valider" onClick={handleSubmit} color="orange">
+          <i className="fas fa-fish"></i>
+        </Button>
       </div>
     </Dialog>
   );

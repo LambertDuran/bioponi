@@ -150,8 +150,10 @@ export default function Settings() {
               setIsCreation(true);
               setOpenFish(true);
             }}
-            children={<i className="fas fa-fish"></i>}
-          />
+            color="orange"
+          >
+            <i className="fas fa-fish"></i>
+          </Button>
         )}
       </div>
 
@@ -171,9 +173,10 @@ export default function Settings() {
             setIsCreation(true);
             setOpenFood(true);
           }}
-          children={<i className="fas fa-cheese"></i>}
           color="blue"
-        />
+        >
+          <i className="fas fa-cheese"></i>
+        </Button>
       </div>
 
       <div className="card_container">
