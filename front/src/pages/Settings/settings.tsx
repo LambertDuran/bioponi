@@ -10,12 +10,14 @@ import FishModalDialog from "./fishModalDialog";
 import IFish from "../../interfaces/fish";
 import SpeciesCard from "./fishCard";
 import { getAllFish } from "../../services/fish";
+import PoolModalDialog from "./poolModalDialog";
 import emptyList from "../../assets/emptyList.gif";
 import "./settings.css";
 
 export default function Settings() {
   const [openFood, setOpenFood] = useState(false);
   const [openFish, setOpenFish] = useState(false);
+  const [openPool, setOpenPool] = useState(false);
   const [isCreation, setIsCreation] = useState(true);
 
   const [selectedFood, setSelectedFood] = useState<IFood | null>(null);
@@ -128,11 +130,17 @@ export default function Settings() {
         onFishModification={handleFishModification}
       />
 
+      <PoolModalDialog
+        title={"Gestion des bassins :"}
+        open={openPool}
+        onClose={() => setOpenPool(false)}
+      />
+
       <div className="bassin_button_container">
         <Button
           title="Gestion bassins"
           color="yellow"
-          onClick={() => console.log("test")}
+          onClick={() => setOpenPool(true)}
         >
           <i className="fas fa-database"></i>
         </Button>
