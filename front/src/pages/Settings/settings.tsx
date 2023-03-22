@@ -128,7 +128,17 @@ export default function Settings() {
         onFishModification={handleFishModification}
       />
 
-      <div className="itemList_container" style={{ paddingBottom: 0 }}>
+      <div className="bassin_button_container">
+        <Button
+          title="Gestion bassins"
+          color="yellow"
+          onClick={() => console.log("test")}
+        >
+          <i className="fas fa-database"></i>
+        </Button>
+      </div>
+
+      <div className="itemList_container" style={{ paddingTop: 0 }}>
         <ItemList
           title={"Espèces de poissons :"}
           items={fishes}

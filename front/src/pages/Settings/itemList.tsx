@@ -31,7 +31,7 @@ export default function ItemList({
   };
 
   return (
-    <div className="itemList_container">
+    <div className="itemList_container" style={{ paddingTop: 0 }}>
       <p style={{ fontSize: "1.25em" }}>{title}</p>
       {items.map((item: any) => (
         <Chip
