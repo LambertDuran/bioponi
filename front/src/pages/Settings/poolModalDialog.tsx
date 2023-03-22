@@ -79,7 +79,11 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth={true}>
       <DialogTitle>{title}</DialogTitle>
-      <form onSubmit={handleSubmit(() => {})}>
+      <form
+        onSubmit={handleSubmit((data) => {
+          console.log("data", data);
+        })}
+      >
         <div className="poolModalDialog_container">
           <div className="poolModalDialog_grid">
             <p>N° bassin</p>
