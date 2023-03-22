@@ -1,6 +1,6 @@
 .poolModalDialog_grid{
     display: grid;
-    grid-template-columns: 190px 190px;
+    grid-template-columns: 180px 180px;
 }
 
 .poolModalDialog_grid p{
@@ -29,4 +29,40 @@
     padding: 0.5em;
     border: none;
     text-align: center;
+}
+
+.poolModalDialog_button_inactive,
+.poolModalDialog_button_active{
+    border: none;
+    width: 15%;
+    color: black;
+    height: 50px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 550;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: #f6bd41;
+}
+
+.poolModalDialog_error{
+    color: red;
+    padding: 1em 0 0 2em;
+}
+
+.poolModalDialog_button_inactive,
+.poolModalDialog_button_active{
+    margin: 1em 0 1.5em 1.5em;
+}
+
+.poolModalDialog_button_active{
+    background-color: #f6bd41;
+}
+
+.poolModalDialog_button_inactive{
+    background-color: rgba(184, 49, 49, 0.849);
+    cursor: not-allowed;
 }
