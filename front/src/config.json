@@ -1,4 +1,5 @@
 {
     "foodEndpoint" : "http://localhost:3000/api/food",
-    "fishEndpoint" : "http://localhost:3000/api/fish"
+    "fishEndpoint" : "http://localhost:3000/api/fish",
+    "poolEndpoint" : "http://localhost:3000/api/pool"
 }

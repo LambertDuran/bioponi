@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../components/button";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
+import { getAllPool } from "../../services/pool";
 import IPool from "../../interfaces/pool";
 import "./poolModalDialog.css";
 
@@ -48,6 +49,15 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
     );
   };
 
+  useEffect(() => {
+    const fetchPools = async () => {
+      const res = await getAllPool();
+      if (res && res.data) setPools(res.data);
+    };
+
+    fetchPools();
+  }, []);
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth={true}>
       <DialogTitle>{title}</DialogTitle>
@@ -90,7 +100,7 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
               title="Nouveau Bassin"
               color="yellow"
               onClick={() => {
-                setPools([...pools, { number: 1, volume: 0 }]);
+                // setPools([...pools, { number: 1, volume: 0 }]);
               }}
             />
           </div>
