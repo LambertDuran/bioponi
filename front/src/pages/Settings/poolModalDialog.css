@@ -1,11 +1,32 @@
 .poolModalDialog_grid{
     display: grid;
     grid-template-columns: 190px 190px;
-    grid-template-rows: 1fr 1fr;
+}
+
+.poolModalDialog_grid p{
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
 }
 
 .poolModalDialog_container{
+    justify-content: center;
     margin: 0 1.5em 0 1.5em;
     display: flex;
     flex-direction: row;
+}
+
+.poolModalDialog_div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.poolModalDialog_input{
+    width: 50%;
+    height: 15px;
+    padding: 0.5em;
+    border: none;
+    text-align: center;
 }
