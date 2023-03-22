@@ -24,11 +24,7 @@ export default function FishGgrid({ fish, editable, onEditCell }: IFishGrid) {
       sortable: false,
       disableColumnMenu: true,
       editable: editable,
-      renderHeader(params: any) {
-        return (
-          <strong className="colHeaderGrid">{params.colDef.headerName}</strong>
-        );
-      },
+      renderHeader,
     },
     {
       field: "weight",
@@ -37,11 +33,7 @@ export default function FishGgrid({ fish, editable, onEditCell }: IFishGrid) {
       sortable: false,
       disableColumnMenu: true,
       editable: editable,
-      renderHeader(params: any) {
-        return (
-          <strong className="colHeaderGrid">{params.colDef.headerName}</strong>
-        );
-      },
+      renderHeader,
     },
   ];
 
