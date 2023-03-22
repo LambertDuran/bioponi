@@ -58,8 +58,25 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
     fetchPools();
   }, []);
 
-  async function onSubmit() {
-    const poolPromises = pools.map((p: IPool) => {
+  async function onSubmit(data: any) {
+    // 1. Update pools state with form values
+    let newPools: IPool[] = [...pools];
+    for (const key in data) {
+      if (key.includes("number")) {
+        const index = parseInt(key.replace(/\D/g, ""));
+        const number = parseInt(data[key]);
+        newPools[index].number = number;
+      }
+      if (key.includes("volume")) {
+        const index = parseInt(key.replace(/\D/g, ""));
+        const volume = parseInt(data[key]);
+        newPools[index].volume = volume;
+      }
+    }
+    setPools(newPools);
+
+    // 2. Send pools to server
+    const poolPromises = pools.map((p: IPool, i) => {
       if (p.id === 0) return postPool(p);
       else return putPool({ id: p.id, number: p.number, volume: p.volume });
     });
@@ -71,19 +88,24 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
         toast.error(
           `Impossible de ${createOrModify} le bassin ${pools[i].number}, ${res.error}`
         );
-      } else toast.success(`Bassin ${pools[i].number} ${createdOrModified}`);
+      } else {
+        if (pools[i].id === 0) {
+          let newPools: IPool[] = [...pools];
+          newPools[i] = res.pool;
+          setPools(newPools);
+        }
+        toast.success(`Bassin ${pools[i].number} ${createdOrModified}`);
+      }
     });
+
+    // 3. Close modal
     onClose();
   }
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth={true}>
       <DialogTitle>{title}</DialogTitle>
-      <form
-        onSubmit={handleSubmit((data) => {
-          console.log("data", data);
-        })}
-      >
+      <form id="pool_form" onSubmit={handleSubmit(onSubmit)}>
         <div className="poolModalDialog_container">
           <div className="poolModalDialog_grid">
             <p>N° bassin</p>
@@ -105,6 +127,7 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
                 <div className="poolModalDialog_div">
                   <input
                     className="poolModalDialog_input"
+                    form="pool_form"
                     defaultValue={pool.volume}
                     {...register(`volume${i}`, {
                       required: true,
@@ -132,6 +155,7 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
                   },
                 ]);
               }}
+              form=""
             />
           </div>
         </div>
@@ -145,8 +169,7 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
           type="submit"
           value="Valider"
           disabled={isNotValid}
-          onClick={() => onSubmit()}
-        ></input>
+        />
       </form>
     </Dialog>
   );

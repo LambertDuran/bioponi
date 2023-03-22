@@ -6,6 +6,7 @@ interface IButton {
   children?: React.ReactElement;
   color?: string;
   width?: string;
+  form?: string;
 }
 
 const litteralColors = ["orange", "salmon", "yellow", "grey", "blue", "black"];
@@ -33,6 +34,7 @@ export default function Button({
   color,
   onClick,
   width,
+  form,
 }: IButton) {
   return (
     <button
@@ -47,6 +49,7 @@ export default function Button({
           "--textColor": color === "black" ? "white" : "black",
         } as React.CSSProperties
       }
+      form={form}
     >
       <div>{children}</div>
       {title && <p style={{ paddingLeft: "0.75em" }}>{title}</p>}
