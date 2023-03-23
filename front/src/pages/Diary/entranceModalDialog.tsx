@@ -35,47 +35,37 @@ export default function EntranceModalDialog({
       <div className="entrance_modDial_container">
         <Calendar />
         <div className="entrance_modDial_form">
-          <div>
-            <div className="entrance_modDial_row">
-              N° de bassin :
-              <select
-                aria-label="N° de bassin :"
-                className="entrance_modial_select"
-              >
-                {pools.map((pool) => (
-                  <option key={pool.id}>{pool.number}</option>
-                ))}
-              </select>
-            </div>
-            <div className="entrance_modDial_row">
-              Espèce de poissons :
-              <select className="entrance_modial_select">
-                {fishes.map((fish) => (
-                  <option key={fish.id}>{fish.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="entrance_modDial_row">
-              Masse totale(kg) :
-              <input
-                className="entrance_modial_select"
-                placeholder="Masse totale(kg)"
-              />
-            </div>
-            <div className="entrance_modDial_row">
-              Nombre de poissons :
-              <input
-                className="entrance_modial_select"
-                placeholder="nb poissons"
-              />
-            </div>
-            <div className="entrance_modDial_row">
-              Poids moyen(g) :
-              <input
-                className="entrance_modial_select"
-                placeholder="poids moyen"
-              />
-            </div>
+          <div className="entrance_modDial_grid">
+            <div>N° de bassin :</div>
+            <select
+              aria-label="N° de bassin :"
+              className="entrance_modial_select"
+            >
+              {pools.map((pool) => (
+                <option key={pool.id}>{pool.number}</option>
+              ))}
+            </select>
+            <div>Espèce de poissons :</div>
+            <select className="entrance_modial_select">
+              {fishes.map((fish) => (
+                <option key={fish.id}>{fish.name}</option>
+              ))}
+            </select>
+            <div>Masse totale(kg) :</div>
+            <input
+              className="entrance_modial_select"
+              placeholder="Masse totale(kg)"
+            />
+            <div>Nombre de poissons :</div>
+            <input
+              className="entrance_modial_select"
+              placeholder="nb poissons"
+            />
+            <div>Poids moyen(g) :</div>
+            <input
+              className="entrance_modial_select"
+              placeholder="poids moyen"
+            />
           </div>
           <div className="entrance_modDial_button">
             <Button title="Valider" color="orange" onClick={() => onClose()}>
