@@ -103,7 +103,7 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
   }
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth={true}>
+    <Dialog open={open} onClose={onClose} maxWidth="sm">
       <DialogTitle>{title}</DialogTitle>
       <form id="pool_form" onSubmit={handleSubmit(onSubmit)}>
         <div className="poolModalDialog_container">

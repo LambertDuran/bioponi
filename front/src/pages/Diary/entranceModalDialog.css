@@ -1,0 +1,33 @@
+.entrance_modDial_row,
+.entrance_modDial_container{
+    display: flex ;
+    flex-direction: row;
+}
+
+.entrance_modDial_title{
+    text-decoration: underline;
+}
+
+.entrance_modDial_row{
+    padding-top: 1em;
+}
+
+.entrance_modDial_form{
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: space-between;
+}
+
+.entrance_modial_select{
+    margin-left: 1em;
+    border-radius: 10px;
+    border: 1px solid #fd7702;
+}
+
+.entrance_modDial_button{
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+}

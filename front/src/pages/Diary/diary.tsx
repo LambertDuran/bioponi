@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "../../components/button";
 import EntranceModalDialog from "./entranceModalDialog";
+import { getAllFish } from "../../services/fish";
+import { getAllPool } from "../../services/pool";
 import "./diary.css";
 
 const iEntrance = 0;
@@ -39,6 +41,23 @@ const icons = [
 
 export default function Diary() {
   const [action, setAction] = useState("");
+  const [fishes, setFishes] = useState([]);
+  const [pools, setPools] = useState([]);
+
+  useEffect(() => {
+    async function getFishes() {
+      const allFish = await getAllFish();
+      if (allFish && allFish.data) setFishes(allFish.data);
+    }
+    async function getPools() {
+      const allPool = await getAllPool();
+      if (allPool && allPool.data) setPools(allPool.data);
+    }
+
+    getFishes();
+    getPools();
+  }, []);
+
   return (
     <div className="diary_container">
       <div className="diary_but_container">
@@ -59,6 +78,8 @@ export default function Diary() {
         title={actions[iEntrance]}
         onClose={() => setAction("")}
         isCreation={true}
+        fishes={fishes}
+        pools={pools}
       />
     </div>
   );
