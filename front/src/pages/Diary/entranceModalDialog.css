@@ -36,4 +36,24 @@
     position: absolute;
     bottom: 1em;
     right: 1em;
+    border: none;
+    color: 'black';
+    height: 50px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 550;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: #fd7702;
+    width: 100px;
+}
+
+.entrance_modDial_error{
+    margin: 0 1em 0 1em;
+    position: relative;
+    top: -1em;
+    color: red;
 }

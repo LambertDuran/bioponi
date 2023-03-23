@@ -127,11 +127,10 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
                 <div className="poolModalDialog_div">
                   <input
                     className="poolModalDialog_input"
-                    form="pool_form"
                     defaultValue={pool.volume}
                     {...register(`volume${i}`, {
                       required: true,
-                      min: 0,
+                      min: 1,
                       max: 100,
                       pattern: /^[0-9]+$/,
                     })}
