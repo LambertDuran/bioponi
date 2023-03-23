@@ -13,9 +13,6 @@ interface IModal {
   onClose: () => void;
   fishes: IFish[];
   pools: IPool[];
-  // food: IFood | null;
-  // setFood: (food: IFood) => void;
-  // onFoodModification: (food: IFood) => void;
   isCreation: boolean;
 }
 
@@ -25,9 +22,6 @@ export default function EntranceModalDialog({
   onClose,
   fishes,
   pools,
-  // food,
-  // setFood,
-  // onFoodModification,
   isCreation,
 }: IModal) {
   const {
@@ -59,7 +53,10 @@ export default function EntranceModalDialog({
   const fish_number = watch("fish_number");
   useEffect(() => {
     if (total_weight && fish_number)
-      setValue("average_weight", total_weight / fish_number);
+      setValue(
+        "average_weight",
+        Math.round((total_weight / fish_number) * 1000 * 100) / 100
+      );
   }, [total_weight, fish_number]);
 
   return (
@@ -119,7 +116,6 @@ export default function EntranceModalDialog({
             <input
               className="entrance_modial_select"
               placeholder="poids moyen"
-              // defaultValue={1000}
               {...register("average_weight", {
                 required: true,
                 min: 0,
