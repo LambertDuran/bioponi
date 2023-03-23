@@ -3,6 +3,9 @@ import Button from "../../components/button";
 import EntranceModalDialog from "./entranceModalDialog";
 import { getAllFish } from "../../services/fish";
 import { getAllPool } from "../../services/pool";
+import IPool from "../../interfaces/pool";
+import IFish from "../../interfaces/fish";
+import { orderBy } from "lodash";
 import "./diary.css";
 
 const iEntrance = 0;
@@ -41,8 +44,8 @@ const icons = [
 
 export default function Diary() {
   const [action, setAction] = useState("");
-  const [fishes, setFishes] = useState([]);
-  const [pools, setPools] = useState([]);
+  const [fishes, setFishes] = useState<IFish[]>([]);
+  const [pools, setPools] = useState<IPool[]>([]);
 
   useEffect(() => {
     async function getFishes() {
@@ -51,7 +54,8 @@ export default function Diary() {
     }
     async function getPools() {
       const allPool = await getAllPool();
-      if (allPool && allPool.data) setPools(allPool.data);
+      if (allPool && allPool.data)
+        setPools(orderBy(allPool.data, ["number"], ["asc"]));
     }
 
     getFishes();
