@@ -1,8 +1,8 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import IPool from "../../interfaces/pool";
 import IFish from "../../interfaces/fish";
 import Calendar from "../../components/calendar";
-import Button from "../../components/button";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import "./entranceModalDialog.css";
@@ -33,6 +33,8 @@ export default function EntranceModalDialog({
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -52,6 +54,13 @@ export default function EntranceModalDialog({
   };
 
   const onSubmit = (data: any) => console.log(data);
+
+  const total_weight = watch("total_weight");
+  const fish_number = watch("fish_number");
+  useEffect(() => {
+    if (total_weight && fish_number)
+      setValue("average_weight", total_weight / fish_number);
+  }, [total_weight, fish_number]);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md">
@@ -85,7 +94,6 @@ export default function EntranceModalDialog({
             <div>Masse totale(kg) :</div>
             <input
               className="entrance_modial_select"
-              form="entrance_form"
               placeholder="Masse totale(kg)"
               {...register("total_weight", {
                 required: true,
@@ -99,7 +107,6 @@ export default function EntranceModalDialog({
             <input
               className="entrance_modial_select"
               placeholder="nb poissons"
-              form="entrance_form"
               {...register("fish_number", {
                 required: true,
                 min: 0,
@@ -112,8 +119,7 @@ export default function EntranceModalDialog({
             <input
               className="entrance_modial_select"
               placeholder="poids moyen"
-              form="entrance_form"
-              defaultValue={1000}
+              // defaultValue={1000}
               {...register("average_weight", {
                 required: true,
                 min: 0,

@@ -91,11 +91,13 @@ export default function Diary() {
           />
         </div>
       ) : (
-        <p className="entrance_modDial_emptyList">
-          ⚠️ Vous devez définir un <strong>bassin</strong> et une
-          <strong> espèce de poissons</strong> dans la page
-          <strong> PARAMETRAGE</strong>⚠️
-        </p>
+        <div className="entrance_modDial_emptyList">
+          <p>
+            ⚠️ Vous devez définir un <strong>bassin</strong> et une
+            <strong> espèce de poissons</strong> dans la page
+            <strong> PARAMETRAGE</strong>⚠️
+          </p>
+        </div>
       )}
     </div>
   );

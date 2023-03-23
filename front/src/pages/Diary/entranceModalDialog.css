@@ -63,9 +63,15 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    flex-grow: 1;
 }
 
-p{
+.entrance_modDial_emptyList p{
+    padding-left: 1em;
+    font-size: 2em;
+    white-space: break-spaces;
+}
+
+.entrance_modDial_emptyList strong{
+    font-size: 1em;
     white-space: break-spaces;
 }
