@@ -62,29 +62,41 @@ export default function Diary() {
     getPools();
   }, []);
 
+  const displayDiary = fishes.length > 0 && pools.length > 0;
+
   return (
-    <div className="diary_container">
-      <div className="diary_but_container">
-        {colors.map((color, index) => (
-          <Button
-            key={index}
-            title={titles[index]}
-            color={color}
-            onClick={() => setAction(actions[index])}
-            width={"13%"}
-          >
-            <i className={icons[index]}></i>
-          </Button>
-        ))}
-      </div>
-      <EntranceModalDialog
-        open={action === actions[iEntrance]}
-        title={actions[iEntrance]}
-        onClose={() => setAction("")}
-        isCreation={true}
-        fishes={fishes}
-        pools={pools}
-      />
+    <div>
+      {displayDiary ? (
+        <div className="diary_container">
+          <div className="diary_but_container">
+            {colors.map((color, index) => (
+              <Button
+                key={index}
+                title={titles[index]}
+                color={color}
+                onClick={() => setAction(actions[index])}
+                width={"13%"}
+              >
+                <i className={icons[index]}></i>
+              </Button>
+            ))}
+          </div>
+          <EntranceModalDialog
+            open={action === actions[iEntrance]}
+            title={actions[iEntrance]}
+            onClose={() => setAction("")}
+            isCreation={true}
+            fishes={fishes}
+            pools={pools}
+          />
+        </div>
+      ) : (
+        <p className="entrance_modDial_emptyList">
+          ⚠️ Vous devez définir un <strong>bassin</strong> et une
+          <strong> espèce de poissons</strong> dans la page
+          <strong> PARAMETRAGE</strong>⚠️
+        </p>
+      )}
     </div>
   );
 }
