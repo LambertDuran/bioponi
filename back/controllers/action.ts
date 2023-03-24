@@ -14,9 +14,9 @@ export default function validateAction(action: any) {
     fishNumber: Joi.number().min(0).required(),
     lotName: Joi.string().required(),
     pool: poolSchema,
-    poolId: Joi.number().min(0).required(),
+    poolId: Joi.number().min(0),
     fish: fishSchema,
-    fishId: Joi.number().min(0).required(),
+    fishId: Joi.number().min(0),
     secondPool: poolSchema,
     secondPoolId: Joi.number().min(0),
   });
