@@ -2,11 +2,13 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 model Pool {
-  id        Int      @id @default(autoincrement())
-  number    Int      @unique
-  volume    Float
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               Int      @id @default(autoincrement())
+  number           Int      @unique
+  volume           Float
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  action           Action[]
+  actionSecondPool Action[] @relation("ActionSecondPool")
 }
 
 model Food {
@@ -33,6 +35,25 @@ model Fish {
   updatedAt DateTime @updatedAt
   food      Food     @relation(fields: [foodId], references: [id], onDelete: Cascade)
   foodId    Int
+  action    Action[]
+}
+
+model Action {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  type          String
+  date          DateTime
+  totalWeight   Float?
+  averageWeight Float?
+  fishNumber    Int
+  lotName       String
+  pool          Pool     @relation(fields: [poolId], references: [id], onDelete: Cascade)
+  poolId        Int
+  fish          Fish     @relation(fields: [fishId], references: [id], onDelete: Cascade)
+  fishId        Int
+  secondPool    Pool?    @relation("ActionSecondPool", fields: [secondPoolId], references: [id], onDelete: Cascade)
+  secondPoolId  Int?
 }
 
 generator client {
