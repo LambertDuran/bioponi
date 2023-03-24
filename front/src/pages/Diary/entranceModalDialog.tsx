@@ -38,7 +38,6 @@ export default function EntranceModalDialog({
   } = useForm();
 
   const [date, setDate] = useState(new Date());
-  console.log("date", date);
 
   const displayError = (type: string) => {
     const jsxError = (
@@ -68,11 +67,11 @@ export default function EntranceModalDialog({
       lotName: data.lot_name,
       secondPool: null,
     };
-    console.log("newAction", newAction);
     if (isCreation) setActions([...actions, newAction]);
     else {
       // ENCORE A ECRIRE
     }
+    onClose();
   };
 
   const total_weight = watch("total_weight");

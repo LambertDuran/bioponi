@@ -6,6 +6,7 @@ import { getAllPool } from "../../services/pool";
 import IPool from "../../interfaces/pool";
 import IFish from "../../interfaces/fish";
 import IAction from "../../interfaces/action";
+import ActionsGrid from "./actionsGrid";
 import { orderBy } from "lodash";
 import "./diary.css";
 
@@ -66,6 +67,12 @@ export default function Diary() {
 
   const displayDiary = fishes.length > 0 && pools.length > 0;
 
+  const gridStyle = {
+    padding: "0 1em 2em 1em",
+    marginTop: "1em",
+    height: `${58 + (actions ? actions.length * 25 : 0)}px`,
+  };
+
   return (
     <div>
       {displayDiary ? (
@@ -93,7 +100,10 @@ export default function Diary() {
             actions={actions}
             setActions={setActions}
           />
-          <div className="entrance_grid">Grille d'actions</div>
+          <p className="diary_text">Historique :</p>
+          <div style={gridStyle}>
+            <ActionsGrid actions={actions} />
+          </div>
         </div>
       ) : (
         <div className="entrance_modDial_emptyList">
