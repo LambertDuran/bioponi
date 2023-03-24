@@ -11,7 +11,7 @@ import { orderBy } from "lodash";
 import "./diary.css";
 
 const iEntrance = 0;
-const iWeighing = 1;
+const iWeight = 1;
 const iSale = 2;
 const iTransfer = 3;
 const iExit = 4;
@@ -68,6 +68,7 @@ export default function Diary() {
   const displayDiary = fishes.length > 0 && pools.length > 0;
 
   const gridStyle = {
+    width: "97%",
     padding: "0 1em 2em 1em",
     marginTop: "1em",
     height: `${58 + (actions ? actions.length * 25 : 0)}px`,

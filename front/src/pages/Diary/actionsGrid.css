@@ -1,0 +1,23 @@
+.actionsGrid_type_entrance{
+    background-color: #fd7702;
+}
+
+.actionsGrid_type_weight{
+    background-color: #ff906a;
+}
+
+.actionsGrid_type_sale{
+    background-color: #f6bd41;
+}
+
+.actionsGrid_type_transfer{
+    background-color: #b9c6d7;
+}
+
+.actionsGrid_type_exit{
+    background-color: #7991bd;
+}
+
+.actionsGrid_type_death{
+    background-color: #020d21;
+}
