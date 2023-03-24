@@ -42,6 +42,7 @@ export default function EntranceModalDialog({
       </>
     );
     if (type === "total_weight") return errors.total_weight && jsxError;
+    else if (type === "lot_name") return errors.lot_name && jsxError;
     else if (type === "fish_number") return errors.fish_number && jsxError;
     else if (type === "average_weight")
       return errors.average_weight && jsxError;
@@ -88,6 +89,13 @@ export default function EntranceModalDialog({
                 <option key={fish.id}>{fish.name}</option>
               ))}
             </select>
+            <div>Nom du lot :</div>
+            <input
+              className="entrance_modial_select"
+              defaultValue={"Lot 1"}
+              {...register("lot_name", { required: true })}
+            />
+            {displayError("lot_name")}
             <div>Masse totale(kg) :</div>
             <input
               className="entrance_modial_select"
