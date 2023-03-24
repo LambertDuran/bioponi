@@ -7,7 +7,13 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
-  const action = await prisma.action.findMany();
+  const action = await prisma.action.findMany({
+    include: {
+      fish: true,
+      pool: true,
+      secondPool: true,
+    },
+  });
   if (action.length < 1) return res.status(404).send("Aucune action trouvée!");
   res.json(action);
 });

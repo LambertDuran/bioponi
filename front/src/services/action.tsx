@@ -2,7 +2,7 @@ import IAction from "../interfaces/action";
 import http from "./httpServices";
 import apiUrls from "../config.json";
 
-async function getActions() {
+async function getAllActions() {
   const allActions = await http.get(apiUrls.actionEndpoint);
   return allActions;
 }
@@ -35,4 +35,4 @@ async function putAction(action: IAction) {
     });
 }
 
-export { getActions, postAction, putAction };
+export { getAllActions, postAction, putAction };

@@ -3,6 +3,7 @@ import Button from "../../components/button";
 import EntranceModalDialog from "./entranceModalDialog";
 import { getAllFish } from "../../services/fish";
 import { getAllPool } from "../../services/pool";
+import { getAllActions } from "../../services/action";
 import IPool from "../../interfaces/pool";
 import IFish from "../../interfaces/fish";
 import IAction from "../../interfaces/action";
@@ -60,7 +61,21 @@ export default function Diary() {
       if (allPool && allPool.data)
         setPools(orderBy(allPool.data, ["number"], ["asc"]));
     }
-
+    async function getActions() {
+      const allActions = await getAllActions();
+      if (allActions && allActions.data) {
+        let newActions = allActions.data.map((a: any) => {
+          return {
+            ...a,
+            date: new Date(a.date),
+            createdAt: new Date(a.createdAt),
+            updatedAt: new Date(a.updatedAt),
+          };
+        });
+        setActions(orderBy(newActions, ["date"], ["asc"]));
+      }
+    }
+    getActions();
     getFishes();
     getPools();
   }, []);

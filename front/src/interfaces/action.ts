@@ -16,4 +16,5 @@ export default interface IAction {
   fishNumber?: number;
   lotName: string;
   secondPool?: IPool;
+  secondPoolId?: number;
 }
