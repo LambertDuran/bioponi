@@ -1,4 +1,4 @@
-import validateFood from "../controllers/food";
+const { validateFood } = require("../controllers/food");
 import { Request, Response, NextFunction } from "express";
 const express = require("express");
 const router = express.Router();

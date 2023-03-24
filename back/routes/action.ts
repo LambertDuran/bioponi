@@ -33,14 +33,6 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   console.log("error", error);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const existingAction = await prisma.action.findFirst({
-    where: {
-      type: req.body.type,
-      date: req.body.date,
-    },
-  });
-  if (existingAction) return res.status(400).send("Action déjà existante !");
-
   let action;
   if (req.body.type === "transfert") {
     if (!req.body.secondPool)

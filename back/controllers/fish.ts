@@ -1,4 +1,5 @@
 import Joi from "joi";
+const { foodSchema } = require("./food");
 
 const fishSchema = Joi.object({
   id: Joi.number().min(0),
@@ -10,7 +11,7 @@ const fishSchema = Joi.object({
     .items(Joi.number().min(0).max(5000).required())
     .required(),
   foodId: Joi.number().min(0),
-  food: Joi.object().required(),
+  food: foodSchema,
 });
 
 const validateFish = (fish: any) => {
