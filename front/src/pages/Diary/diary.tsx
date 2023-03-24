@@ -5,6 +5,7 @@ import { getAllFish } from "../../services/fish";
 import { getAllPool } from "../../services/pool";
 import IPool from "../../interfaces/pool";
 import IFish from "../../interfaces/fish";
+import IAction from "../../interfaces/action";
 import { orderBy } from "lodash";
 import "./diary.css";
 
@@ -15,7 +16,7 @@ const iTransfer = 3;
 const iExit = 4;
 const iMortality = 5;
 
-const actions = [
+const actionList = [
   "Entrée du lot",
   "Pesée",
   "Vente",
@@ -44,6 +45,7 @@ const icons = [
 
 export default function Diary() {
   const [action, setAction] = useState("");
+  const [actions, setActions] = useState<IAction[]>([]);
   const [fishes, setFishes] = useState<IFish[]>([]);
   const [pools, setPools] = useState<IPool[]>([]);
 
@@ -74,7 +76,7 @@ export default function Diary() {
                 key={index}
                 title={titles[index]}
                 color={color}
-                onClick={() => setAction(actions[index])}
+                onClick={() => setAction(actionList[index])}
                 width={"13%"}
               >
                 <i className={icons[index]}></i>
@@ -82,13 +84,16 @@ export default function Diary() {
             ))}
           </div>
           <EntranceModalDialog
-            open={action === actions[iEntrance]}
-            title={actions[iEntrance]}
+            open={action === actionList[iEntrance]}
+            title={actionList[iEntrance]}
             onClose={() => setAction("")}
             isCreation={true}
             fishes={fishes}
             pools={pools}
+            actions={actions}
+            setActions={setActions}
           />
+          <div className="entrance_grid">Grille d'actions</div>
         </div>
       ) : (
         <div className="entrance_modDial_emptyList">

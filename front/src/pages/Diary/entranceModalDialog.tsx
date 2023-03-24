@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import IPool from "../../interfaces/pool";
 import IFish from "../../interfaces/fish";
+import IAction from "../../interfaces/action";
 import Calendar from "../../components/calendar";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -13,6 +14,8 @@ interface IModal {
   onClose: () => void;
   fishes: IFish[];
   pools: IPool[];
+  actions: IAction[];
+  setActions: (actions: IAction[]) => void;
   isCreation: boolean;
 }
 
@@ -22,6 +25,8 @@ export default function EntranceModalDialog({
   onClose,
   fishes,
   pools,
+  actions,
+  setActions,
   isCreation,
 }: IModal) {
   const {
@@ -31,6 +36,9 @@ export default function EntranceModalDialog({
     setValue,
     formState: { errors },
   } = useForm();
+
+  const [date, setDate] = useState(new Date());
+  console.log("date", date);
 
   const displayError = (type: string) => {
     const jsxError = (
@@ -48,7 +56,24 @@ export default function EntranceModalDialog({
       return errors.average_weight && jsxError;
   };
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: any) => {
+    const newAction: IAction = {
+      type: title,
+      date: date,
+      pool: pools.find((p) => p.number === parseInt(data.pool_number))!,
+      fish: fishes.find((f) => f.name === data.fish_name)!,
+      totalWeight: parseFloat(data.total_weight),
+      averageWeight: parseFloat(data.average_weight),
+      fishNumber: parseInt(data.fish_number),
+      lotName: data.lot_name,
+      secondPool: null,
+    };
+    console.log("newAction", newAction);
+    if (isCreation) setActions([...actions, newAction]);
+    else {
+      // ENCORE A ECRIRE
+    }
+  };
 
   const total_weight = watch("total_weight");
   const fish_number = watch("fish_number");
@@ -68,7 +93,7 @@ export default function EntranceModalDialog({
         onSubmit={handleSubmit(onSubmit)}
         className="entrance_modDial_container"
       >
-        <Calendar />
+        <Calendar date={date} setDate={setDate} />
         <div className="entrance_modDial_form">
           <div className="entrance_modDial_grid">
             <div>N° de bassin :</div>
@@ -83,7 +108,7 @@ export default function EntranceModalDialog({
             <div>Espèce de poissons :</div>
             <select
               className="entrance_modial_select"
-              {...register("fish_species", { required: true })}
+              {...register("fish_name", { required: true })}
             >
               {fishes.map((fish) => (
                 <option key={fish.id}>{fish.name}</option>
