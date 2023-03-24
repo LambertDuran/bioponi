@@ -2,6 +2,7 @@ import IPool from "./pool";
 import IFish from "./fish";
 
 export default interface IAction {
+  id: number;
   type: string;
   date: Date;
   pool: IPool;
