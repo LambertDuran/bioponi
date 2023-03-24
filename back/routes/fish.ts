@@ -1,4 +1,4 @@
-import validateFish from "../controllers/fish";
+const { validateFish } = require("../controllers/fish");
 import { Request, Response } from "express";
 const express = require("express");
 const router = express.Router();

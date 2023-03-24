@@ -1,22 +1,20 @@
-const Joi = require("joi");
+import Joi from "joi";
 
-export default function validateFish(fish: any) {
-  const schema = Joi.object({
-    id: Joi.number().min(0),
-    createdAt: Joi.date(),
-    updatedAt: Joi.date(),
-    name: Joi.string().min(3).max(50).required(),
-    weeks: Joi.array()
-      .items(Joi.number().min(0).max(200).required())
-      .required(),
-    weights: Joi.array()
-      .items(Joi.number().min(0).max(5000).required())
-      .required(),
-    foodId: Joi.number().min(0),
-    food: Joi.object().required(),
-  });
+const fishSchema = Joi.object({
+  id: Joi.number().min(0),
+  createdAt: Joi.date(),
+  updatedAt: Joi.date(),
+  name: Joi.string().min(3).max(50).required(),
+  weeks: Joi.array().items(Joi.number().min(0).max(200).required()).required(),
+  weights: Joi.array()
+    .items(Joi.number().min(0).max(5000).required())
+    .required(),
+  foodId: Joi.number().min(0),
+  food: Joi.object().required(),
+});
 
-  const err = schema.validate(fish);
+const validateFish = (fish: any) => {
+  const err = fishSchema.validate(fish);
   if (err.error) return err;
 
   for (var i = 0; i < fish.weeks.length; i++) {
@@ -47,4 +45,9 @@ export default function validateFish(fish: any) {
     };
 
   return { error: null };
-}
+};
+
+module.exports = {
+  validateFish,
+  fishSchema,
+};

@@ -1,4 +1,4 @@
-import validatePool from "../controllers/pool";
+const { validatePool } = require("../controllers/pool");
 import { Request, Response, NextFunction } from "express";
 const express = require("express");
 const router = express.Router();

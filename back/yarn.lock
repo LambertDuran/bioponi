@@ -1376,6 +1376,13 @@
     "expect" "^29.0.0"
     "pretty-format" "^29.0.0"
 
+"@types/joi@^17.2.3":
+  "integrity" "sha512-dGjs/lhrWOa+eO0HwgxCSnDm5eMGCsXuvLglMghJq32F6q5LyyNuXb41DHzrg501CKNOSSAHmfB7FDGeUnDmzw=="
+  "resolved" "https://registry.npmjs.org/@types/joi/-/joi-17.2.3.tgz"
+  "version" "17.2.3"
+  dependencies:
+    "joi" "*"
+
 "@types/mime@*":
   "integrity" "sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA=="
   "resolved" "https://registry.npmjs.org/@types/mime/-/mime-3.0.1.tgz"
@@ -2772,7 +2779,7 @@
     "import-local" "^3.0.2"
     "jest-cli" "^29.5.0"
 
-"joi@^17.8.3":
+"joi@*", "joi@^17.8.3":
   "integrity" "sha512-q5Fn6Tj/jR8PfrLrx4fpGH4v9qM6o+vDUfD4/3vxxyg34OmKcNqYZ1qn2mpLza96S8tL0p0rIw2gOZX+/cTg9w=="
   "resolved" "https://registry.npmjs.org/joi/-/joi-17.8.3.tgz"
   "version" "17.8.3"
