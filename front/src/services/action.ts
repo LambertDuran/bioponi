@@ -13,7 +13,15 @@ async function postAction(action: IAction) {
   return http
     .post(apiUrls.actionEndpoint, action)
     .then((res) => {
-      return { action: res.data, error: error };
+      return {
+        action: {
+          ...res.data,
+          date: new Date(res.data.date),
+          createdAt: new Date(res.data.createdAt),
+          updatedAt: new Date(res.data.updatedAt),
+        },
+        error: error,
+      };
     })
     .catch((err) => {
       error = err.response.data;
@@ -27,7 +35,15 @@ async function putAction(action: IAction) {
   return http
     .put(apiUrls.actionEndpoint + `/${action.id}`, action)
     .then((res) => {
-      return { action: res.data, error: error };
+      return {
+        action: {
+          ...res.data,
+          date: new Date(res.data.date),
+          createdAt: new Date(res.data.createdAt),
+          updatedAt: new Date(res.data.updatedAt),
+        },
+        error: error,
+      };
     })
     .catch((err) => {
       error = err.response.data;

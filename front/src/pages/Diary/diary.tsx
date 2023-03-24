@@ -64,15 +64,7 @@ export default function Diary() {
     async function getActions() {
       const allActions = await getAllActions();
       if (allActions && allActions.data) {
-        let newActions = allActions.data.map((a: any) => {
-          return {
-            ...a,
-            date: new Date(a.date),
-            createdAt: new Date(a.createdAt),
-            updatedAt: new Date(a.updatedAt),
-          };
-        });
-        setActions(orderBy(newActions, ["date"], ["asc"]));
+        setActions(orderBy(allActions.data, ["date"], ["asc"]));
       }
     }
     getActions();
