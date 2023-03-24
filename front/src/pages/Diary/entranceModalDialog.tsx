@@ -4,8 +4,10 @@ import IPool from "../../interfaces/pool";
 import IFish from "../../interfaces/fish";
 import IAction from "../../interfaces/action";
 import Calendar from "../../components/calendar";
+import { postAction, putAction } from "../../services/action";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
+import { toast } from "react-toastify";
 import "./entranceModalDialog.css";
 
 interface IModal {
@@ -55,24 +57,32 @@ export default function EntranceModalDialog({
       return errors.average_weight && jsxError;
   };
 
-  const onSubmit = (data: any) => {
-    const newAction: IAction = {
-      type: title,
-      date: date,
-      pool: pools.find((p) => p.number === parseInt(data.pool_number))!,
-      fish: fishes.find((f) => f.name === data.fish_name)!,
-      totalWeight: parseFloat(data.total_weight),
-      averageWeight: parseFloat(data.average_weight),
-      fishNumber: parseInt(data.fish_number),
-      lotName: data.lot_name,
-      secondPool: null,
-    };
-    if (isCreation) setActions([...actions, newAction]);
-    else {
+  async function onSubmit(data: any) {
+    if (isCreation) {
+      const newAction: IAction = {
+        id: 0,
+        type: title,
+        date: date,
+        pool: pools.find((p) => p.number === parseInt(data.pool_number))!,
+        fish: fishes.find((f) => f.name === data.fish_name)!,
+        totalWeight: parseFloat(data.total_weight),
+        averageWeight: parseFloat(data.average_weight),
+        fishNumber: parseInt(data.fish_number),
+        lotName: data.lot_name,
+      };
+
+      const dataFromServer: { action: IAction | null; error: string } =
+        await postAction(newAction);
+
+      if (dataFromServer.action) {
+        toast.success("Action enregistrée");
+        setActions([...actions, dataFromServer.action]);
+      } else if (dataFromServer.error) toast.error(dataFromServer.error);
+    } else {
       // ENCORE A ECRIRE
     }
     onClose();
-  };
+  }
 
   const total_weight = watch("total_weight");
   const fish_number = watch("fish_number");
