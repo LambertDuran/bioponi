@@ -2,8 +2,6 @@ import Joi from "joi";
 const { poolSchema } = require("./pool");
 const { fishSchema } = require("./fish");
 
-console.log("poolSchema", poolSchema);
-
 export default function validateAction(action: any) {
   const schema = Joi.object({
     id: Joi.number().min(0),
