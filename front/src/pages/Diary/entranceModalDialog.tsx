@@ -16,6 +16,7 @@ interface IModal {
   onClose: () => void;
   fishes: IFish[];
   pools: IPool[];
+  actionType: string;
   actions: IAction[];
   setActions: (actions: IAction[]) => void;
   isCreation: boolean;
@@ -27,6 +28,7 @@ export default function EntranceModalDialog({
   onClose,
   fishes,
   pools,
+  actionType,
   actions,
   setActions,
   isCreation,

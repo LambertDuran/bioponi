@@ -46,7 +46,8 @@ const icons = [
 ];
 
 export default function Diary() {
-  const [action, setAction] = useState("");
+  const [open, setOpen] = useState(false);
+  const [actionType, setActionType] = useState("");
   const [actions, setActions] = useState<IAction[]>([]);
   const [fishes, setFishes] = useState<IFish[]>([]);
   const [pools, setPools] = useState<IPool[]>([]);
@@ -91,7 +92,10 @@ export default function Diary() {
                 key={index}
                 title={titles[index]}
                 color={color}
-                onClick={() => setAction(actionList[index])}
+                onClick={() => {
+                  setActionType(actionList[index]);
+                  setOpen(true);
+                }}
                 width={"13%"}
               >
                 <i className={icons[index]}></i>
@@ -99,13 +103,17 @@ export default function Diary() {
             ))}
           </div>
           <EntranceModalDialog
-            open={action === actionList[iEntrance]}
+            open={open}
             title={actionList[iEntrance]}
-            onClose={() => setAction("")}
+            onClose={() => {
+              setActionType("");
+              setOpen(false);
+            }}
             isCreation={true}
             fishes={fishes}
             pools={pools}
             actions={actions}
+            actionType={actionType}
             setActions={setActions}
           />
           <p className="diary_text">Historique :</p>
