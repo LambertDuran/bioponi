@@ -47,11 +47,11 @@ model Action {
   totalWeight   Float?
   averageWeight Float?
   fishNumber    Int
-  lotName       String
+  lotName       String?
   pool          Pool     @relation(fields: [poolId], references: [id], onDelete: Cascade)
   poolId        Int
-  fish          Fish     @relation(fields: [fishId], references: [id], onDelete: Cascade)
-  fishId        Int
+  fish          Fish?    @relation(fields: [fishId], references: [id], onDelete: Cascade)
+  fishId        Int?
   secondPool    Pool?    @relation("ActionSecondPool", fields: [secondPoolId], references: [id], onDelete: Cascade)
   secondPoolId  Int?
 }

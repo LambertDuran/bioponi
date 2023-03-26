@@ -34,64 +34,95 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   let action;
-  if (req.body.type === "transfert") {
-    if (!req.body.secondPool)
-      return res.status(400).send("Donnée manquante: second bassin !");
-    action = await prisma.action.create({
-      data: {
-        type: req.body.type,
-        date: req.body.date,
-        totalWeight: req.body.totalWeight,
-        averageWeight: req.body.averageWeight,
-        fishNumber: req.body.fishNumber,
-        lotName: req.body.lotName,
-        pool: {
-          connect: {
-            id: req.body.pool.id,
+
+  switch (req.body.type) {
+    case "Entrée du lot": {
+      action = await prisma.action.create({
+        data: {
+          type: req.body.type,
+          date: req.body.date,
+          totalWeight: req.body.totalWeight,
+          averageWeight: req.body.averageWeight,
+          fishNumber: req.body.fishNumber,
+          lotName: req.body.lotName,
+          pool: {
+            connect: {
+              id: req.body.pool.id,
+            },
+          },
+          fish: {
+            connect: {
+              id: req.body.fish.id,
+            },
           },
         },
-        fish: {
-          connect: {
-            id: req.body.fish.id,
+        include: {
+          pool: true,
+          fish: true,
+        },
+      });
+      break;
+    }
+
+    case "Pesée":
+    case "Vente":
+    case "Sortie définitve":
+    case "Mortalité": {
+      action = await prisma.action.create({
+        data: {
+          type: req.body.type,
+          date: req.body.date,
+          totalWeight: req.body.totalWeight,
+          averageWeight: req.body.averageWeight,
+          fishNumber: req.body.fishNumber,
+          pool: {
+            connect: {
+              id: req.body.pool.id,
+            },
           },
         },
-        secondPool: {
-          connect: {
-            id: req.body.secondPool.id,
+        include: {
+          pool: true,
+        },
+      });
+      break;
+    }
+
+    case "Transfert": {
+      if (!req.body.secondPool)
+        return res.status(400).send("Donnée manquante: second bassin !");
+      action = await prisma.action.create({
+        data: {
+          type: req.body.type,
+          date: req.body.date,
+          totalWeight: req.body.totalWeight,
+          averageWeight: req.body.averageWeight,
+          fishNumber: req.body.fishNumber,
+          lotName: req.body.lotName,
+          pool: {
+            connect: {
+              id: req.body.pool.id,
+            },
+          },
+          fish: {
+            connect: {
+              id: req.body.fish.id,
+            },
+          },
+          secondPool: {
+            connect: {
+              id: req.body.secondPool.id,
+            },
           },
         },
-      },
-      include: {
-        pool: true,
-        fish: true,
-        secondPool: true,
-      },
-    });
-  } else {
-    action = await prisma.action.create({
-      data: {
-        type: req.body.type,
-        date: req.body.date,
-        totalWeight: req.body.totalWeight,
-        averageWeight: req.body.averageWeight,
-        fishNumber: req.body.fishNumber,
-        lotName: req.body.lotName,
-        pool: {
-          connect: {
-            id: req.body.pool.id,
-          },
+        include: {
+          pool: true,
+          fish: true,
+          secondPool: true,
         },
-        fish: {
-          connect: {
-            id: req.body.fish.id,
-          },
-        },
-      },
-      include: {
-        pool: true,
-        fish: true,
-      },
-    });
+      });
+      break;
+    }
   }
 
   if (!action) return res.status(400).send("Erreur de création prisma!");

@@ -12,7 +12,7 @@ export default function validateAction(action: any) {
     totalWeight: Joi.number().min(0),
     averageWeight: Joi.number().min(0),
     fishNumber: Joi.number().min(0).required(),
-    lotName: Joi.string().required(),
+    lotName: Joi.string(),
     pool: poolSchema,
     poolId: Joi.number().min(0),
     fish: fishSchema,
