@@ -9,12 +9,12 @@ export default interface IAction {
   date: Date;
   pool: IPool;
   poolId?: number;
-  fish: IFish;
+  fish?: IFish;
   fishId?: number;
   totalWeight?: number;
   averageWeight?: number;
   fishNumber?: number;
-  lotName: string;
+  lotName?: string;
   secondPool?: IPool;
   secondPoolId?: number;
 }

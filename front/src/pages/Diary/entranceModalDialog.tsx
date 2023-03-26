@@ -86,17 +86,44 @@ export default function EntranceModalDialog({
 
   async function onSubmit(data: any) {
     if (isCreation) {
-      const newAction: IAction = {
+      let newAction: IAction = {
         id: 0,
         type: actionType,
         date: date,
         pool: pools.find((p) => p.number === parseInt(data.pool_number))!,
-        fish: fishes.find((f) => f.name === data.fish_name)!,
-        totalWeight: parseFloat(data.total_weight),
-        averageWeight: parseFloat(data.average_weight),
-        fishNumber: parseInt(data.fish_number),
-        lotName: data.lot_name,
       };
+
+      switch (actionType) {
+        case actionList[0]:
+          newAction = {
+            ...newAction,
+            fish: fishes.find((f) => f.name === data.fish_name)!,
+            totalWeight: parseFloat(data.total_weight),
+            averageWeight: parseFloat(data.average_weight),
+            fishNumber: parseInt(data.fish_number),
+            lotName: data.lot_name,
+          };
+          break;
+        case actionList[1]:
+        case actionList[2]:
+        case actionList[4]:
+        case actionList[5]:
+          newAction.totalWeight = parseFloat(data.total_weight);
+          newAction.averageWeight = parseFloat(data.average_weight);
+          newAction.fishNumber = parseInt(data.fish_number);
+          break;
+        case actionList[3]:
+          newAction = {
+            ...newAction,
+            fish: fishes.find((f) => f.name === data.fish_name)!,
+            totalWeight: parseFloat(data.total_weight),
+            averageWeight: parseFloat(data.average_weight),
+            fishNumber: parseInt(data.fish_number),
+            lotName: data.lot_name,
+            secondPool: data.new_pool,
+          };
+          break;
+      }
 
       const dataFromServer: { action: IAction | null; error: string } =
         await postAction(newAction);

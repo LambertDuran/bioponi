@@ -23,11 +23,11 @@ export default function ActionsGgrid({ actions }: IActionGrid) {
       action: a.type,
       date: moment(a.date).format("DD/MM/YYYY"),
       pool: a.pool.number,
-      fish: a.fish.name,
+      fish: a.fish?.name ?? "",
       totalWeight: a.totalWeight,
       averageWeight: a.averageWeight,
       fishNumber: a.fishNumber,
-      lotName: a.lotName,
+      lotName: a.lotName ?? "",
       secondPool: a.secondPool ?? "",
     };
   });
