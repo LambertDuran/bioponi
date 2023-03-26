@@ -10,7 +10,7 @@ import { postAction, putAction } from "../../services/action";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import { toast } from "react-toastify";
-import "./entranceModalDialog.css";
+import "./actionModalDialog.css";
 
 const poolNumber = "N° de bassin";
 const fishSpecies = "Espèce de poissons";
@@ -48,7 +48,7 @@ interface IModal {
   isCreation: boolean;
 }
 
-export default function EntranceModalDialog({
+export default function ActionModalDialog({
   open,
   onClose,
   fishes,
@@ -72,9 +72,7 @@ export default function EntranceModalDialog({
     const jsxError = (
       <>
         <div></div>
-        <div className="entrance_modDial_error">
-          Format ou valeur incorrecte
-        </div>
+        <div className="action_modDial_error">Format ou valeur incorrecte</div>
       </>
     );
     if (type === "total_weight") return errors.total_weight && jsxError;
@@ -157,23 +155,23 @@ export default function EntranceModalDialog({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md">
       <DialogTitle
-        className="entrance_modDial_title"
+        className="action_modDial_title"
         style={{ "--color": color } as React.CSSProperties}
       >
         {actionType}
       </DialogTitle>
       <form
-        id="entrance_form"
+        id="action_form"
         onSubmit={handleSubmit(onSubmit)}
-        className="entrance_modDial_container"
+        className="action_modDial_container"
       >
         <Calendar date={date} setDate={setDate} />
-        <div className="entrance_modDial_form">
+        <div className="action_modDial_form">
           <div>
-            <div className="entrance_modDial_grid">
+            <div className="action_modDial_grid">
               <div>{poolNumber} :</div>
               <select
-                className="entrance_modial_select"
+                className="action_modial_select"
                 {...register("pool_number", { required: true })}
                 style={{ "--color": color } as React.CSSProperties}
               >
@@ -183,10 +181,10 @@ export default function EntranceModalDialog({
               </select>
             </div>
             {propsToDisplay.includes(fishSpecies) && (
-              <div className="entrance_modDial_grid">
+              <div className="action_modDial_grid">
                 <div>{fishSpecies} :</div>
                 <select
-                  className="entrance_modial_select"
+                  className="action_modial_select"
                   style={{ "--color": color } as React.CSSProperties}
                   {...register("fish_name", { required: true })}
                 >
@@ -197,10 +195,10 @@ export default function EntranceModalDialog({
               </div>
             )}
             {propsToDisplay.includes(lotName) && (
-              <div className="entrance_modDial_grid">
+              <div className="action_modDial_grid">
                 <div>{lotName} :</div>
                 <input
-                  className="entrance_modial_select"
+                  className="action_modial_select"
                   defaultValue={"Lot 1"}
                   style={{ "--color": color } as React.CSSProperties}
                   {...register("lot_name", { required: true })}
@@ -209,10 +207,10 @@ export default function EntranceModalDialog({
               </div>
             )}
             {propsToDisplay.includes(totalWeight) && (
-              <div className="entrance_modDial_grid">
+              <div className="action_modDial_grid">
                 <div>{totalWeight} :</div>
                 <input
-                  className="entrance_modial_select"
+                  className="action_modial_select"
                   placeholder="Masse totale(kg)"
                   style={{ "--color": color } as React.CSSProperties}
                   {...register("total_weight", {
@@ -226,10 +224,10 @@ export default function EntranceModalDialog({
               </div>
             )}
             {propsToDisplay.includes(fishNumber) && (
-              <div className="entrance_modDial_grid">
+              <div className="action_modDial_grid">
                 <div>{fishNumber} :</div>
                 <input
-                  className="entrance_modial_select"
+                  className="action_modial_select"
                   placeholder="nb poissons"
                   style={{ "--color": color } as React.CSSProperties}
                   {...register("fish_number", {
@@ -243,10 +241,10 @@ export default function EntranceModalDialog({
               </div>
             )}
             {propsToDisplay.includes(averageWeight) && (
-              <div className="entrance_modDial_grid">
+              <div className="action_modDial_grid">
                 <div>{averageWeight} :</div>
                 <input
-                  className="entrance_modial_select"
+                  className="action_modial_select"
                   placeholder="poids moyen"
                   style={{ "--color": color } as React.CSSProperties}
                   {...register("average_weight", {
@@ -259,10 +257,10 @@ export default function EntranceModalDialog({
               </div>
             )}
             {propsToDisplay.includes(newPool) && (
-              <div className="entrance_modDial_grid">
+              <div className="action_modDial_grid">
                 <div>{newPool} :</div>
                 <select
-                  className="entrance_modial_select"
+                  className="action_modial_select"
                   style={{ "--color": color } as React.CSSProperties}
                   {...register("new_pool", { required: true })}
                 >
@@ -274,7 +272,7 @@ export default function EntranceModalDialog({
             )}
           </div>
           <input
-            className="entrance_modDial_button"
+            className="action_modDial_button"
             type="submit"
             value="Valider"
             style={{ "--color": color } as React.CSSProperties}

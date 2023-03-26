@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Button, { litteralColors } from "../../components/button";
-import EntranceModalDialog from "./entranceModalDialog";
+import ActionModalDialog from "./actionModalDialog";
 import { getAllFish } from "../../services/fish";
 import { getAllPool } from "../../services/pool";
 import { getAllActions } from "../../services/action";
@@ -85,7 +85,7 @@ export default function Diary() {
               </Button>
             ))}
           </div>
-          <EntranceModalDialog
+          <ActionModalDialog
             open={open}
             onClose={() => {
               setActionType("");
