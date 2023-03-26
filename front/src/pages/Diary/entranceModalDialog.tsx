@@ -4,15 +4,40 @@ import IPool from "../../interfaces/pool";
 import IFish from "../../interfaces/fish";
 import IAction from "../../interfaces/action";
 import Calendar from "../../components/calendar";
+import { actionList } from "./diary";
 import { postAction, putAction } from "../../services/action";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import { toast } from "react-toastify";
 import "./entranceModalDialog.css";
 
+const poolNumber = "N° de bassin";
+const fishSpecies = "Espèce de poissons";
+const lotName = "Nom du lot";
+const totalWeight = "Masse totale(kg)";
+const fishNumber = "Nombre de poissons";
+const averageWeight = "Poids moyen(g)";
+const newPool = "Nouveau bassin";
+
+const propsByActionType = [
+  [poolNumber, fishSpecies, lotName, totalWeight, fishNumber, averageWeight],
+  [poolNumber, totalWeight, fishNumber, averageWeight],
+  [poolNumber, totalWeight, fishNumber, averageWeight],
+  [
+    poolNumber,
+    fishSpecies,
+    lotName,
+    totalWeight,
+    fishNumber,
+    averageWeight,
+    newPool,
+  ],
+  [poolNumber, totalWeight, fishNumber, averageWeight],
+  [poolNumber, totalWeight, fishNumber, averageWeight],
+];
+
 interface IModal {
   open: boolean;
-  title: string;
   onClose: () => void;
   fishes: IFish[];
   pools: IPool[];
@@ -24,7 +49,6 @@ interface IModal {
 
 export default function EntranceModalDialog({
   open,
-  title,
   onClose,
   fishes,
   pools,
@@ -63,7 +87,7 @@ export default function EntranceModalDialog({
     if (isCreation) {
       const newAction: IAction = {
         id: 0,
-        type: title,
+        type: actionType,
         date: date,
         pool: pools.find((p) => p.number === parseInt(data.pool_number))!,
         fish: fishes.find((f) => f.name === data.fish_name)!,
@@ -96,9 +120,13 @@ export default function EntranceModalDialog({
       );
   }, [total_weight, fish_number]);
 
+  let propsToDisplay: string[] = [];
+  const index = actionList.indexOf(actionType);
+  if (index >= 0) propsToDisplay = propsByActionType[index];
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md">
-      <DialogTitle className="entrance_modDial_title">{title}</DialogTitle>
+      <DialogTitle className="entrance_modDial_title">{actionType}</DialogTitle>
       <form
         id="entrance_form"
         onSubmit={handleSubmit(onSubmit)}
@@ -106,68 +134,90 @@ export default function EntranceModalDialog({
       >
         <Calendar date={date} setDate={setDate} />
         <div className="entrance_modDial_form">
-          <div className="entrance_modDial_grid">
-            <div>N° de bassin :</div>
-            <select
-              className="entrance_modial_select"
-              {...register("pool_number", { required: true })}
-            >
-              {pools.map((pool) => (
-                <option key={pool.id}>{pool.number}</option>
-              ))}
-            </select>
-            <div>Espèce de poissons :</div>
-            <select
-              className="entrance_modial_select"
-              {...register("fish_name", { required: true })}
-            >
-              {fishes.map((fish) => (
-                <option key={fish.id}>{fish.name}</option>
-              ))}
-            </select>
-            <div>Nom du lot :</div>
-            <input
-              className="entrance_modial_select"
-              defaultValue={"Lot 1"}
-              {...register("lot_name", { required: true })}
-            />
-            {displayError("lot_name")}
-            <div>Masse totale(kg) :</div>
-            <input
-              className="entrance_modial_select"
-              placeholder="Masse totale(kg)"
-              {...register("total_weight", {
-                required: true,
-                min: 0,
-                max: 10000,
-                pattern: /^[0-9]+$/,
-              })}
-            />
-            {displayError("total_weight")}
-            <div>Nombre de poissons :</div>
-            <input
-              className="entrance_modial_select"
-              placeholder="nb poissons"
-              {...register("fish_number", {
-                required: true,
-                min: 0,
-                max: 10000,
-                pattern: /^[0-9]+$/,
-              })}
-            />
-            {displayError("fish_number")}
-            <div>Poids moyen(g) :</div>
-            <input
-              className="entrance_modial_select"
-              placeholder="poids moyen"
-              {...register("average_weight", {
-                required: true,
-                min: 0,
-                max: 10000,
-                pattern: /^[0-9]+$/,
-              })}
-            />
-            {displayError("average_weight")}
+          <div style={{ width: "400px" }}>
+            <div className="entrance_modDial_grid">
+              <div>{poolNumber} :</div>
+              <select
+                className="entrance_modial_select"
+                {...register("pool_number", { required: true })}
+              >
+                {pools.map((pool) => (
+                  <option key={pool.id}>{pool.number}</option>
+                ))}
+              </select>
+            </div>
+            {propsToDisplay.includes(fishSpecies) && (
+              <div className="entrance_modDial_grid">
+                <div>{fishSpecies} :</div>
+                <select
+                  className="entrance_modial_select"
+                  {...register("fish_name", { required: true })}
+                >
+                  {fishes.map((fish) => (
+                    <option key={fish.id}>{fish.name}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+            {propsToDisplay.includes(lotName) && (
+              <div className="entrance_modDial_grid">
+                <div>{lotName} :</div>
+                <input
+                  className="entrance_modial_select"
+                  defaultValue={"Lot 1"}
+                  {...register("lot_name", { required: true })}
+                />
+                {displayError("lot_name")}
+              </div>
+            )}
+            {propsToDisplay.includes(totalWeight) && (
+              <div className="entrance_modDial_grid">
+                <div>{totalWeight} :</div>
+                <input
+                  className="entrance_modial_select"
+                  placeholder="Masse totale(kg)"
+                  {...register("total_weight", {
+                    required: true,
+                    min: 0,
+                    max: 10000,
+                    pattern: /^[0-9]+$/,
+                  })}
+                />
+                {displayError("total_weight")}
+              </div>
+            )}
+            {propsToDisplay.includes(fishNumber) && (
+              <div className="entrance_modDial_grid">
+                <div>{fishNumber} :</div>
+                <input
+                  className="entrance_modial_select"
+                  placeholder="nb poissons"
+                  {...register("fish_number", {
+                    required: true,
+                    min: 0,
+                    max: 10000,
+                    pattern: /^[0-9]+$/,
+                  })}
+                />
+                {displayError("fish_number")}
+              </div>
+            )}
+            {propsToDisplay.includes(averageWeight) && (
+              <div className="entrance_modDial_grid">
+                <div>{averageWeight} :</div>
+                <input
+                  className="entrance_modial_select"
+                  placeholder="poids moyen"
+                  {...register("average_weight", {
+                    required: true,
+                    min: 0,
+                    max: 10000,
+                    pattern: /^[0-9]+$/,
+                  })}
+                />
+                {displayError("average_weight")}
+              </div>
+            )}
           </div>
           <input
             className="entrance_modDial_button"

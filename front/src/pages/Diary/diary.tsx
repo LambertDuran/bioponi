@@ -11,13 +11,6 @@ import ActionsGrid from "./actionsGrid";
 import { orderBy } from "lodash";
 import "./diary.css";
 
-const iEntrance = 0;
-const iWeight = 1;
-const iSale = 2;
-const iTransfer = 3;
-const iExit = 4;
-const iMortality = 5;
-
 const actionList = [
   "Entrée du lot",
   "Pesée",
@@ -104,7 +97,6 @@ export default function Diary() {
           </div>
           <EntranceModalDialog
             open={open}
-            title={actionList[iEntrance]}
             onClose={() => {
               setActionType("");
               setOpen(false);
@@ -133,3 +125,5 @@ export default function Diary() {
     </div>
   );
 }
+
+export { actionList };
