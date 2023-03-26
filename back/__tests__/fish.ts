@@ -1,6 +1,7 @@
 import * as http from "http";
 const request = require("supertest");
 import prisma from "../src/prismaClient";
+// import { Prisma } from "@prisma/client";
 let server: http.Server;
 
 const food = {
@@ -32,21 +33,27 @@ beforeEach(async () => {
       weeks: fish.weeks,
       weights: fish.weights,
       food: {
-        create: { ...food },
+        create: food,
       },
+    },
+    include: {
+      food: true,
     },
   });
 
   if (resFish) {
     fish.id = resFish.id;
+    fish.food = resFish.food;
     fish.foodId = resFish.foodId;
   }
 });
 
 afterEach(async () => {
-  const deleteFishes = prisma.fish.deleteMany();
-  const deleteFoods = prisma.food.deleteMany();
-  await prisma.$transaction([deleteFishes, deleteFoods]);
+  const deleteFishes = await prisma.fish.deleteMany();
+  const deleteFoods = await prisma.food.deleteMany();
+  // await prisma.$transaction([deleteFishes, deleteFoods], {
+  //   isolationLevel: Prisma.TransactionIsolationLevel.Serializable, // optional, default defined by database configuration
+  // });
   await prisma.$disconnect();
 });
 
