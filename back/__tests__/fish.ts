@@ -1,9 +1,7 @@
 import * as http from "http";
-import { PrismaClient } from "@prisma/client";
 const request = require("supertest");
-
+import prisma from "../src/prismaClient";
 let server: http.Server;
-const prisma = new PrismaClient();
 
 const food = {
   name: "Aliment Sole meunière",
@@ -39,7 +37,10 @@ beforeEach(async () => {
     },
   });
 
-  if (resFish) fish.id = resFish.id;
+  if (resFish) {
+    fish.id = resFish.id;
+    fish.foodId = resFish.foodId;
+  }
 });
 
 afterEach(async () => {
@@ -90,7 +91,7 @@ describe("POST /api/fish", () => {
   it("should return 200 if fish is valid", async () => {
     const res = await request(server)
       .post("/api/fish")
-      .send({ ...fish, name: "autre poisson" });
+      .send({ ...fish, name: "autre poisson", food: { ...food } });
     expect(res.status).toBe(200);
   });
 });

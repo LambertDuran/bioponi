@@ -1,9 +1,7 @@
 import * as http from "http";
-import { PrismaClient } from "@prisma/client";
 const request = require("supertest");
-
+import prisma from "../src/prismaClient";
 let server: http.Server;
-const prisma = new PrismaClient();
 
 const food = {
   id: 0,
