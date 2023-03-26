@@ -5,7 +5,7 @@
 }
 
 .entrance_modDial_title{
-    text-decoration: underline #fd7702;
+    text-decoration: underline var(--color);
 }
 
 .entrance_modDial_row{
@@ -30,7 +30,7 @@
 .entrance_modial_select{
     margin-left: 1em;
     border-radius: 10px;
-    border: 1px solid #fd7702;
+    border: 1px solid var(--color);
 }
 
 .entrance_modDial_button{
@@ -48,7 +48,7 @@
     align-items: center;
     cursor: pointer;
     border-radius: 8px;
-    background-color: #fd7702;
+    background-color: var(--color);
     width: 100px;
 }
 

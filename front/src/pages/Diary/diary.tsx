@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Button from "../../components/button";
+import Button, { litteralColors } from "../../components/button";
 import EntranceModalDialog from "./entranceModalDialog";
 import { getAllFish } from "../../services/fish";
 import { getAllPool } from "../../services/pool";
@@ -19,16 +19,6 @@ const actionList = [
   "Sortie définitive",
   "Mortalité",
 ];
-const colors = ["orange", "salmon", "yellow", "grey", "blue", "black"];
-const titles = [
-  "Entrée du lot",
-  "Pesée",
-  "Vente",
-  "Transfert",
-  "Sortie définitive",
-  "Mortalité",
-];
-
 const icons = [
   "fas fa-sign-in-alt",
   "fas fa-weight",
@@ -80,10 +70,10 @@ export default function Diary() {
       {displayDiary ? (
         <div className="diary_container">
           <div className="diary_but_container">
-            {colors.map((color, index) => (
+            {litteralColors.map((color, index) => (
               <Button
                 key={index}
-                title={titles[index]}
+                title={actionList[index]}
                 color={color}
                 onClick={() => {
                   setActionType(actionList[index]);

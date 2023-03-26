@@ -5,6 +5,7 @@ import IFish from "../../interfaces/fish";
 import IAction from "../../interfaces/action";
 import Calendar from "../../components/calendar";
 import { actionList } from "./diary";
+import { colors } from "../../components/button";
 import { postAction, putAction } from "../../services/action";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -124,9 +125,16 @@ export default function EntranceModalDialog({
   const index = actionList.indexOf(actionType);
   if (index >= 0) propsToDisplay = propsByActionType[index];
 
+  const color = index >= 0 ? colors[index] : "white";
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md">
-      <DialogTitle className="entrance_modDial_title">{actionType}</DialogTitle>
+      <DialogTitle
+        className="entrance_modDial_title"
+        style={{ "--color": color } as React.CSSProperties}
+      >
+        {actionType}
+      </DialogTitle>
       <form
         id="entrance_form"
         onSubmit={handleSubmit(onSubmit)}
@@ -134,12 +142,13 @@ export default function EntranceModalDialog({
       >
         <Calendar date={date} setDate={setDate} />
         <div className="entrance_modDial_form">
-          <div style={{ width: "400px" }}>
+          <div>
             <div className="entrance_modDial_grid">
               <div>{poolNumber} :</div>
               <select
                 className="entrance_modial_select"
                 {...register("pool_number", { required: true })}
+                style={{ "--color": color } as React.CSSProperties}
               >
                 {pools.map((pool) => (
                   <option key={pool.id}>{pool.number}</option>
@@ -151,6 +160,7 @@ export default function EntranceModalDialog({
                 <div>{fishSpecies} :</div>
                 <select
                   className="entrance_modial_select"
+                  style={{ "--color": color } as React.CSSProperties}
                   {...register("fish_name", { required: true })}
                 >
                   {fishes.map((fish) => (
@@ -165,6 +175,7 @@ export default function EntranceModalDialog({
                 <input
                   className="entrance_modial_select"
                   defaultValue={"Lot 1"}
+                  style={{ "--color": color } as React.CSSProperties}
                   {...register("lot_name", { required: true })}
                 />
                 {displayError("lot_name")}
@@ -176,6 +187,7 @@ export default function EntranceModalDialog({
                 <input
                   className="entrance_modial_select"
                   placeholder="Masse totale(kg)"
+                  style={{ "--color": color } as React.CSSProperties}
                   {...register("total_weight", {
                     required: true,
                     min: 0,
@@ -192,6 +204,7 @@ export default function EntranceModalDialog({
                 <input
                   className="entrance_modial_select"
                   placeholder="nb poissons"
+                  style={{ "--color": color } as React.CSSProperties}
                   {...register("fish_number", {
                     required: true,
                     min: 0,
@@ -208,14 +221,28 @@ export default function EntranceModalDialog({
                 <input
                   className="entrance_modial_select"
                   placeholder="poids moyen"
+                  style={{ "--color": color } as React.CSSProperties}
                   {...register("average_weight", {
                     required: true,
                     min: 0,
                     max: 10000,
-                    pattern: /^[0-9]+$/,
                   })}
                 />
                 {displayError("average_weight")}
+              </div>
+            )}
+            {propsToDisplay.includes(newPool) && (
+              <div className="entrance_modDial_grid">
+                <div>{newPool} :</div>
+                <select
+                  className="entrance_modial_select"
+                  style={{ "--color": color } as React.CSSProperties}
+                  {...register("new_pool", { required: true })}
+                >
+                  {pools.map((pool) => (
+                    <option key={pool.id}>{pool.number}</option>
+                  ))}
+                </select>
               </div>
             )}
           </div>
@@ -223,6 +250,7 @@ export default function EntranceModalDialog({
             className="entrance_modDial_button"
             type="submit"
             value="Valider"
+            style={{ "--color": color } as React.CSSProperties}
           ></input>
         </div>
       </form>
