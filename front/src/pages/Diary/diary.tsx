@@ -104,7 +104,7 @@ export default function Diary() {
           </div>
         </div>
       ) : (
-        <div className="entrance_modDial_emptyList">
+        <div className="action_modDial_emptyList">
           <p>
             ⚠️ Vous devez définir un <strong>bassin</strong> et une
             <strong> espèce de poissons</strong> dans la page

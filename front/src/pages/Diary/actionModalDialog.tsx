@@ -275,7 +275,12 @@ export default function ActionModalDialog({
             className="action_modDial_button"
             type="submit"
             value="Valider"
-            style={{ "--color": color } as React.CSSProperties}
+            style={
+              {
+                "--color": color,
+                color: actionType === "Mortalité" ? "white" : "black",
+              } as React.CSSProperties
+            }
           ></input>
         </div>
       </form>

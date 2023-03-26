@@ -109,7 +109,7 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
         <div className="poolModalDialog_container">
           <div className="poolModalDialog_grid">
             <p>N° bassin</p>
-            <p>Volume</p>
+            <p>Volume (m³)</p>
             {pools.map((pool, i) => (
               <>
                 <div className="poolModalDialog_div">
