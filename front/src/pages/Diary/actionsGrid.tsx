@@ -1,4 +1,5 @@
 import IAction from "../../interfaces/action";
+import { actionList } from "./diary";
 import {
   DataGrid,
   GridRowsProp,
@@ -45,15 +46,15 @@ export default function ActionsGgrid({ actions }: IActionGrid) {
       flex: 1,
       renderHeader,
       cellClassName: (params: GridCellParams<any>) => {
-        if (params.value === "Entrée du lot")
-          return "actionsGrid_type_entrance";
-        else if ((params.value = "Pesée")) return "actionsGrid_type_weight";
-        else if ((params.value = "Vente")) return "actionsGrid_type_sale";
-        else if ((params.value = "Transfert"))
+        if (params.value === actionList[0]) return "actionsGrid_type_entrance";
+        else if (params.value === actionList[1])
+          return "actionsGrid_type_weight";
+        else if (params.value === actionList[2]) return "actionsGrid_type_sale";
+        else if (params.value === actionList[3])
           return "actionsGrid_type_transfer";
-        else if ((params.value = "Sortie définitive"))
-          return "actionsGrid_type_exit";
-        else if ((params.value = "Mortalité")) return "actionsGrid_type_death";
+        else if (params.value === actionList[4]) return "actionsGrid_type_exit";
+        else if (params.value === actionList[5])
+          return "actionsGrid_type_death";
         else return "";
       },
     },
