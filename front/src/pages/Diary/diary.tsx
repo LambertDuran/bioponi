@@ -118,9 +118,11 @@ export default function Diary() {
             setActions={setActions}
           />
           <RemoveModalDialog
-            action={action}
             open={openRemove}
             onClose={() => setOpenRemove(false)}
+            action={action}
+            actions={actions}
+            setActions={setActions}
           />
           <p className="diary_text">Historique :</p>
           <div style={gridStyle}>

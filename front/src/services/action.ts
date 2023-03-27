@@ -51,4 +51,26 @@ async function putAction(action: IAction) {
     });
 }
 
-export { getAllActions, postAction, putAction };
+async function deleteAction(action: IAction) {
+  let newAction: IAction | null = null;
+  let error = "";
+  return http
+    .delete(apiUrls.actionEndpoint + `/${action.id}`)
+    .then((res) => {
+      return {
+        action: {
+          ...res.data,
+          date: new Date(res.data.date),
+          createdAt: new Date(res.data.createdAt),
+          updatedAt: new Date(res.data.updatedAt),
+        },
+        error: error,
+      };
+    })
+    .catch((err) => {
+      error = err.response.data;
+      return { action: newAction, error: error };
+    });
+}
+
+export { getAllActions, postAction, putAction, deleteAction };

@@ -244,4 +244,17 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
   res.json(action);
 });
 
+router.delete(
+  "/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const action = await prisma.action.delete({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
+    if (!action) return res.status(404).send("Action non trouvée!");
+    res.json(action);
+  }
+);
+
 module.exports = router;
