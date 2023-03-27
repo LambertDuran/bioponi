@@ -24,15 +24,7 @@ const propsByActionType = [
   [poolNumber, fishSpecies, lotName, totalWeight, fishNumber, averageWeight],
   [poolNumber, totalWeight, fishNumber, averageWeight],
   [poolNumber, totalWeight, fishNumber, averageWeight],
-  [
-    poolNumber,
-    fishSpecies,
-    lotName,
-    totalWeight,
-    fishNumber,
-    averageWeight,
-    newPool,
-  ],
+  [poolNumber, lotName, totalWeight, fishNumber, averageWeight, newPool],
   [poolNumber, totalWeight, fishNumber, averageWeight],
   [poolNumber, totalWeight, fishNumber, averageWeight],
 ];
@@ -141,7 +133,7 @@ export default function ActionModalDialog({
           averageWeight: parseFloat(data.average_weight),
           fishNumber: parseInt(data.fish_number),
           lotName: data.lot_name,
-          secondPool: data.new_pool,
+          secondPool: pools.find((p) => p.number === parseInt(data.new_pool))!,
         };
         break;
     }
