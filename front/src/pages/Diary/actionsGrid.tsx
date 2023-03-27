@@ -38,16 +38,16 @@ export default function ActionsGgrid({ actions, setAction }: IActionGrid) {
     {
       field: "Effacer",
       headerName: "Effacer",
-      flex: 0.5,
+      flex: 0.4,
       renderHeader,
       renderCell: (params: GridCellParams<any>) => (
         <i className="fas fa-trash actionsGrid_delete"></i>
       ),
     },
     {
-      field: "Modifier",
-      headerName: "Modifier",
-      flex: 0.5,
+      field: "Editer",
+      headerName: "Editer",
+      flex: 0.4,
       renderHeader,
       renderCell: (params: GridCellParams<any>) => (
         <i

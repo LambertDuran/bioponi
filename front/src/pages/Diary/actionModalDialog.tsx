@@ -68,6 +68,18 @@ export default function ActionModalDialog({
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+    if (action) {
+      setValue("pool_number", action.pool.number);
+      setValue("lot_name", action.lotName);
+      setValue("total_weight", action.totalWeight);
+      setValue("fish_number", action.fishNumber);
+      setValue("average_weight", action.averageWeight);
+      setValue("fish_name", action.fish?.name);
+      setValue("new_pool", action.secondPool?.number);
+    }
+  }, [action]);
+
   const [date, setDate] = useState(new Date());
 
   const displayError = (type: string) => {
