@@ -9,6 +9,7 @@ import { colors } from "../../components/button";
 import { postAction, putAction } from "../../services/action";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
+import Chip from "@mui/material/Chip";
 import { toast } from "react-toastify";
 import "./actionModalDialog.css";
 
@@ -27,6 +28,24 @@ const propsByActionType = [
   [poolNumber, lotName, totalWeight, fishNumber, averageWeight, newPool],
   [poolNumber, totalWeight, fishNumber, averageWeight],
   [poolNumber, totalWeight, fishNumber, averageWeight],
+];
+
+const computeMethods = [
+  "Masse tot ET Nb poissons",
+  "Masse tot ET Poids moyen",
+  "Nb poissons ET Poids moyen",
+];
+
+const computeMethodsJSX = [
+  <p>
+    M<sub>tot</sub> + N<sub>poisssons</sub>
+  </p>,
+  <p>
+    M<sub>tot</sub> + P<sub>moy</sub>
+  </p>,
+  <p>
+    N<sub>poisssons</sub> + P<sub>moy</sub>
+  </p>,
 ];
 
 interface IModal {
@@ -61,6 +80,7 @@ export default function ActionModalDialog({
   } = useForm();
 
   const [date, setDate] = useState(new Date());
+  const [computeMethode, setComputeMethode] = useState("");
 
   useEffect(() => {
     if (action) {
@@ -74,15 +94,9 @@ export default function ActionModalDialog({
     }
   }, [action]);
 
+  const average_weight = watch("average_weight");
   const total_weight = watch("total_weight");
   const fish_number = watch("fish_number");
-  useEffect(() => {
-    if (total_weight && fish_number)
-      setValue(
-        "average_weight",
-        Math.round((total_weight / fish_number) * 1000 * 100) / 100
-      );
-  }, [total_weight, fish_number]);
 
   const displayError = (type: string) => {
     const jsxError = (
@@ -160,6 +174,22 @@ export default function ActionModalDialog({
   if (index >= 0) propsToDisplay = propsByActionType[index];
   const color = index >= 0 ? colors[index] : "white";
 
+  const unselectedItemStyle = {
+    border: `2px solid ${color}`,
+    cursor: "pointer",
+    margin: "1em 0 1em 1em",
+    backgroundColor: "transparent",
+    top: "0px",
+  };
+  const selectedItemStyle = {
+    backgroundColor: `${color}`,
+    cursor: "pointer",
+    margin: "1em 0 1em 1em",
+    border: "1px solid black",
+    fontWeight: "bold",
+    top: 0,
+  };
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md">
       <DialogTitle
@@ -214,6 +244,17 @@ export default function ActionModalDialog({
                 {displayError("lot_name")}
               </div>
             )}
+            <div>Méthode de saisie du poids :</div>
+            {computeMethods.map((m: string, i) => (
+              <Chip
+                key={m}
+                label={computeMethodsJSX[i]}
+                onClick={() => setComputeMethode(m)}
+                style={
+                  m === computeMethode ? selectedItemStyle : unselectedItemStyle
+                }
+              />
+            ))}
             {propsToDisplay.includes(totalWeight) && (
               <div className="action_modDial_grid">
                 <div>{totalWeight} :</div>

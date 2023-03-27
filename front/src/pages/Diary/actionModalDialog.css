@@ -75,3 +75,7 @@
     font-size: 1em;
     white-space: break-spaces;
 }
+
+p sub{
+    font-size: 0.75em;
+}
