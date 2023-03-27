@@ -23,8 +23,7 @@
     padding: 1em;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: space-between;
+    align-items: flex-end;
 }
 
 .action_modial_select{
@@ -34,9 +33,6 @@
 }
 
 .action_modDial_button{
-    position: absolute;
-    bottom: 1em;
-    right: 1em;
     border: none;
     height: 50px;
     text-align: center;

@@ -98,6 +98,48 @@ export default function ActionModalDialog({
   const total_weight = watch("total_weight");
   const fish_number = watch("fish_number");
 
+  useEffect(() => {
+    if (!total_weight) return;
+    if (computeMethode === "Masse tot ET Nb poissons" && fishNumber)
+      setValue(
+        "average_weight",
+        ((total_weight / fish_number) * 1000).toFixed(2)
+      );
+    else if (computeMethode === "Masse tot ET Poids moyen" && averageWeight)
+      setValue(
+        "fish_number",
+        Math.round((total_weight / average_weight) * 1000)
+      );
+  }, [total_weight]);
+
+  useEffect(() => {
+    if (!fish_number) return;
+    if (computeMethode === "Nb poissons ET Poids moyen" && averageWeight)
+      setValue(
+        "total_weight",
+        ((fish_number * average_weight) / 1000).toFixed(2)
+      );
+    else if (computeMethode === "Masse tot ET Nb poissons" && total_weight)
+      setValue(
+        "average_weight",
+        ((total_weight / fish_number) * 1000).toFixed(2)
+      );
+  }, [fish_number]);
+
+  useEffect(() => {
+    if (!average_weight) return;
+    if (computeMethode === "Masse tot ET Poids moyen" && total_weight)
+      setValue(
+        "fish_number",
+        Math.round((total_weight / average_weight) * 1000)
+      );
+    else if (computeMethode === "Nb poissons ET Poids moyen" && fish_number)
+      setValue(
+        "total_weight",
+        ((fish_number * average_weight) / 1000).toFixed(2)
+      );
+  }, [average_weight]);
+
   const displayError = (type: string) => {
     const jsxError = (
       <>
@@ -266,7 +308,7 @@ export default function ActionModalDialog({
                     required: true,
                     min: 0,
                     max: 10000,
-                    pattern: /^[0-9]+$/,
+                    pattern: /^[0-9]+(\.[0-9]+)?$/,
                   })}
                 />
                 {displayError("total_weight")}
@@ -300,6 +342,7 @@ export default function ActionModalDialog({
                     required: true,
                     min: 0,
                     max: 10000,
+                    pattern: /^[0-9]+(\.[0-9]+)?$/,
                   })}
                 />
                 {displayError("average_weight")}
