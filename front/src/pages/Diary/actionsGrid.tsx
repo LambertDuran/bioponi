@@ -35,6 +35,24 @@ export default function ActionsGgrid({ actions }: IActionGrid) {
 
   const colHeaders: GridColDef[] = [
     {
+      field: "Effacer",
+      headerName: "Effacer",
+      flex: 0.5,
+      renderHeader,
+      renderCell: (params: GridCellParams<any>) => (
+        <i className="fas fa-trash actionsGrid_delete"></i>
+      ),
+    },
+    {
+      field: "Modifier",
+      headerName: "Modifier",
+      flex: 0.5,
+      renderHeader,
+      renderCell: (params: GridCellParams<any>) => (
+        <i className="fas fa-edit actionsGrid_modify"></i>
+      ),
+    },
+    {
       field: "date",
       headerName: "Date",
       flex: 1,
@@ -43,7 +61,7 @@ export default function ActionsGgrid({ actions }: IActionGrid) {
     {
       field: "action",
       headerName: "Action",
-      flex: 1,
+      flex: 0.75,
       renderHeader,
       cellClassName: (params: GridCellParams<any>) => {
         if (params.value === actionList[0]) return "actionsGrid_type_entrance";
@@ -73,18 +91,18 @@ export default function ActionsGgrid({ actions }: IActionGrid) {
     {
       field: "totalWeight",
       headerName: "Masse totale (kg)",
-      flex: 0.8,
+      flex: 1,
       renderHeader,
     },
     {
       field: "averageWeight",
       headerName: "Masse moyenne (g)",
-      flex: 0.8,
+      flex: 1,
       renderHeader,
     },
     {
       field: "fishNumber",
-      headerName: "Nombre de poissons",
+      headerName: "Nb poissons",
       flex: 1,
       renderHeader,
     },

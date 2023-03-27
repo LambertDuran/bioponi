@@ -22,3 +22,15 @@
     background-color: #020d21;
     color: white;
 }
+
+.actionsGrid_modify{
+    color: lightslategray;
+    cursor: pointer;
+}
+
+.actionsGrid_delete{
+    display: flex;
+    justify-content: center;
+    color: lightslategray;
+    cursor: pointer;
+}
