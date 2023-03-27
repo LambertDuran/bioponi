@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Button, { litteralColors } from "../../components/button";
 import ActionModalDialog from "./actionModalDialog";
+import RemoveModalDialog from "./removeModalDialog";
 import { getAllFish } from "../../services/fish";
 import { getAllPool } from "../../services/pool";
 import { getAllActions } from "../../services/action";
@@ -36,6 +37,7 @@ export default function Diary() {
   const [actions, setActions] = useState<IAction[]>([]);
   const [fishes, setFishes] = useState<IFish[]>([]);
   const [pools, setPools] = useState<IPool[]>([]);
+  const [openRemove, setOpenRemove] = useState(false);
 
   useEffect(() => {
     async function getFishes() {
@@ -60,9 +62,13 @@ export default function Diary() {
 
   useEffect(() => {
     if (action) {
-      setIsCreation(false);
-      setOpen(true);
-      setActionType(action.type);
+      if (!openRemove) {
+        setIsCreation(false);
+        setOpen(true);
+        setActionType(action.type);
+      } else {
+        setOpenRemove(true);
+      }
     }
   }, [action]);
 
@@ -80,13 +86,13 @@ export default function Diary() {
       {displayDiary ? (
         <div className="diary_container">
           <div className="diary_but_container">
-            {litteralColors.map((color, index) => (
+            {actionList.map((action, index) => (
               <Button
                 key={index}
-                title={actionList[index]}
-                color={color}
+                title={action}
+                color={litteralColors[index]}
                 onClick={() => {
-                  setActionType(actionList[index]);
+                  setActionType(action);
                   setOpen(true);
                   setIsCreation(true);
                   setAction(null);
@@ -111,9 +117,18 @@ export default function Diary() {
             actionType={actionType}
             setActions={setActions}
           />
+          <RemoveModalDialog
+            action={action}
+            open={openRemove}
+            onClose={() => setOpenRemove(false)}
+          />
           <p className="diary_text">Historique :</p>
           <div style={gridStyle}>
-            <ActionsGrid actions={actions} setAction={setAction} />
+            <ActionsGrid
+              actions={actions}
+              setAction={setAction}
+              setOpenRemove={setOpenRemove}
+            />
           </div>
         </div>
       ) : (

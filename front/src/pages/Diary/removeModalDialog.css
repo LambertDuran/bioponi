@@ -1,0 +1,9 @@
+.rm_action_moddial{
+    color: #d0312d;
+}
+
+.rm_action_moddial_butContainer{
+    display: flex;
+    justify-content: flex-end;
+    padding: 1em;
+}

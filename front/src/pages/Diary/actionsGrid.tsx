@@ -16,9 +16,14 @@ const renderHeader = (params: any) => (
 interface IActionGrid {
   actions: IAction[];
   setAction: (action: IAction | null) => void;
+  setOpenRemove: (open: boolean) => void;
 }
 
-export default function ActionsGgrid({ actions, setAction }: IActionGrid) {
+export default function ActionsGgrid({
+  actions,
+  setAction,
+  setOpenRemove,
+}: IActionGrid) {
   const muiRows: GridRowsProp = actions.map((a, i) => {
     return {
       id: a.id,
@@ -41,7 +46,13 @@ export default function ActionsGgrid({ actions, setAction }: IActionGrid) {
       flex: 0.4,
       renderHeader,
       renderCell: (params: GridCellParams<any>) => (
-        <i className="fas fa-trash actionsGrid_delete"></i>
+        <i
+          className="fas fa-trash actionsGrid_delete"
+          onClick={() => {
+            setOpenRemove(true);
+            setAction(actions.find((a) => a.id === params.row.id)!);
+          }}
+        ></i>
       ),
     },
     {

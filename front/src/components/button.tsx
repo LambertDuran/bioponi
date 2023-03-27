@@ -9,7 +9,15 @@ interface IButton {
   form?: string;
 }
 
-const litteralColors = ["orange", "salmon", "yellow", "grey", "blue", "black"];
+const litteralColors = [
+  "orange",
+  "salmon",
+  "yellow",
+  "grey",
+  "blue",
+  "black",
+  "red",
+];
 
 const colors = [
   "#fd7702",
@@ -18,6 +26,7 @@ const colors = [
   "#b9c6d7",
   "#7991bd",
   "#020d21",
+  "#d0312d",
 ];
 const hoverColors = [
   "#ff8e00",
@@ -26,6 +35,7 @@ const hoverColors = [
   "#94a3c0",
   "#94a3c0",
   "#28292b",
+  "#bc544b",
 ];
 
 export default function Button({
