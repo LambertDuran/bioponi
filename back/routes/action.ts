@@ -140,39 +140,105 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
   });
   if (!existingAction) return res.status(404).send("Action non trouvée!");
 
-  const action = await prisma.action.update({
-    where: {
-      id: parseInt(req.params.id),
-    },
-    data: {
-      type: req.body.type,
-      date: req.body.date,
-      totalWeight: req.body.totalWeight,
-      averageWeight: req.body.averageWeight,
-      fishNumber: req.body.fishNumber,
-      lotName: req.body.lotName,
-      pool: {
-        connect: {
-          id: req.body.pool.id,
+  let action;
+  switch (req.body.type) {
+    case "Entrée du lot": {
+      action = await prisma.action.update({
+        where: {
+          id: parseInt(req.params.id),
         },
-      },
-      fish: {
-        connect: {
-          id: req.body.fish.id,
+        data: {
+          type: req.body.type,
+          date: req.body.date,
+          totalWeight: req.body.totalWeight,
+          averageWeight: req.body.averageWeight,
+          fishNumber: req.body.fishNumber,
+          lotName: req.body.lotName,
+          pool: {
+            connect: {
+              id: req.body.pool.id,
+            },
+          },
+          fish: {
+            connect: {
+              id: req.body.fish.id,
+            },
+          },
         },
-      },
-      secondPool: {
-        connect: {
-          id: req.body.secondPool.id,
+        include: {
+          pool: true,
+          fish: true,
         },
-      },
-    },
-    include: {
-      pool: true,
-      fish: true,
-      secondPool: true,
-    },
-  });
+      });
+      break;
+    }
+
+    case "Pesée":
+    case "Vente":
+    case "Sortie définitve":
+    case "Mortalité": {
+      action = await prisma.action.update({
+        where: {
+          id: parseInt(req.params.id),
+        },
+        data: {
+          type: req.body.type,
+          date: req.body.date,
+          totalWeight: req.body.totalWeight,
+          averageWeight: req.body.averageWeight,
+          fishNumber: req.body.fishNumber,
+          pool: {
+            connect: {
+              id: req.body.pool.id,
+            },
+          },
+        },
+        include: {
+          pool: true,
+        },
+      });
+      break;
+    }
+
+    case "Transfert": {
+      if (!req.body.secondPool)
+        return res.status(400).send("Donnée manquante: second bassin !");
+      action = await prisma.action.update({
+        where: {
+          id: parseInt(req.params.id),
+        },
+        data: {
+          type: req.body.type,
+          date: req.body.date,
+          totalWeight: req.body.totalWeight,
+          averageWeight: req.body.averageWeight,
+          fishNumber: req.body.fishNumber,
+          lotName: req.body.lotName,
+          pool: {
+            connect: {
+              id: req.body.pool.id,
+            },
+          },
+          fish: {
+            connect: {
+              id: req.body.fish.id,
+            },
+          },
+          secondPool: {
+            connect: {
+              id: req.body.secondPool.id,
+            },
+          },
+        },
+        include: {
+          pool: true,
+          fish: true,
+          secondPool: true,
+        },
+      });
+      break;
+    }
+  }
 
   if (!action) return res.status(400).send("Erreur de maj prisma!");
   res.json(action);

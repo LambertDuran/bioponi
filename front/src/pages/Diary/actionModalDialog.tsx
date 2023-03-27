@@ -68,6 +68,8 @@ export default function ActionModalDialog({
     formState: { errors },
   } = useForm();
 
+  const [date, setDate] = useState(new Date());
+
   useEffect(() => {
     if (action) {
       setValue("pool_number", action.pool.number);
@@ -80,7 +82,15 @@ export default function ActionModalDialog({
     }
   }, [action]);
 
-  const [date, setDate] = useState(new Date());
+  const total_weight = watch("total_weight");
+  const fish_number = watch("fish_number");
+  useEffect(() => {
+    if (total_weight && fish_number)
+      setValue(
+        "average_weight",
+        Math.round((total_weight / fish_number) * 1000 * 100) / 100
+      );
+  }, [total_weight, fish_number]);
 
   const displayError = (type: string) => {
     const jsxError = (
@@ -97,73 +107,65 @@ export default function ActionModalDialog({
   };
 
   async function onSubmit(data: any) {
-    if (isCreation) {
-      let newAction: IAction = {
-        id: 0,
-        type: actionType,
-        date: date,
-        pool: pools.find((p) => p.number === parseInt(data.pool_number))!,
-      };
+    let newAction: IAction = {
+      id: isCreation ? 0 : action!.id,
+      type: actionType,
+      date: date,
+      pool: pools.find((p) => p.number === parseInt(data.pool_number))!,
+    };
 
-      switch (actionType) {
-        case actionList[0]:
-          newAction = {
-            ...newAction,
-            fish: fishes.find((f) => f.name === data.fish_name)!,
-            totalWeight: parseFloat(data.total_weight),
-            averageWeight: parseFloat(data.average_weight),
-            fishNumber: parseInt(data.fish_number),
-            lotName: data.lot_name,
-          };
-          break;
-        case actionList[1]:
-        case actionList[2]:
-        case actionList[4]:
-        case actionList[5]:
-          newAction.totalWeight = parseFloat(data.total_weight);
-          newAction.averageWeight = parseFloat(data.average_weight);
-          newAction.fishNumber = parseInt(data.fish_number);
-          break;
-        case actionList[3]:
-          newAction = {
-            ...newAction,
-            fish: fishes.find((f) => f.name === data.fish_name)!,
-            totalWeight: parseFloat(data.total_weight),
-            averageWeight: parseFloat(data.average_weight),
-            fishNumber: parseInt(data.fish_number),
-            lotName: data.lot_name,
-            secondPool: data.new_pool,
-          };
-          break;
-      }
+    switch (actionType) {
+      case actionList[0]:
+        newAction = {
+          ...newAction,
+          fish: fishes.find((f) => f.name === data.fish_name)!,
+          totalWeight: parseFloat(data.total_weight),
+          averageWeight: parseFloat(data.average_weight),
+          fishNumber: parseInt(data.fish_number),
+          lotName: data.lot_name,
+        };
+        break;
+      case actionList[1]:
+      case actionList[2]:
+      case actionList[4]:
+      case actionList[5]:
+        newAction.totalWeight = parseFloat(data.total_weight);
+        newAction.averageWeight = parseFloat(data.average_weight);
+        newAction.fishNumber = parseInt(data.fish_number);
+        break;
+      case actionList[3]:
+        newAction = {
+          ...newAction,
+          fish: fishes.find((f) => f.name === data.fish_name)!,
+          totalWeight: parseFloat(data.total_weight),
+          averageWeight: parseFloat(data.average_weight),
+          fishNumber: parseInt(data.fish_number),
+          lotName: data.lot_name,
+          secondPool: data.new_pool,
+        };
+        break;
+    }
 
-      const dataFromServer: { action: IAction | null; error: string } =
-        await postAction(newAction);
+    let dataFromServer: { action: IAction | null; error: string };
+    if (isCreation) dataFromServer = await postAction(newAction);
+    else dataFromServer = await putAction(newAction);
 
-      if (dataFromServer.action) {
+    if (dataFromServer.action) {
+      if (isCreation) {
         toast.success("Action enregistrée");
         setActions([...actions, dataFromServer.action]);
-      } else if (dataFromServer.error) toast.error(dataFromServer.error);
-    } else {
-      // ENCORE A ECRIRE
-    }
+      } else {
+        toast.success("Action modifiée");
+        setActions(actions.map((a) => (a.id === newAction.id ? newAction : a)));
+      }
+    } else if (dataFromServer.error) toast.error(dataFromServer.error);
+
     onClose();
   }
-
-  const total_weight = watch("total_weight");
-  const fish_number = watch("fish_number");
-  useEffect(() => {
-    if (total_weight && fish_number)
-      setValue(
-        "average_weight",
-        Math.round((total_weight / fish_number) * 1000 * 100) / 100
-      );
-  }, [total_weight, fish_number]);
 
   let propsToDisplay: string[] = [];
   const index = actionList.indexOf(actionType);
   if (index >= 0) propsToDisplay = propsByActionType[index];
-
   const color = index >= 0 ? colors[index] : "white";
 
   return (
