@@ -15,12 +15,13 @@ const renderHeader = (params: any) => (
 
 interface IActionGrid {
   actions: IAction[];
+  setAction: (action: IAction | null) => void;
 }
 
-export default function ActionsGgrid({ actions }: IActionGrid) {
+export default function ActionsGgrid({ actions, setAction }: IActionGrid) {
   const muiRows: GridRowsProp = actions.map((a, i) => {
     return {
-      id: i,
+      id: a.id,
       action: a.type,
       date: moment(a.date).format("DD/MM/YYYY"),
       pool: a.pool.number,
@@ -49,7 +50,12 @@ export default function ActionsGgrid({ actions }: IActionGrid) {
       flex: 0.5,
       renderHeader,
       renderCell: (params: GridCellParams<any>) => (
-        <i className="fas fa-edit actionsGrid_modify"></i>
+        <i
+          className="fas fa-edit actionsGrid_modify"
+          onClick={() =>
+            setAction(actions.find((a) => a.id === params.row.id)!)
+          }
+        ></i>
       ),
     },
     {

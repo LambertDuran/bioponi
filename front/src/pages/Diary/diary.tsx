@@ -30,7 +30,9 @@ const icons = [
 
 export default function Diary() {
   const [open, setOpen] = useState(false);
+  const [isCreation, setIsCreation] = useState(true);
   const [actionType, setActionType] = useState("");
+  const [action, setAction] = useState<IAction | null>(null);
   const [actions, setActions] = useState<IAction[]>([]);
   const [fishes, setFishes] = useState<IFish[]>([]);
   const [pools, setPools] = useState<IPool[]>([]);
@@ -56,6 +58,14 @@ export default function Diary() {
     getPools();
   }, []);
 
+  useEffect(() => {
+    if (action) {
+      setIsCreation(false);
+      setOpen(true);
+      setActionType(action.type);
+    }
+  }, [action]);
+
   const displayDiary = fishes.length > 0 && pools.length > 0;
 
   const gridStyle = {
@@ -78,6 +88,8 @@ export default function Diary() {
                 onClick={() => {
                   setActionType(actionList[index]);
                   setOpen(true);
+                  setIsCreation(true);
+                  setAction(null);
                 }}
                 width={"13%"}
               >
@@ -91,16 +103,17 @@ export default function Diary() {
               setActionType("");
               setOpen(false);
             }}
-            isCreation={true}
+            isCreation={isCreation}
             fishes={fishes}
             pools={pools}
             actions={actions}
+            action={action}
             actionType={actionType}
             setActions={setActions}
           />
           <p className="diary_text">Historique :</p>
           <div style={gridStyle}>
-            <ActionsGrid actions={actions} />
+            <ActionsGrid actions={actions} setAction={setAction} />
           </div>
         </div>
       ) : (

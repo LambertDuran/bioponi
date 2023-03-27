@@ -43,6 +43,7 @@ interface IModal {
   fishes: IFish[];
   pools: IPool[];
   actionType: string;
+  action: IAction | null;
   actions: IAction[];
   setActions: (actions: IAction[]) => void;
   isCreation: boolean;
@@ -54,6 +55,7 @@ export default function ActionModalDialog({
   fishes,
   pools,
   actionType,
+  action,
   actions,
   setActions,
   isCreation,
