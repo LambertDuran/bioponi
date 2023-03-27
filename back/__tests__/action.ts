@@ -4,7 +4,7 @@ import prisma from "../src/prismaClient";
 let server: http.Server;
 
 const food = {
-  name: "Aliment Sole meunière",
+  name: "Aliment Saumon",
   froms: [10],
   tos: [100],
   ranges: ["NEO CDC CF 20"],
@@ -15,7 +15,7 @@ const food = {
 };
 
 const fish = {
-  name: "Sole",
+  name: "Saumon",
   id: 0,
   weeks: [4],
   weights: [200],
@@ -29,10 +29,10 @@ const pool = {
   volume: 10,
 };
 
-const action = {
-  id: 0,
+let action = {
+  id: 1,
   type: "Entrée du lot",
-  date: Date(),
+  date: new Date().toISOString(),
   totalWeight: 100,
   fishNumber: 200,
   averageWeight: 500,
@@ -78,18 +78,15 @@ beforeEach(async () => {
     },
   });
 
-  if (resAction) {
-    action.id = resAction.id;
-    action.fish = resAction.fish;
-    action.fishId = resAction.fishId;
-    action.pool = resAction.pool;
-    action.poolId = resAction.poolId;
-  }
+  //   if (resAction) action = resAction;
 });
 
 afterEach(async () => {
-  const deleteActions = prisma.action.deleteMany();
-  await prisma.$transaction([deleteActions]);
+  await prisma.action.deleteMany();
+  await prisma.fish.deleteMany();
+  await prisma.food.deleteMany();
+  await prisma.pool.deleteMany();
+  //   await prisma.$transaction([deleteActions]);
   await prisma.$disconnect();
 });
 

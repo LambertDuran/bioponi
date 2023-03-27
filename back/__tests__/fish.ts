@@ -27,19 +27,38 @@ const fish = {
 beforeEach(async () => {
   server = require("../index");
 
+  const existingFood = await prisma.food.create({
+    data: {
+      name: food.name,
+      froms: food.froms,
+      tos: food.tos,
+      ranges: food.ranges,
+      sizes: food.sizes,
+      foodRates: food.foodRates,
+      prices: food.prices,
+      distributions: food.distributions,
+    },
+  });
+
+  console.log("existingFood - id", existingFood.id);
+
   const resFish = await prisma.fish.create({
     data: {
       name: fish.name,
       weeks: fish.weeks,
       weights: fish.weights,
       food: {
-        create: food,
+        connect: {
+          id: existingFood.id,
+        },
       },
     },
     include: {
       food: true,
     },
   });
+
+  console.log("resFish - id", resFish.id);
 
   if (resFish) {
     fish.id = resFish.id;
@@ -98,7 +117,7 @@ describe("POST /api/fish", () => {
   it("should return 200 if fish is valid", async () => {
     const res = await request(server)
       .post("/api/fish")
-      .send({ ...fish, name: "autre poisson", food: { ...food } });
+      .send({ ...fish, name: "autre poisson" });
     expect(res.status).toBe(200);
   });
 });

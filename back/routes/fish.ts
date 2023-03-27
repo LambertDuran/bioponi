@@ -19,19 +19,19 @@ router.post("/", async (req: Request, res: Response) => {
   const { error } = validateFish(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const existingFish = await prisma.fish.findFirst({
-    where: {
-      name: req.body.name,
-    },
-  });
-  if (existingFish) return res.status(400).send("Fish already exists!");
-
   const existingFood = await prisma.food.findFirst({
     where: {
       name: req.body.food.name,
     },
   });
   if (!existingFood) return res.status(400).send("Food doesn't exist!");
+
+  const existingFish = await prisma.fish.findFirst({
+    where: {
+      name: req.body.name,
+    },
+  });
+  if (existingFish) return res.status(400).send("Fish already exists!");
 
   const fish = await prisma.fish.create({
     data: {
@@ -40,7 +40,7 @@ router.post("/", async (req: Request, res: Response) => {
       weights: req.body.weights,
       food: {
         connect: {
-          name: existingFood.name,
+          id: existingFood.id,
         },
       },
     },
