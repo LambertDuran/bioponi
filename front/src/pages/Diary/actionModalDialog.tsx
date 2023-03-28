@@ -93,7 +93,7 @@ export default function ActionModalDialog({
       setValue("new_pool", action.secondPool?.number);
       setDate(new Date(action.date));
     }
-  }, [action]);
+  }, [action, setValue]);
 
   const average_weight = watch("average_weight");
   const total_weight = watch("total_weight");
@@ -111,7 +111,8 @@ export default function ActionModalDialog({
         "fish_number",
         Math.round((total_weight / average_weight) * 1000)
       );
-  }, [total_weight]);
+    // eslint-disable-next-line
+  }, [total_weight, setValue]);
 
   useEffect(() => {
     if (!fish_number) return;
@@ -125,7 +126,8 @@ export default function ActionModalDialog({
         "average_weight",
         ((total_weight / fish_number) * 1000).toFixed(2)
       );
-  }, [fish_number]);
+    // eslint-disable-next-line
+  }, [fish_number, setValue]);
 
   useEffect(() => {
     if (!average_weight) return;
@@ -139,7 +141,8 @@ export default function ActionModalDialog({
         "total_weight",
         ((fish_number * average_weight) / 1000).toFixed(2)
       );
-  }, [average_weight]);
+    // eslint-disable-next-line
+  }, [average_weight, setValue]);
 
   const displayError = (type: string) => {
     const jsxError = (
