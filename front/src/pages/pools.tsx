@@ -1,4 +1,4 @@
-export default function DashBoard() {
+export default function Pools() {
   return (
     <div>
       <h1>Aucune Donnée 🙄</h1>

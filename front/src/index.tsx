@@ -8,7 +8,7 @@ import Settings from "./pages/Settings/settings";
 import Diary from "./pages/Diary/diary";
 import Balance from "./pages/balance";
 import DailyCard from "./pages/dailyCard";
-import DashBoard from "./pages/dashBoard";
+import Pools from "./pages/pools";
 
 const router = createBrowserRouter([
   {
@@ -17,8 +17,8 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/tableau-de-bord",
-        element: <DashBoard />,
+        path: "/bassins",
+        element: <Pools />,
       },
       {
         path: "/parametrage",

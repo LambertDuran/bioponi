@@ -4,23 +4,23 @@ import logo from "../assets/logo.png";
 import "./sidebar.css";
 
 const paths = [
-  "/tableau-de-bord",
   "/parametrage",
   "/journal",
+  "/bassins",
   "/bilan",
   "/fiche-journalière",
 ];
 const icons = [
-  "fas fa-home",
   "fas fa-cog",
   "fas fa-book",
+  "fas fa-database",
   "fas fa-chart-line",
   "fas fa-calendar",
 ];
 const names = [
-  "Tableau de bord",
   "Paramétrage",
   "Journal",
+  "Bassins",
   "Bilan",
   "Fiche Journalière",
 ];
