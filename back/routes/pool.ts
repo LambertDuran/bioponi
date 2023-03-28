@@ -6,7 +6,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
-  const pool = await prisma.pool.findMany();
+  const pool = await prisma.pool.findMany({ orderBy: { number: "asc" } });
   if (pool.length < 1) return res.status(404).send("Aucun bassin trouvé!");
   res.json(pool);
 });

@@ -8,6 +8,9 @@ const prisma = new PrismaClient();
 
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   const actions = await prisma.action.findMany({
+    orderBy: {
+      date: "asc",
+    },
     include: {
       fish: true,
       pool: true,

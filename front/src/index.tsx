@@ -8,7 +8,7 @@ import Settings from "./pages/Settings/settings";
 import Diary from "./pages/Diary/diary";
 import Balance from "./pages/balance";
 import DailyCard from "./pages/dailyCard";
-import Pools from "./pages/pools";
+import Pools from "./pages/Pools/pools";
 
 const router = createBrowserRouter([
   {
