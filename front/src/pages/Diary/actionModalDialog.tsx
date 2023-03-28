@@ -91,6 +91,7 @@ export default function ActionModalDialog({
       setValue("average_weight", action.averageWeight);
       setValue("fish_name", action.fish?.name);
       setValue("new_pool", action.secondPool?.number);
+      setDate(new Date(action.date));
     }
   }, [action]);
 

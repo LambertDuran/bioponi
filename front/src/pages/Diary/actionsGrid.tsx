@@ -7,6 +7,7 @@ import {
   GridCellParams,
 } from "@mui/x-data-grid";
 import moment from "moment";
+import "moment/locale/fr";
 import "./actionsGrid.css";
 
 const renderHeader = (params: any) => (
@@ -28,7 +29,7 @@ export default function ActionsGgrid({
     return {
       id: a.id,
       action: a.type,
-      date: moment(a.date).format("DD/MM/YYYY"),
+      date: moment(a.date).locale("fr").format("Do MMM YYYY"),
       pool: a.pool.number,
       fish: a.fish?.name,
       totalWeight: a.totalWeight,
