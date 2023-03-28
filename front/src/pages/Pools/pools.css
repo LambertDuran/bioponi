@@ -1,0 +1,15 @@
+.pools_container{
+    padding: 1em;
+}
+
+.pools_container .pools{
+    display: flex;
+}
+
+.pools_container select{
+    margin-left: 1em;
+    width: 5em;
+    border: 1px solid black;
+    background-color: #f6bd41;
+    border-radius: 10px;
+}
