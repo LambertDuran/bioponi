@@ -1,7 +1,8 @@
 import IAction from "../../interfaces/action";
 import moment from "moment";
+import { orderBy } from "lodash";
 
-interface IData {
+export interface IData {
   date: Date;
   dateFormatted: string;
   averageWeight: number;
@@ -32,7 +33,7 @@ export class ComputePool {
   poolVolume: number = 0;
 
   constructor(actions: IAction[], poolVolume: number) {
-    this.actions = actions;
+    this.actions = orderBy(actions, ["date"], ["asc"]);
     this.poolVolume = poolVolume;
   }
 
@@ -79,9 +80,11 @@ export class ComputePool {
   }
 
   computeData(index: number): IComputedData {
+    // console.log("actions: ", this.actions);
     const index0 = index;
+    const index1 = index + 1;
     const action0 = this.actions[index0];
-    if (index < 0 || index > this.actions.length - 2)
+    if (index0 < 0 || index1 >= this.actions.length)
       return {
         error: "Index out of range",
         data: null,
@@ -89,21 +92,21 @@ export class ComputePool {
 
     // 1. Calculer l'échantillon des dates entre les deux actions
     const dates = this.getDates(
-      this.actions[index].date,
-      this.actions[index + 1].date
+      this.actions[index0].date,
+      this.actions[index1].date
     );
 
     // 2. Récuper les dernières données, c-à-d le dernier IData
-    // IData est vide et que la première action n'est pas une entrée de lot ou un transfert => ERREUR
+    // IData est vide et la première action n'est pas une entrée de lot ou un transfert => ERREUR
     if (this.data.length === 0) {
       if (
-        index !== 0 ||
+        index0 !== 0 ||
         (this.actions[0].type !== "Entrée du lot" &&
           this.actions[0].type !== "Transfert")
       )
         return { error: "Première action non valide", data: null };
+      // Sinon, on initialise le tableau de données avec les données de l'entrée du lot
       else {
-        console.log("action0", action0);
         this.data.push({
           date: action0.date,
           dateFormatted: moment(action0.date).format("DD/MM/YYYY"),
@@ -119,8 +122,7 @@ export class ComputePool {
       }
     }
 
-    console.log("this.data", this.data);
-    let lastData: IData = this.data.slice(0, -1)[0];
+    let lastData: IData = this.data[this.data.length - 1];
     if (!lastData) return { error: "Dernière action non valide", data: null };
 
     // 3. Soit la seconde action est une pesée  -> Rien à faire
@@ -159,10 +161,10 @@ export class ComputePool {
       nextAction = this.actions[index];
     }
 
-    console.log("test");
-
     // 4. On MAJ les poids entre les deux dernières pesées
     if (nextAction.type === "Pesée") {
+      //   console.log("action0", action0);
+      //   console.log("nextAction", nextAction);
       const p1 = action0.averageWeight;
       const p2 = nextAction.averageWeight;
       const nbDays = moment(nextAction.date).diff(action0.date, "days");
@@ -187,8 +189,6 @@ export class ComputePool {
           foodWeight: 0,
         };
       });
-
-      console.log("datas", datas);
 
       return {
         error: "",

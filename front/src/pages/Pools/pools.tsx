@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
 import { getAllPool } from "../../services/pool";
 import IPool from "../../interfaces/pool";
-import { ComputePool } from "./computePool";
+import { IData, ComputePool } from "./computePool";
 import { toast } from "react-toastify";
 import "./pools.css";
+import PoolGrid from "./poolGrid";
 
 export default function Pools() {
   const [pools, setPools] = useState<IPool[]>([]);
   const [selectedPool, setSelectedPool] = useState<IPool | null>(null);
+  const [datas, setDatas] = useState<IData[] | null>(null);
+
+  const gridStyle = {
+    width: "97%",
+    padding: "0 1em 2em 1em",
+    marginTop: "1em",
+    height: `${58 + (datas ? datas.length * 25 : 0)}px`,
+  };
 
   useEffect(() => {
     async function getPools() {
@@ -30,9 +39,8 @@ export default function Pools() {
       );
       const resComputation = compute.computeAllData();
       if (resComputation.error) toast.error(resComputation.error);
-      else {
-        console.log(resComputation);
-      }
+      else if (resComputation.data) setDatas(resComputation.data as IData[]);
+      else toast.error("Erreur inconnue");
     }
   }, [selectedPool]);
 
@@ -65,6 +73,7 @@ export default function Pools() {
             ))}
           </select>
         </div>
+        <div style={gridStyle}>{datas && <PoolGrid datas={datas} />}</div>
       </div>
     );
 }

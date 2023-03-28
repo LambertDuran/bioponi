@@ -6,6 +6,7 @@ const poolSchema = Joi.object({
   updatedAt: Joi.date(),
   number: Joi.number().required(),
   volume: Joi.number().required(),
+  action: Joi.array().items(Joi.object()),
 });
 
 const validatePool = (pool: any) => {
