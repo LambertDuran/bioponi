@@ -6,7 +6,10 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
-  const pool = await prisma.pool.findMany({ orderBy: { number: "asc" } });
+  const pool = await prisma.pool.findMany({
+    include: { action: true },
+    orderBy: { number: "asc" },
+  });
   if (pool.length < 1) return res.status(404).send("Aucun bassin trouvé!");
   res.json(pool);
 });
@@ -15,6 +18,9 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
   const pool = await prisma.pool.findFirst({
     where: {
       id: parseInt(req.params.id),
+    },
+    include: {
+      action: true,
     },
   });
   if (!pool) return res.status(404).send("Bassin non trouvé!");

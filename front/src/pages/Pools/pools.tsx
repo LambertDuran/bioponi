@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getAllPool } from "../../services/pool";
 import IPool from "../../interfaces/pool";
+import { ComputePool } from "./computePool";
+import { toast } from "react-toastify";
 import "./pools.css";
 
 export default function Pools() {
@@ -22,7 +24,15 @@ export default function Pools() {
 
   useEffect(() => {
     if (selectedPool) {
-      console.log(selectedPool);
+      const compute = new ComputePool(
+        selectedPool.action!,
+        selectedPool.volume
+      );
+      const resComputation = compute.computeAllData();
+      if (resComputation.error) toast.error(resComputation.error);
+      else {
+        console.log(resComputation);
+      }
     }
   }, [selectedPool]);
 

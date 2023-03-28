@@ -7,6 +7,11 @@ async function getAllPool() {
   return allPools;
 }
 
+async function getPool(id: number) {
+  const pool = await http.get(apiUrls.poolEndpoint + `/${id}`);
+  return pool;
+}
+
 async function postPool(pool: IPool) {
   let newPool: IPool | null = null;
   let error = "";
@@ -35,4 +40,4 @@ async function putPool(pool: IPool) {
     });
 }
 
-export { getAllPool, putPool, postPool };
+export { getAllPool, getPool, putPool, postPool };
