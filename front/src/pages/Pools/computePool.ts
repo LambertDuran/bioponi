@@ -37,6 +37,9 @@ export class ComputePool {
     this.poolVolume = poolVolume;
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Créer un intervalle entre ces deux dates avec un espacement journalier
+  //////////////////////////////////////////////////////////////////////////////////////////
   getDates(date0: Date, date1: Date): moment.Moment[] {
     let moment0 = moment(date0)
       .startOf("day")
@@ -55,6 +58,10 @@ export class ComputePool {
     return dates;
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Calculer les données pour le bassin après une action de type "Vente", "Mortalité",
+  // "Sortie définitive" ou "Transfert" mais vers un autre bassin
+  //////////////////////////////////////////////////////////////////////////////////////////
   recomputeDataAfterDecrease(data: IData, nbFish: number): IData {
     return {
       ...data,
@@ -67,6 +74,10 @@ export class ComputePool {
     };
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Calculer les données pour le bassin après une action de type "Entrée du lot" ou
+  // "Transfert" vers le bassin courant
+  //////////////////////////////////////////////////////////////////////////////////////////
   recomputeDataAfterIncrease(data: IData, nbFish: number): IData {
     return {
       ...data,
@@ -79,8 +90,56 @@ export class ComputePool {
     };
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Récupérer le poids moyen sur le bassin lors de la prochaine action de type "Pesée"
+  //////////////////////////////////////////////////////////////////////////////////////////
+  getNextWeight(index: number, nextAverageWeight: any): boolean {
+    let lastData: IData = this.data[this.data.length - 1];
+    let nextAction: IAction = this.actions[index];
+    while (nextAction.type !== "Pesée" && index <= this.actions.length - 1) {
+      nextAction = this.actions[index];
+
+      // Soit la seconde action est :
+      switch (nextAction.type) {
+        // - une mortalité                       -> On réduit le nombre de poissons
+        // - une vente ou une sortie définitive  -> On réduit le nombre de poissons
+        case "Vente":
+        case "Sortie définitive":
+        case "Mortalité":
+          lastData = this.recomputeDataAfterDecrease(
+            lastData,
+            lastData.fishNumber
+          );
+          break;
+        // - un transfert vers le bassin courant -> On augmente le nombre de poissons
+        case "Transfert": {
+          if (nextAction.secondPoolId)
+            lastData = this.recomputeDataAfterDecrease(
+              lastData,
+              lastData.fishNumber
+            );
+          else {
+            lastData = this.recomputeDataAfterIncrease(
+              lastData,
+              lastData.fishNumber
+            );
+          }
+          break;
+        }
+      }
+      index++;
+    }
+
+    nextAverageWeight.value = nextAction.averageWeight;
+    return nextAction.type === "Pesée";
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Calculer les données pour le bassin sur l'intervalle de temps (tous les jours)
+  // entre la date de la index-ème action et la date de la (index+1)-ème action
+  //////////////////////////////////////////////////////////////////////////////////////////
   computeData(index: number): IComputedData {
-    // console.log("actions: ", this.actions);
+    // 0. Initialiser les variables
     const index0 = index;
     const index1 = index + 1;
     const action0 = this.actions[index0];
@@ -122,54 +181,15 @@ export class ComputePool {
       }
     }
 
-    let lastData: IData = this.data[this.data.length - 1];
-    if (!lastData) return { error: "Dernière action non valide", data: null };
-
-    // 3. Soit la seconde action est une pesée  -> Rien à faire
-    index++;
-    let nextAction: IAction = this.actions[index];
-    while (nextAction.type !== "Pesée" && index <= this.actions.length - 1) {
-      nextAction = this.actions[index];
-      // console.log("nextAction", nextAction);
-
-      // Soit la seconde action est :
-      switch (nextAction.type) {
-        // -  une mortalité                      -> On réduit le nombre de poissons
-        // - une vente ou une sortie définitive  -> On réduit le nombre de poissons
-        case "Vente":
-        case "Sortie définitive":
-        case "Mortalité":
-          lastData = this.recomputeDataAfterDecrease(
-            lastData,
-            lastData.fishNumber
-          );
-          break;
-        // - un transfert vers le bassin courant -> On augmente le nombre de poissons
-        case "Transfert": {
-          if (nextAction.secondPoolId)
-            lastData = this.recomputeDataAfterDecrease(
-              lastData,
-              lastData.fishNumber
-            );
-          else {
-            lastData = this.recomputeDataAfterIncrease(
-              lastData,
-              lastData.fishNumber
-            );
-          }
-          break;
-        }
-      }
-      index++;
-    }
-
-    // 4. On MAJ les poids entre les deux dernières pesées
-    if (nextAction.type === "Pesée") {
-      //   console.log("action0", action0);
-      //   console.log("nextAction", nextAction);
+    // 3. Récupérer le poids moyen sur le bassin lors de la prochaine Pesée
+    let nextAverageWeight = { value: 0 };
+    if (this.getNextWeight(index1, nextAverageWeight)) {
       const p1 = action0.averageWeight;
-      const p2 = nextAction.averageWeight;
-      const nbDays = moment(nextAction.date).diff(action0.date, "days");
+      const p2 = nextAverageWeight.value;
+      const nbDays = moment(this.actions[index1].date).diff(
+        action0.date,
+        "days"
+      );
       const slope = (p2! - p1!) / nbDays;
 
       const datas: IData[] = dates.map((date, i) => {
