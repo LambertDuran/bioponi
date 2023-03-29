@@ -67,9 +67,9 @@ export class ComputePool {
       ...data,
       fishNumber: data.fishNumber - nbFish,
       density: (data.density * (data.fishNumber - nbFish)) / data.fishNumber,
-      totalWeight: data.totalWeight - nbFish * data.averageWeight,
+      totalWeight: data.totalWeight - (nbFish * data.averageWeight) / 1000,
       averageWeight:
-        (data.totalWeight - nbFish * data.averageWeight) /
+        (data.totalWeight * 1000 - nbFish * data.averageWeight) /
         (data.fishNumber - nbFish),
     };
   }
@@ -83,9 +83,9 @@ export class ComputePool {
       ...data,
       fishNumber: data.fishNumber + nbFish,
       density: (data.density * (data.fishNumber + nbFish)) / data.fishNumber,
-      totalWeight: data.totalWeight + nbFish * data.averageWeight,
+      totalWeight: data.totalWeight + (nbFish * data.averageWeight) / 1000,
       averageWeight:
-        (data.totalWeight + nbFish * data.averageWeight) /
+        (data.totalWeight * 1000 + nbFish * data.averageWeight) /
         (data.fishNumber + nbFish),
     };
   }
@@ -135,6 +135,90 @@ export class ComputePool {
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
+  // Récupérer la dernière donnée du bassin
+  //////////////////////////////////////////////////////////////////////////////////////////
+  getLastData(index: number): IComputedData {
+    const action0: IAction = this.actions[index];
+    const data0: IData = {
+      date: action0.date,
+      dateFormatted: moment(action0.date).format("DD/MM/YYYY"),
+      averageWeight: action0.averageWeight!,
+      totalWeight: action0.totalWeight!,
+      fishNumber: action0.fishNumber!,
+      lotName: action0.lotName!,
+      actionType: action0.type,
+      actionWeight: action0.totalWeight!,
+      foodWeight: 0,
+      density: action0.totalWeight! / this.poolVolume,
+    };
+
+    // Si aucune donnée et en plus l'action n'est pas une Entrée du lot ou un Transfert
+    // => Erreur: il faut d'abord faire rentrer des poissons
+    if (
+      this.data.length === 0 &&
+      action0.type !== "Entrée du lot" &&
+      action0.type !== "Transfert"
+    )
+      return { error: "Première action non valide", data: null };
+
+    // Si aucune donnée mais qu'on est sur une Entrée du lot par exemple,
+    // => on initialise les données
+    if (this.data.length === 0) {
+      return {
+        error: "",
+        data: data0,
+      };
+    }
+
+    switch (action0.type) {
+      case "Vente":
+      case "Sortie définitive":
+      case "Mortalité":
+        return {
+          error: "",
+          data: {
+            ...this.recomputeDataAfterDecrease(
+              this.data[this.data.length - 1],
+              action0.fishNumber!
+            ),
+            actionType: action0.type,
+            actionWeight: action0.totalWeight!,
+          },
+        };
+      case "Transfert":
+        if (action0.secondPoolId)
+          return {
+            error: "",
+            data: {
+              ...this.recomputeDataAfterDecrease(
+                this.data[this.data.length - 1],
+                action0.fishNumber!
+              ),
+              actionType: action0.type,
+              actionWeight: action0.totalWeight!,
+            },
+          };
+        else
+          return {
+            error: "",
+            data: {
+              ...this.recomputeDataAfterIncrease(
+                this.data[this.data.length - 1],
+                action0.fishNumber!
+              ),
+              actionType: action0.type,
+              actionWeight: action0.totalWeight!,
+            },
+          };
+      default:
+        return {
+          error: "",
+          data: data0,
+        };
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////
   // Calculer les données pour le bassin sur l'intervalle de temps (tous les jours)
   // entre la date de la index-ème action et la date de la (index+1)-ème action
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -142,7 +226,6 @@ export class ComputePool {
     // 0. Initialiser les variables
     const index0 = index;
     const index1 = index + 1;
-    const action0 = this.actions[index0];
     if (index0 < 0 || index1 >= this.actions.length)
       return {
         error: "Index out of range",
@@ -155,62 +238,45 @@ export class ComputePool {
       this.actions[index1].date
     );
 
-    // 2. Récuper les dernières données, c-à-d le dernier IData
-    // IData est vide et la première action n'est pas une entrée de lot ou un transfert => ERREUR
-    if (this.data.length === 0) {
-      if (
-        index0 !== 0 ||
-        (this.actions[0].type !== "Entrée du lot" &&
-          this.actions[0].type !== "Transfert")
-      )
-        return { error: "Première action non valide", data: null };
-      // Sinon, on initialise le tableau de données avec les données de l'entrée du lot
-      else {
-        this.data.push({
-          date: action0.date,
-          dateFormatted: moment(action0.date).format("DD/MM/YYYY"),
-          averageWeight: action0.averageWeight!,
-          totalWeight: action0.totalWeight!,
-          fishNumber: action0.fishNumber!,
-          lotName: action0.lotName!,
-          actionType: action0.type,
-          actionWeight: action0.totalWeight!,
-          foodWeight: 0,
-          density: action0.totalWeight! / this.poolVolume,
-        });
-      }
-    }
+    // 2. Récuper la donnée de la dernière action
+    // qui va être la première donnée à partir de la quelle on va calculer
+    // les autres données sur cette plage de temps
+    // NB: il faut ajouter cette donnée à la liste des données générées
+    const res: IComputedData = this.getLastData(index0);
+    if (res.error) return res;
+    const lastData: IData = res.data! as IData;
+    // console.log("lastData", lastData);
 
     // 3. Récupérer le poids moyen sur le bassin lors de la prochaine Pesée
+    // puis calculer les poids sur l'intervalle de temps
     let nextAverageWeight = { value: 0 };
     if (this.getNextWeight(index1, nextAverageWeight)) {
-      const p1 = action0.averageWeight;
-      const p2 = nextAverageWeight.value;
-      const nbDays = moment(this.actions[index1].date).diff(
-        action0.date,
-        "days"
-      );
-      const slope = (p2! - p1!) / nbDays;
+      const p0 = lastData.averageWeight;
+      const p1 = nextAverageWeight.value;
+      const nbDays = dates.length;
+      const slope = (p1! - p0!) / nbDays;
 
       const datas: IData[] = dates.map((date, i) => {
-        const averageWeight = p1! + slope * date.diff(action0.date, "days");
-        const totalWeight = (averageWeight * action0.fishNumber!) / 1000;
-        const actionType = i === 0 ? action0.type : "";
+        const averageWeight = p0! + slope * date.diff(lastData.date, "days");
+        const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
+        const actionType = i === 0 ? lastData.actionType : "";
         return {
           date: date.toDate(),
           dateFormatted: date.format("DD/MM/YYYY"),
-          fishNumber: action0.fishNumber!,
+          fishNumber: lastData.fishNumber!,
           averageWeight: averageWeight,
           totalWeight: totalWeight,
           density: totalWeight / this.poolVolume,
-          actionType: i === 0 ? action0.type : "",
+          actionType: i === 0 ? lastData.actionType : "",
           actionWeight: fielsWithWeight.includes(actionType)
-            ? action0.totalWeight!
+            ? lastData.totalWeight!
             : 0,
-          lotName: action0.lotName ?? "",
+          lotName: lastData.lotName ?? "",
           foodWeight: 0,
         };
       });
+
+      // console.log("datas", datas);
 
       return {
         error: "",
@@ -234,24 +300,19 @@ export class ComputePool {
   }
 
   computeAllData(): IComputedData {
-    let computedData: IComputedData = {
-      error: "",
-      data: [],
-    };
-
-    // console.log("actions", this.actions);
     for (let i = 0; i < this.actions.length - 1; i++) {
       let dataI = this.computeData(i);
-      if (dataI.error === "" && dataI.data)
-        computedData.data = (computedData.data as IData[]).concat(
-          dataI.data as IData[]
-        );
-      else {
-        computedData.error = dataI.error;
-        break;
-      }
+      if (dataI.error || !dataI.data)
+        return {
+          error: dataI.error,
+          data: null,
+        };
+      this.data = this.data.concat(dataI.data as IData[]);
     }
 
-    return computedData;
+    return {
+      error: "",
+      data: this.data,
+    };
   }
 }
