@@ -167,7 +167,8 @@ export class ComputePool {
   //////////////////////////////////////////////////////////////////////////////////////////
   // Récupérer le poids moyen sur le bassin lors de la prochaine action de type "Pesée"
   //////////////////////////////////////////////////////////////////////////////////////////
-  getNextWeight(index: number, nextAverageWeight: any): boolean {
+  getNextWeightAndDuration(index: number, nextWeight: any): boolean {
+    const date0 = this.actions[index].date;
     let nextAction: IAction = this.actions[index];
 
     // Appliquer la prochaine action
@@ -185,7 +186,8 @@ export class ComputePool {
       index++;
     }
 
-    nextAverageWeight.value = lastData.averageWeight;
+    nextWeight.weight = lastData.averageWeight;
+    nextWeight.nbDays = this.getDates(lastData.date, date0).length;
     return nextAction.type === "Pesée";
   }
 
@@ -243,22 +245,16 @@ export class ComputePool {
   // entre la date de la index-ème action et la date de la (index+1)-ème action
   //////////////////////////////////////////////////////////////////////////////////////////
   computeData(index: number): IComputedData {
-    // 0. Initialiser les variables
-    const index0 = index;
-    const index1 = index + 1;
-    if (index0 < 0 || index1 >= this.actions.length)
+    if (index < 0 || index + 1 >= this.actions.length)
       return {
         error: "Index out of range",
         data: null,
       };
 
-    const action0 = this.actions[index0];
-    const action1 = this.actions[index1];
-
     // 1. Calculer l'échantillon des dates entre les deux actions
     const dates = this.getDates(
-      this.actions[index0].date,
-      this.actions[index1].date
+      this.actions[index].date,
+      this.actions[index + 1].date
     );
 
     // 2. Si aucun écart entre les dates: par exemple même jour
@@ -270,7 +266,7 @@ export class ComputePool {
         data: [
           this.recomputeDataFromAction(
             this.data[this.data.length - 1],
-            action1
+            this.actions[index + 1]
           ),
         ],
       };
@@ -278,24 +274,23 @@ export class ComputePool {
     // 3. Récuper la donnée de la dernière action
     // qui va être la première donnée à partir de la quelle on va calculer
     // les autres données sur cette plage de temps
-    const res: IComputedData = this.getLastData(index0);
+    const res: IComputedData = this.getLastData(index);
     if (res.error) return res;
     const lastData: IData = res.data! as IData;
 
     // 4. Récupérer le poids moyen sur le bassin lors de la prochaine Pesée
     // puis calculer les poids sur l'intervalle de temps
-    let nextAverageWeight = { value: 0 };
-    if (this.getNextWeight(index1, nextAverageWeight)) {
+    let nextWeight = { weight: 0, nbDays: 0 };
+    if (this.getNextWeightAndDuration(index + 1, nextWeight)) {
       const p0 = lastData.averageWeight;
-      const p1 = nextAverageWeight.value;
-      const nbDays = dates.length;
-      console.log("p0", p0);
-      console.log("p1", p1);
-      console.log("nbDays", nbDays);
+      const p1 = nextWeight.weight;
+      // Le nombre de jours entre les deux actions, mais attention, si par exemple il y a Pesée
+      // + Mortalité + Pesée, c'est bien le nombre de jours entre la première et la dernière pesée
+      const nbDays = nextWeight.nbDays;
       const slope = (p1! - p0!) / nbDays;
 
       // On ne rajoute pas le premier élément, il a été rajouté sur l'action précédente
-      // En temps que dernière donnée
+      // En temps que dernière donnée, du coup on enlève la première date
       dates.shift();
 
       const datas: IData[] = dates.map((date) => {
@@ -318,7 +313,10 @@ export class ComputePool {
 
       // Rajouter la dernière donnée, qui sera utilisée pour la prochaine action
       datas.push(
-        this.recomputeDataFromAction(datas[datas.length - 1], action1)
+        this.recomputeDataFromAction(
+          datas[datas.length - 1],
+          this.actions[index + 1]
+        )
       );
 
       return {
