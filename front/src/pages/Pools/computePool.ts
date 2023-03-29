@@ -126,8 +126,12 @@ export class ComputePool {
     if (!lastData) return { error: "Dernière action non valide", data: null };
 
     // 3. Soit la seconde action est une pesée  -> Rien à faire
+    index++;
     let nextAction: IAction = this.actions[index];
-    while (nextAction.type !== "Pesée") {
+    while (nextAction.type !== "Pesée" && index <= this.actions.length - 1) {
+      nextAction = this.actions[index];
+      // console.log("nextAction", nextAction);
+
       // Soit la seconde action est :
       switch (nextAction.type) {
         // -  une mortalité                      -> On réduit le nombre de poissons
@@ -156,9 +160,7 @@ export class ComputePool {
           break;
         }
       }
-
-      if (index < this.actions.length - 2) index++;
-      nextAction = this.actions[index];
+      index++;
     }
 
     // 4. On MAJ les poids entre les deux dernières pesées
@@ -172,7 +174,7 @@ export class ComputePool {
 
       const datas: IData[] = dates.map((date, i) => {
         const averageWeight = p1! + slope * date.diff(action0.date, "days");
-        const totalWeight = averageWeight * action0.fishNumber!;
+        const totalWeight = (averageWeight * action0.fishNumber!) / 1000;
         const actionType = i === 0 ? action0.type : "";
         return {
           date: date.toDate(),

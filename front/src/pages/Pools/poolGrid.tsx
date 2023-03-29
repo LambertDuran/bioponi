@@ -39,6 +39,12 @@ export default function PoolGrid({ datas }: IPoolGrid) {
       renderHeader,
     },
     {
+      field: "totalWeight",
+      headerName: "Masse totale(kg)",
+      flex: 1,
+      renderHeader,
+    },
+    {
       field: "fishNumber",
       headerName: "Nb poissons",
       flex: 1,
@@ -70,7 +76,7 @@ export default function PoolGrid({ datas }: IPoolGrid) {
     },
     {
       field: "density",
-      headerName: "Densité",
+      headerName: "Densité(kg/m³)",
       flex: 1,
       renderHeader,
     },
