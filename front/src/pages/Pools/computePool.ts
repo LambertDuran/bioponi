@@ -44,8 +44,6 @@ export class ComputePool {
           .startOf("millisecond")
           .toDate())
     );
-
-    // console.log("actions", this.actions);
     this.poolVolume = poolVolume;
   }
 
@@ -108,10 +106,6 @@ export class ComputePool {
   //////////////////////////////////////////////////////////////////////////////////////////
   recomputeDataFromAction(lastData: IData, action: IAction): IData {
     let data: IData;
-    // if (action.type === "Mortalité") {
-    //   console.log("date", action.date);
-    //   console.log("moment", moment(action.date).format("DD/MM/YYYY"));
-    // }
     switch (action.type) {
       case "Vente":
       case "Sortie définitive":
@@ -174,43 +168,24 @@ export class ComputePool {
   // Récupérer le poids moyen sur le bassin lors de la prochaine action de type "Pesée"
   //////////////////////////////////////////////////////////////////////////////////////////
   getNextWeight(index: number, nextAverageWeight: any): boolean {
-    let lastData: IData = this.data[this.data.length - 1];
     let nextAction: IAction = this.actions[index];
+
+    // Appliquer la prochaine action
+    let lastData: IData = this.recomputeDataFromAction(
+      this.data[this.data.length - 1],
+      nextAction
+    );
+    index++;
+
+    // Si la prochaine action n'est pas une pesée, on applique les actions en série
+    // jusqu'à tomber sur la prochaine pesée
     while (nextAction.type !== "Pesée" && index <= this.actions.length - 1) {
       nextAction = this.actions[index];
-
-      // Soit la seconde action est :
-      switch (nextAction.type) {
-        // - une mortalité                       -> On réduit le nombre de poissons
-        // - une vente ou une sortie définitive  -> On réduit le nombre de poissons
-        case "Vente":
-        case "Sortie définitive":
-        case "Mortalité":
-          lastData = this.recomputeDataAfterDecrease(
-            lastData,
-            lastData.fishNumber
-          );
-          break;
-        // - un transfert vers le bassin courant -> On augmente le nombre de poissons
-        case "Transfert": {
-          if (nextAction.secondPoolId)
-            lastData = this.recomputeDataAfterDecrease(
-              lastData,
-              lastData.fishNumber
-            );
-          else {
-            lastData = this.recomputeDataAfterIncrease(
-              lastData,
-              lastData.fishNumber
-            );
-          }
-          break;
-        }
-      }
+      lastData = this.recomputeDataFromAction(lastData, nextAction);
       index++;
     }
 
-    nextAverageWeight.value = nextAction.averageWeight;
+    nextAverageWeight.value = lastData.averageWeight;
     return nextAction.type === "Pesée";
   }
 
@@ -251,7 +226,6 @@ export class ComputePool {
     // => on initialise les données
     if (this.data.length === 0) {
       this.data.push(data0);
-      // console.log("data0", data0);
       return {
         error: "",
         data: data0,
@@ -307,7 +281,6 @@ export class ComputePool {
     const res: IComputedData = this.getLastData(index0);
     if (res.error) return res;
     const lastData: IData = res.data! as IData;
-    // console.log("lastData", lastData);
 
     // 4. Récupérer le poids moyen sur le bassin lors de la prochaine Pesée
     // puis calculer les poids sur l'intervalle de temps
@@ -316,35 +289,20 @@ export class ComputePool {
       const p0 = lastData.averageWeight;
       const p1 = nextAverageWeight.value;
       const nbDays = dates.length;
+      console.log("p0", p0);
+      console.log("p1", p1);
+      console.log("nbDays", nbDays);
       const slope = (p1! - p0!) / nbDays;
-      // console.log("action0", action0);
-      // console.log("action1", action1);
-      // console.log("index1", index1);
-      // console.log("p0", p0);
-      // console.log("p1", p1);
-      // console.log("nbDays", nbDays);
-      // console.log("slope", slope);
-      // console.log("index0", index0);
-      // dates.map((d) => {
-      //   console.log("d : ", d.format("DD/MM/YYYY"));
-      // });
 
       // On ne rajoute pas le premier élément, il a été rajouté sur l'action précédente
       // En temps que dernière donnée
       dates.shift();
 
-      // console.log("lastData", lastData);
       const datas: IData[] = dates.map((date) => {
         const diffDays = date.diff(lastData.date, "days");
-        // console.log("date", date.format("DD/MM/YYYY"));
-        // console.log("diffDays", diffDays);
         const averageWeight = p0! + slope * diffDays;
         const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
-
-        // console.log("date (moment)", date.format("DD/MM/YYYY"));
-        // console.log("date.toDate()", date.toDate());
-
-        const data = {
+        return {
           date: date.toDate(),
           dateFormatted: date.format("DD/MM/YYYY"),
           fishNumber: lastData.fishNumber!,
@@ -356,15 +314,9 @@ export class ComputePool {
           lotName: lastData.lotName ?? "",
           foodWeight: 0,
         };
-        // console.log("data", data);
-
-        return data;
       });
 
       // Rajouter la dernière donnée, qui sera utilisée pour la prochaine action
-      // console.log("date - action1", action1.date);
-      let data = this.recomputeDataFromAction(datas[datas.length - 1], action1);
-      // console.log("data", data);
       datas.push(
         this.recomputeDataFromAction(datas[datas.length - 1], action1)
       );
@@ -389,7 +341,6 @@ export class ComputePool {
   computeAllData(): IComputedData {
     for (let i = 0; i < this.actions.length - 1; i++) {
       let dataI = this.computeData(i);
-      // console.log("dataI", dataI);
       if (dataI.error || !dataI.data)
         return {
           error: dataI.error,
