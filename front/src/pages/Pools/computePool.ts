@@ -34,6 +34,18 @@ export class ComputePool {
 
   constructor(actions: IAction[], poolVolume: number) {
     this.actions = orderBy(actions, ["date"], ["asc"]);
+    this.actions.forEach(
+      (a) =>
+        (a.date = moment(a.date)
+          .startOf("day")
+          .startOf("hour")
+          .startOf("minute")
+          .startOf("second")
+          .startOf("millisecond")
+          .toDate())
+    );
+
+    // console.log("actions", this.actions);
     this.poolVolume = poolVolume;
   }
 
@@ -96,12 +108,17 @@ export class ComputePool {
   //////////////////////////////////////////////////////////////////////////////////////////
   recomputeDataFromAction(lastData: IData, action: IAction): IData {
     let data: IData;
+    // if (action.type === "Mortalité") {
+    //   console.log("date", action.date);
+    //   console.log("moment", moment(action.date).format("DD/MM/YYYY"));
+    // }
     switch (action.type) {
       case "Vente":
       case "Sortie définitive":
       case "Mortalité":
         data = {
           ...this.recomputeDataAfterDecrease(lastData, action.fishNumber!),
+          dateFormatted: moment(action.date).format("DD/MM/YYYY"),
           actionType: action.type,
           actionWeight: action.totalWeight!,
         };
@@ -110,30 +127,45 @@ export class ComputePool {
         if (action.secondPoolId)
           data = {
             ...this.recomputeDataAfterDecrease(lastData, action.fishNumber!),
+            dateFormatted: moment(action.date).format("DD/MM/YYYY"),
             actionType: action.type,
             actionWeight: action.totalWeight!,
           };
         else
           data = {
             ...this.recomputeDataAfterIncrease(lastData, action.fishNumber!),
+            dateFormatted: moment(action.date).format("DD/MM/YYYY"),
             actionType: action.type,
             actionWeight: action.totalWeight!,
           };
         break;
-      default:
+      case "Pesée":
         data = {
-          date: action.date,
+          ...lastData,
           dateFormatted: moment(action.date).format("DD/MM/YYYY"),
-          averageWeight: action.averageWeight!,
-          totalWeight: action.totalWeight!,
-          fishNumber: action.fishNumber!,
-          lotName: action.lotName!,
           actionType: action.type,
-          actionWeight: action.totalWeight!,
-          foodWeight: 0,
+          averageWeight: (action.totalWeight! / lastData.fishNumber!) * 1000,
+          totalWeight: action.totalWeight!,
           density: action.totalWeight! / this.poolVolume,
         };
         break;
+      case "Entrée du lot":
+        data = {
+          ...lastData,
+          dateFormatted: moment(action.date).format("DD/MM/YYYY"),
+          actionType: action.type,
+          fishNumber: lastData.fishNumber! + action.fishNumber!,
+          totalWeight: lastData.totalWeight! + action.totalWeight!,
+          averageWeight:
+            ((lastData.totalWeight! + action.totalWeight!) /
+              (lastData.fishNumber! + action.fishNumber!)) *
+            1000,
+          density:
+            (lastData.totalWeight! + action.totalWeight!) / this.poolVolume,
+        };
+        break;
+      default:
+        data = { ...lastData };
     }
     return data;
   }
@@ -219,6 +251,7 @@ export class ComputePool {
     // => on initialise les données
     if (this.data.length === 0) {
       this.data.push(data0);
+      // console.log("data0", data0);
       return {
         error: "",
         data: data0,
@@ -291,19 +324,25 @@ export class ComputePool {
       // console.log("p1", p1);
       // console.log("nbDays", nbDays);
       // console.log("slope", slope);
-      // console.log("dates", dates);
+      // console.log("index0", index0);
+      // dates.map((d) => {
+      //   console.log("d : ", d.format("DD/MM/YYYY"));
+      // });
 
       // On ne rajoute pas le premier élément, il a été rajouté sur l'action précédente
       // En temps que dernière donnée
       dates.shift();
 
-      console.log("lastData", lastData);
+      // console.log("lastData", lastData);
       const datas: IData[] = dates.map((date) => {
         const diffDays = date.diff(lastData.date, "days");
-        console.log("date", date.format("DD/MM/YYYY"));
-        console.log("diffDays", diffDays);
+        // console.log("date", date.format("DD/MM/YYYY"));
+        // console.log("diffDays", diffDays);
         const averageWeight = p0! + slope * diffDays;
         const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
+
+        // console.log("date (moment)", date.format("DD/MM/YYYY"));
+        // console.log("date.toDate()", date.toDate());
 
         const data = {
           date: date.toDate(),
@@ -323,6 +362,9 @@ export class ComputePool {
       });
 
       // Rajouter la dernière donnée, qui sera utilisée pour la prochaine action
+      // console.log("date - action1", action1.date);
+      let data = this.recomputeDataFromAction(datas[datas.length - 1], action1);
+      // console.log("data", data);
       datas.push(
         this.recomputeDataFromAction(datas[datas.length - 1], action1)
       );
@@ -337,10 +379,6 @@ export class ComputePool {
     // => on doit utiliser la courbe de croissance théorique du poisson
     else {
     }
-
-    // dates.forEach((date) => {
-    //   console.log(date.format("DD/MM/YYYY"));
-    // });
 
     return {
       error: "",
