@@ -91,6 +91,54 @@ export class ComputePool {
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
+  // Recalculer la donnée au jour J à partir de la donnée J-1
+  // Traite tous les cas possibles: "Entrée du lot", "Pesée", "Vente", "Mortalité", "Transfert"
+  //////////////////////////////////////////////////////////////////////////////////////////
+  recomputeDataFromAction(lastData: IData, action: IAction): IData {
+    let data: IData;
+    switch (action.type) {
+      case "Vente":
+      case "Sortie définitive":
+      case "Mortalité":
+        data = {
+          ...this.recomputeDataAfterDecrease(lastData, action.fishNumber!),
+          actionType: action.type,
+          actionWeight: action.totalWeight!,
+        };
+        break;
+      case "Transfert":
+        if (action.secondPoolId)
+          data = {
+            ...this.recomputeDataAfterDecrease(lastData, action.fishNumber!),
+            actionType: action.type,
+            actionWeight: action.totalWeight!,
+          };
+        else
+          data = {
+            ...this.recomputeDataAfterIncrease(lastData, action.fishNumber!),
+            actionType: action.type,
+            actionWeight: action.totalWeight!,
+          };
+        break;
+      default:
+        data = {
+          date: action.date,
+          dateFormatted: moment(action.date).format("DD/MM/YYYY"),
+          averageWeight: action.averageWeight!,
+          totalWeight: action.totalWeight!,
+          fishNumber: action.fishNumber!,
+          lotName: action.lotName!,
+          actionType: action.type,
+          actionWeight: action.totalWeight!,
+          foodWeight: 0,
+          density: action.totalWeight! / this.poolVolume,
+        };
+        break;
+    }
+    return data;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////
   // Récupérer le poids moyen sur le bassin lors de la prochaine action de type "Pesée"
   //////////////////////////////////////////////////////////////////////////////////////////
   getNextWeight(index: number, nextAverageWeight: any): boolean {
@@ -170,52 +218,10 @@ export class ComputePool {
       };
     }
 
-    switch (action0.type) {
-      case "Vente":
-      case "Sortie définitive":
-      case "Mortalité":
-        return {
-          error: "",
-          data: {
-            ...this.recomputeDataAfterDecrease(
-              this.data[this.data.length - 1],
-              action0.fishNumber!
-            ),
-            actionType: action0.type,
-            actionWeight: action0.totalWeight!,
-          },
-        };
-      case "Transfert":
-        if (action0.secondPoolId)
-          return {
-            error: "",
-            data: {
-              ...this.recomputeDataAfterDecrease(
-                this.data[this.data.length - 1],
-                action0.fishNumber!
-              ),
-              actionType: action0.type,
-              actionWeight: action0.totalWeight!,
-            },
-          };
-        else
-          return {
-            error: "",
-            data: {
-              ...this.recomputeDataAfterIncrease(
-                this.data[this.data.length - 1],
-                action0.fishNumber!
-              ),
-              actionType: action0.type,
-              actionWeight: action0.totalWeight!,
-            },
-          };
-      default:
-        return {
-          error: "",
-          data: data0,
-        };
-    }
+    return {
+      error: "",
+      data: this.data[this.data.length - 1],
+    };
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -232,16 +238,32 @@ export class ComputePool {
         data: null,
       };
 
+    const action0 = this.actions[index0];
+    const action1 = this.actions[index1];
+
     // 1. Calculer l'échantillon des dates entre les deux actions
     const dates = this.getDates(
       this.actions[index0].date,
       this.actions[index1].date
     );
 
-    // 2. Récuper la donnée de la dernière action
+    // 2. Si aucun écart entre les dates: par exemple même jour
+    // => Pesée + Mortalité
+    // => Retourne juste la donnée au jour J
+    if (dates.length === 0)
+      return {
+        error: "",
+        data: [
+          this.recomputeDataFromAction(
+            this.data[this.data.length - 1],
+            action1
+          ),
+        ],
+      };
+
+    // 3. Récuper la donnée de la dernière action
     // qui va être la première donnée à partir de la quelle on va calculer
     // les autres données sur cette plage de temps
-    // NB: il faut ajouter cette donnée à la liste des données générées
     const res: IComputedData = this.getLastData(index0);
     if (res.error) return res;
     const lastData: IData = res.data! as IData;
@@ -255,12 +277,21 @@ export class ComputePool {
       const p1 = nextAverageWeight.value;
       const nbDays = dates.length;
       const slope = (p1! - p0!) / nbDays;
+      // console.log("action0", action0);
+      // console.log("action1", action1);
+      // console.log("index1", index1);
+      // console.log("p0", p0);
+      // console.log("p1", p1);
+      // console.log("nbDays", nbDays);
+      // console.log("slope", slope);
+      // console.log("dates", dates);
 
       const datas: IData[] = dates.map((date, i) => {
         const averageWeight = p0! + slope * date.diff(lastData.date, "days");
         const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
         const actionType = i === 0 ? lastData.actionType : "";
-        return {
+
+        const data = {
           date: date.toDate(),
           dateFormatted: date.format("DD/MM/YYYY"),
           fishNumber: lastData.fishNumber!,
@@ -274,9 +305,68 @@ export class ComputePool {
           lotName: lastData.lotName ?? "",
           foodWeight: 0,
         };
+        // console.log("data", data);
+
+        return data;
       });
 
-      // console.log("datas", datas);
+      if (index > 0) {
+        let data: IData;
+        switch (action1.type) {
+          case "Vente":
+          case "Sortie définitive":
+          case "Mortalité":
+            data = {
+              ...this.recomputeDataAfterDecrease(
+                datas[datas.length - 1],
+                action1.fishNumber!
+              ),
+              actionType: action1.type,
+              actionWeight: action1.totalWeight!,
+            };
+            break;
+          case "Transfert":
+            if (action1.secondPoolId)
+              data = {
+                ...this.recomputeDataAfterDecrease(
+                  datas[datas.length - 1],
+                  action1.fishNumber!
+                ),
+                actionType: action1.type,
+                actionWeight: action1.totalWeight!,
+              };
+            else
+              data = {
+                ...this.recomputeDataAfterIncrease(
+                  datas[datas.length - 1],
+                  action1.fishNumber!
+                ),
+                actionType: action1.type,
+                actionWeight: action1.totalWeight!,
+              };
+            break;
+          default:
+            data = {
+              date: action1.date,
+              dateFormatted: moment(action1.date).format("DD/MM/YYYY"),
+              averageWeight: action1.averageWeight!,
+              totalWeight: action1.totalWeight!,
+              fishNumber: action1.fishNumber!,
+              lotName: action1.lotName!,
+              actionType: action1.type,
+              actionWeight: action1.totalWeight!,
+              foodWeight: 0,
+              density: action1.totalWeight! / this.poolVolume,
+            };
+            break;
+        }
+
+        // console.log("data last - ", data);
+
+        datas.push(data);
+
+        // console.log("datas", datas);
+      }
 
       return {
         error: "",
@@ -302,6 +392,7 @@ export class ComputePool {
   computeAllData(): IComputedData {
     for (let i = 0; i < this.actions.length - 1; i++) {
       let dataI = this.computeData(i);
+      // console.log("dataI", dataI);
       if (dataI.error || !dataI.data)
         return {
           error: dataI.error,
