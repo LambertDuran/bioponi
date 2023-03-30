@@ -85,9 +85,13 @@ export default function Pools() {
           </select>
         </div>
         <div style={actionGridStyle}>
+          <div className="pools_titles">Historique des actions : </div>
           {selectedPool && <ActionsGgrid actions={selectedPool.action!} />}
         </div>
-        <div style={dataGridStyle}>{datas && <PoolGrid datas={datas} />}</div>
+        <div style={dataGridStyle}>
+          <div className="pools_titles">Evolution du bassin :</div>
+          {datas && <PoolGrid datas={datas} />}
+        </div>
       </div>
     );
 }

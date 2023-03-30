@@ -1,5 +1,11 @@
 import { IData } from "./computePool";
-import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridRowsProp,
+  GridColDef,
+  GridCellParams,
+} from "@mui/x-data-grid";
+import { actionList } from "../Diary/diary";
 
 const renderHeader = (params: any) => (
   <strong className="colHeaderGrid">{params.colDef.headerName}</strong>
@@ -19,7 +25,7 @@ export default function PoolGrid({ datas }: IPoolGrid) {
       fishNumber: d.fishNumber,
       lotName: d.lotName,
       actionType: d.actionType,
-      actionWeight: d.actionWeight.toFixed(2),
+      actionWeight: d.actionWeight > 0 ? d.actionWeight.toFixed(2) : "",
       foodWeight: d.foodWeight.toFixed(2),
       density: d.density.toFixed(2),
     };
@@ -61,16 +67,28 @@ export default function PoolGrid({ datas }: IPoolGrid) {
       headerName: "Action",
       flex: 1,
       renderHeader,
+      cellClassName: (params: GridCellParams<any>) => {
+        if (params.value === actionList[0]) return "actionsGrid_type_entrance";
+        else if (params.value === actionList[1])
+          return "actionsGrid_type_weight";
+        else if (params.value === actionList[2]) return "actionsGrid_type_sale";
+        else if (params.value === actionList[3])
+          return "actionsGrid_type_transfer";
+        else if (params.value === actionList[4]) return "actionsGrid_type_exit";
+        else if (params.value === actionList[5])
+          return "actionsGrid_type_death";
+        else return "";
+      },
     },
     {
-      field: "action Weight",
+      field: "actionWeight",
       headerName: "Poids action(g)",
       flex: 1,
       renderHeader,
     },
     {
-      field: "Quantité aliment (kg)",
-      headerName: "",
+      field: "foodWeight",
+      headerName: "Quantité aliment (kg)",
       flex: 1,
       renderHeader,
     },
