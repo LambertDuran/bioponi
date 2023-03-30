@@ -17,12 +17,12 @@ export default function Pools() {
   const [dataType, setDataType] = useState<string>("averageWeight");
 
   const dataGridStyle = {
-    margin: "1em",
+    marginBottom: "5em",
     height: `${58 + (datas ? datas.length * 25 : 0)}px`,
   };
 
   const actionGridStyle = {
-    margin: "1em",
+    marginBottom: "5em",
     height: `${
       58 +
       (selectedPool?.action?.length ? selectedPool?.action?.length * 25 : 0)
