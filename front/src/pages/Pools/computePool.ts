@@ -79,8 +79,10 @@ export class ComputePool {
       density: (data.density * (data.fishNumber - nbFish)) / data.fishNumber,
       totalWeight: data.totalWeight - (nbFish * data.averageWeight) / 1000,
       averageWeight:
-        (data.totalWeight * 1000 - nbFish * data.averageWeight) /
-        (data.fishNumber - nbFish),
+        data.fishNumber - nbFish <= 0
+          ? 0
+          : (data.totalWeight * 1000 - nbFish * data.averageWeight) /
+            (data.fishNumber - nbFish),
     };
   }
 

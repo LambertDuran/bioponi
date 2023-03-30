@@ -2,20 +2,31 @@ import { useEffect, useState } from "react";
 import { getAllPool } from "../../services/pool";
 import IPool from "../../interfaces/pool";
 import { IData, ComputePool } from "./computePool";
+import PoolGrid from "./poolGrid";
+import ActionsGgrid from "../Diary/actionsGrid";
 import { toast } from "react-toastify";
 import "./pools.css";
-import PoolGrid from "./poolGrid";
 
 export default function Pools() {
   const [pools, setPools] = useState<IPool[]>([]);
   const [selectedPool, setSelectedPool] = useState<IPool | null>(null);
   const [datas, setDatas] = useState<IData[] | null>(null);
 
-  const gridStyle = {
+  const dataGridStyle = {
     width: "97%",
     padding: "0 1em 2em 1em",
     marginTop: "1em",
     height: `${58 + (datas ? datas.length * 25 : 0)}px`,
+  };
+
+  const actionGridStyle = {
+    width: "97%",
+    padding: "0 1em 2em 1em",
+    marginTop: "1em",
+    height: `${
+      58 +
+      (selectedPool?.action?.length ? selectedPool?.action?.length * 25 : 0)
+    }px`,
   };
 
   useEffect(() => {
@@ -73,7 +84,10 @@ export default function Pools() {
             ))}
           </select>
         </div>
-        <div style={gridStyle}>{datas && <PoolGrid datas={datas} />}</div>
+        <div style={actionGridStyle}>
+          {selectedPool && <ActionsGgrid actions={selectedPool.action!} />}
+        </div>
+        <div style={dataGridStyle}>{datas && <PoolGrid datas={datas} />}</div>
       </div>
     );
 }

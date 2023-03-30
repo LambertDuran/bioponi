@@ -16,8 +16,8 @@ const renderHeader = (params: any) => (
 
 interface IActionGrid {
   actions: IAction[];
-  setAction: (action: IAction | null) => void;
-  setOpenRemove: (open: boolean) => void;
+  setAction?: (action: IAction | null) => void;
+  setOpenRemove?: (open: boolean) => void;
 }
 
 export default function ActionsGgrid({
@@ -30,7 +30,7 @@ export default function ActionsGgrid({
       id: a.id,
       action: a.type,
       date: moment(a.date).locale("fr").format("Do MMM YYYY"),
-      pool: a.pool.number,
+      pool: a.pool?.number,
       fish: a.fish?.name,
       totalWeight: a.totalWeight,
       averageWeight: a.averageWeight,
@@ -40,8 +40,9 @@ export default function ActionsGgrid({
     };
   });
 
-  const colHeaders: GridColDef[] = [
-    {
+  let colHeaders: GridColDef[] = [];
+  if (setOpenRemove)
+    colHeaders.push({
       field: "Effacer",
       headerName: "Effacer",
       flex: 0.4,
@@ -50,13 +51,14 @@ export default function ActionsGgrid({
         <i
           className="fas fa-trash actionsGrid_delete"
           onClick={() => {
-            setOpenRemove(true);
-            setAction(actions.find((a) => a.id === params.row.id)!);
+            setOpenRemove!(true);
+            setAction!(actions.find((a) => a.id === params.row.id)!);
           }}
         ></i>
       ),
-    },
-    {
+    });
+  if (setAction)
+    colHeaders.push({
       field: "Editer",
       headerName: "Editer",
       flex: 0.4,
@@ -64,12 +66,14 @@ export default function ActionsGgrid({
       renderCell: (params: GridCellParams<any>) => (
         <i
           className="fas fa-edit actionsGrid_modify"
-          onClick={() =>
-            setAction(actions.find((a) => a.id === params.row.id)!)
-          }
+          onClick={() => {
+            setAction!(actions.find((a) => a.id === params.row.id)!);
+          }}
         ></i>
       ),
-    },
+    });
+
+  colHeaders = colHeaders.concat([
     {
       field: "date",
       headerName: "Date",
@@ -136,7 +140,7 @@ export default function ActionsGgrid({
       flex: 1,
       renderHeader,
     },
-  ];
+  ]);
 
   return (
     <DataGrid
