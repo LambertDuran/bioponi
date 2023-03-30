@@ -7,6 +7,20 @@ async function getAllFood() {
   return allFood;
 }
 
+async function getFood(id: number) {
+  let food: IFood | null = null;
+  let error = "";
+  return http
+    .get(apiUrls.foodEndpoint + `/${id}`)
+    .then((res) => {
+      return { food: res.data, error: error };
+    })
+    .catch((err) => {
+      error = err.response.data;
+      return { food: food, error: error };
+    });
+}
+
 async function postFood(food: IFood) {
   let newFood: IFood | null = null;
   let error = "";
@@ -35,4 +49,4 @@ async function putFood(food: IFood) {
     });
 }
 
-export { getAllFood, postFood, putFood };
+export { getAllFood, getFood, postFood, putFood };

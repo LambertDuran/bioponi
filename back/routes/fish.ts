@@ -15,6 +15,19 @@ router.get("/", async (req: Request, res: Response) => {
   res.json(fish);
 });
 
+router.get("/:id", async (req: Request, res: Response) => {
+  const fish = await prisma.fish.findFirst({
+    where: {
+      id: parseInt(req.params.id),
+    },
+    include: {
+      food: true,
+    },
+  });
+  if (!fish) return res.status(404).send("Poisson non trouvé!");
+  res.json(fish);
+});
+
 router.post("/", async (req: Request, res: Response) => {
   const { error } = validateFish(req.body);
   if (error) return res.status(400).send(error.details[0].message);

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getAllPool } from "../../services/pool";
+import { getFoodFromFish } from "../../services/fish";
 import IPool from "../../interfaces/pool";
+import IAction from "../../interfaces/action";
 import { IData, ComputePool } from "./computePool";
 import PoolGrid from "./poolGrid";
 import ActionsGgrid from "../Diary/actionsGrid";
@@ -43,16 +45,37 @@ export default function Pools() {
   }, [pools]);
 
   useEffect(() => {
-    if (selectedPool) {
+    async function getDatas() {
+      if (!selectedPool) return;
+
+      const actionWithFishId = selectedPool.action!.find(
+        (a: IAction) => a.fishId !== null
+      );
+
+      if (!actionWithFishId) {
+        toast.error("Impossible de récupérer l'aliment utilisé pour ce bassin");
+        return;
+      }
+      const food = await getFoodFromFish(actionWithFishId.fishId!);
+      if (!food || !food.food) {
+        toast.error(food.error);
+        return;
+      }
+      console.log("food", food);
+
       const compute = new ComputePool(
         selectedPool.action!,
-        selectedPool.volume
+        selectedPool.volume,
+        food.food.foodRates
       );
+
       const resComputation = compute.computeAllData();
       if (resComputation.error) toast.error(resComputation.error);
       else if (resComputation.data) setDatas(resComputation.data as IData[]);
       else toast.error("Erreur inconnue");
     }
+
+    getDatas();
   }, [selectedPool]);
 
   if (!pools.length)

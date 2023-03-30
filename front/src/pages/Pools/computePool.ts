@@ -31,8 +31,9 @@ export class ComputePool {
   actions: IAction[] = [];
   data: IData[] = [];
   poolVolume: number = 0;
+  foodRates: number[] = [];
 
-  constructor(actions: IAction[], poolVolume: number) {
+  constructor(actions: IAction[], poolVolume: number, foodRates: number[]) {
     this.actions = orderBy(actions, ["date"], ["asc"]);
     this.actions.forEach(
       (a) =>
@@ -45,6 +46,7 @@ export class ComputePool {
           .toDate())
     );
     this.poolVolume = poolVolume;
+    this.foodRates = foodRates;
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////

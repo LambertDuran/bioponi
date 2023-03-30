@@ -11,6 +11,16 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   res.json(food);
 });
 
+router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+  const food = await prisma.food.findFirst({
+    where: {
+      id: parseInt(req.params.id),
+    },
+  });
+  if (!food) return res.status(404).send("Food not found!");
+  res.json(food);
+});
+
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   const { error } = validateFood(req.body);
   if (error) return res.status(400).send(error.details[0].message);
