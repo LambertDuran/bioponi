@@ -61,12 +61,11 @@ export default function Pools() {
         toast.error(food.error);
         return;
       }
-      console.log("food", food);
 
       const compute = new ComputePool(
         selectedPool.action!,
         selectedPool.volume,
-        food.food.foodRates
+        food.food
       );
 
       const resComputation = compute.computeAllData();

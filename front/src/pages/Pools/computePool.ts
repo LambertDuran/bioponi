@@ -1,4 +1,5 @@
 import IAction from "../../interfaces/action";
+import Food from "../../interfaces/food";
 import moment from "moment";
 import { orderBy } from "lodash";
 
@@ -31,9 +32,9 @@ export class ComputePool {
   actions: IAction[] = [];
   data: IData[] = [];
   poolVolume: number = 0;
-  foodRates: number[] = [];
+  food: Food | null = null;
 
-  constructor(actions: IAction[], poolVolume: number, foodRates: number[]) {
+  constructor(actions: IAction[], poolVolume: number, food: Food) {
     this.actions = orderBy(actions, ["date"], ["asc"]);
     this.actions.forEach(
       (a) =>
@@ -46,7 +47,7 @@ export class ComputePool {
           .toDate())
     );
     this.poolVolume = poolVolume;
-    this.foodRates = foodRates;
+    this.food = food;
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -71,20 +72,39 @@ export class ComputePool {
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
+  // Caculer le poids de la nourriture en fonction de la masse totale des poissons
+  //////////////////////////////////////////////////////////////////////////////////////////
+  getFoodWeight(averageWeight: number, totalWeight: number): number {
+    let foodWeight = 0;
+    if (!this.food) return foodWeight;
+
+    for (let i = 0; i < this.food.tos.length; i++) {
+      if (averageWeight < this.food.tos[i]) {
+        foodWeight = (this.food!.foodRates[i] * totalWeight) / 100;
+        break;
+      }
+    }
+
+    return foodWeight;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////
   // Calculer les données pour le bassin après une action de type "Vente", "Mortalité",
   // "Sortie définitive" ou "Transfert" mais vers un autre bassin
   //////////////////////////////////////////////////////////////////////////////////////////
   recomputeDataAfterDecrease(data: IData, nbFish: number): IData {
+    const totalWeight = data.totalWeight - (nbFish * data.averageWeight) / 1000;
+    const averageWeight =
+      data.fishNumber - nbFish <= 0
+        ? 0
+        : (totalWeight / (data.fishNumber - nbFish)) * 1000;
     return {
       ...data,
       fishNumber: data.fishNumber - nbFish,
       density: (data.density * (data.fishNumber - nbFish)) / data.fishNumber,
-      totalWeight: data.totalWeight - (nbFish * data.averageWeight) / 1000,
-      averageWeight:
-        data.fishNumber - nbFish <= 0
-          ? 0
-          : (data.totalWeight * 1000 - nbFish * data.averageWeight) /
-            (data.fishNumber - nbFish),
+      totalWeight: totalWeight,
+      averageWeight: averageWeight,
+      foodWeight: this.getFoodWeight(averageWeight, totalWeight),
     };
   }
 
@@ -93,14 +113,15 @@ export class ComputePool {
   // "Transfert" vers le bassin courant
   //////////////////////////////////////////////////////////////////////////////////////////
   recomputeDataAfterIncrease(data: IData, nbFish: number): IData {
+    const totalWeight = data.totalWeight + (nbFish * data.averageWeight) / 1000;
+    const averageWeight = (totalWeight / (data.fishNumber + nbFish)) * 1000;
     return {
       ...data,
       fishNumber: data.fishNumber + nbFish,
       density: (data.density * (data.fishNumber + nbFish)) / data.fishNumber,
-      totalWeight: data.totalWeight + (nbFish * data.averageWeight) / 1000,
-      averageWeight:
-        (data.totalWeight * 1000 + nbFish * data.averageWeight) /
-        (data.fishNumber + nbFish),
+      totalWeight: totalWeight,
+      averageWeight: averageWeight,
+      foodWeight: this.getFoodWeight(averageWeight, totalWeight),
     };
   }
 
@@ -215,7 +236,10 @@ export class ComputePool {
       lotName: action0.lotName!,
       actionType: action0.type,
       actionWeight: action0.totalWeight!,
-      foodWeight: 0,
+      foodWeight: this.getFoodWeight(
+        action0.averageWeight!,
+        action0.totalWeight!
+      ),
       density: action0.totalWeight! / this.poolVolume,
     };
 
@@ -311,7 +335,7 @@ export class ComputePool {
           actionType: "",
           actionWeight: 0,
           lotName: lastData.lotName ?? "",
-          foodWeight: 0,
+          foodWeight: this.getFoodWeight(averageWeight, totalWeight),
         };
       });
 

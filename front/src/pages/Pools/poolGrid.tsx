@@ -82,7 +82,7 @@ export default function PoolGrid({ datas }: IPoolGrid) {
     },
     {
       field: "actionWeight",
-      headerName: "Poids action(g)",
+      headerName: "Poids action(kg)",
       flex: 1,
       renderHeader,
     },
