@@ -106,6 +106,8 @@ export default function PoolGrid({ datas }: IPoolGrid) {
       columns={colHeaders}
       rowHeight={25}
       hideFooter={true}
+      autoHeight
+      disableVirtualization
     />
   );
 }

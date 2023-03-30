@@ -1,5 +1,8 @@
 .poolChart_dataType{
+    position: absolute;
+    right: 1.5em;
     font-weight: 500; 
-    width: 150px;
-    border-radius: 10px;
+    width: 160px;
+    cursor: pointer;
+    border: 0;
 }

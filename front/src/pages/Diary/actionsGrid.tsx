@@ -148,6 +148,8 @@ export default function ActionsGgrid({
       columns={colHeaders}
       rowHeight={25}
       hideFooter={true}
+      autoHeight
+      disableVirtualization
     />
   );
 }

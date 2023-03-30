@@ -46,7 +46,9 @@ export default function PoolChart({
     datasets: [
       {
         label: title,
-        data: datas.map((d) => d[dataType as keyof IData]),
+        data: datas.map((d) =>
+          d[dataType as keyof IData] > 0 ? d[dataType as keyof IData] : null
+        ),
         borderColor: "rgb(50, 205, 50)",
         backgroundColor: "rgba(50, 205, 50, 0.5)",
         tension: 0.5,
