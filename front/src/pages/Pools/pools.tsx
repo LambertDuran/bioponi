@@ -8,6 +8,14 @@ import PoolGrid from "./poolGrid";
 import PoolChart from "./poolChart";
 import ActionsGgrid from "../Diary/actionsGrid";
 import { toast } from "react-toastify";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  Collapse,
+} from "@mui/material";
+import { colors } from "../../components/button";
 import "./pools.css";
 
 export default function Pools() {
@@ -105,23 +113,50 @@ export default function Pools() {
           </select>
         </div>
         <div className="pools_grid">
-          <div style={actionGridStyle}>
-            <div className="pools_titles">Historique des actions : </div>
-            {selectedPool && <ActionsGgrid actions={selectedPool.action!} />}
-          </div>
-          <div style={dataGridStyle}>
-            <div className="pools_titles">Evolution du bassin :</div>
-            {datas && <PoolGrid datas={datas} />}
-          </div>
-          <div className="pools_chart">
-            {datas && (
-              <PoolChart
-                datas={datas}
-                dataType={dataType}
-                setDataType={setDataType}
-              />
-            )}
-          </div>
+          <Accordion TransitionComponent={Collapse} className="pools_accordion">
+            <AccordionSummary
+              style={{ backgroundColor: colors[1], borderRadius: "10px" }}
+            >
+              <Typography>Historique des actions</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div style={actionGridStyle}>
+                {selectedPool && (
+                  <ActionsGgrid actions={selectedPool.action!} />
+                )}
+              </div>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion TransitionComponent={Collapse} className="pools_accordion">
+            <AccordionSummary
+              style={{ backgroundColor: colors[2], borderRadius: "10px" }}
+            >
+              <Typography>Evolution du bassin</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div style={dataGridStyle}>
+                {datas && <PoolGrid datas={datas} />}
+              </div>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion TransitionComponent={Collapse} className="pools_accordion">
+            <AccordionSummary
+              style={{ backgroundColor: colors[3], borderRadius: "10px" }}
+            >
+              <Typography>Représentation graphique</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div className="pools_chart">
+                {datas && (
+                  <PoolChart
+                    datas={datas}
+                    dataType={dataType}
+                    setDataType={setDataType}
+                  />
+                )}
+              </div>
+            </AccordionDetails>
+          </Accordion>
         </div>
       </div>
     );

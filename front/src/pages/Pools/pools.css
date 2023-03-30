@@ -13,16 +13,8 @@
 .pools select{
     margin-left: 1em;
     width: 5em;
-    border: 1px solid black;
-    background-color: #f6bd41;
+    border: 1px solid #7991bd;
     border-radius: 10px;
-}
-
-.pools_titles{
-    margin: 1em 1em 1em 1em;
-    font-weight: 500;
-    font-size: larger;
-    text-decoration: underline;
 }
 
 .pools_chart{
@@ -31,4 +23,9 @@
 
 .pools_grid{
     margin-left: 1em;
+}
+
+.pools_accordion{
+    margin-bottom: 1em;
+    border-radius: 10px;
 }
