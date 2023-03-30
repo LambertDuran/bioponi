@@ -8,7 +8,7 @@
     margin: 1em;
 }
 
-.pools_container select{
+.pools select{
     margin-left: 1em;
     width: 5em;
     border: 1px solid black;
@@ -21,4 +21,8 @@
     font-weight: 500;
     font-size: larger;
     text-decoration: underline;
+}
+
+.pools_chart{
+    margin: 4em 0 4em 0;
 }

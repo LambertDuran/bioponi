@@ -5,6 +5,7 @@ import IPool from "../../interfaces/pool";
 import IAction from "../../interfaces/action";
 import { IData, ComputePool } from "./computePool";
 import PoolGrid from "./poolGrid";
+import PoolChart from "./poolChart";
 import ActionsGgrid from "../Diary/actionsGrid";
 import { toast } from "react-toastify";
 import "./pools.css";
@@ -13,6 +14,7 @@ export default function Pools() {
   const [pools, setPools] = useState<IPool[]>([]);
   const [selectedPool, setSelectedPool] = useState<IPool | null>(null);
   const [datas, setDatas] = useState<IData[] | null>(null);
+  const [dataType, setDataType] = useState<string>("averageWeight");
 
   const dataGridStyle = {
     width: "97%",
@@ -113,6 +115,15 @@ export default function Pools() {
         <div style={dataGridStyle}>
           <div className="pools_titles">Evolution du bassin :</div>
           {datas && <PoolGrid datas={datas} />}
+        </div>
+        <div className="pools_chart">
+          {datas && (
+            <PoolChart
+              datas={datas}
+              dataType={dataType}
+              setDataType={setDataType}
+            />
+          )}
         </div>
       </div>
     );
