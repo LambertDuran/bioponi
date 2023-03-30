@@ -15,6 +15,7 @@ import {
   Typography,
   Collapse,
 } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { colors } from "../../components/button";
 import "./pools.css";
 
@@ -115,6 +116,7 @@ export default function Pools() {
         <div className="pools_grid">
           <Accordion TransitionComponent={Collapse} className="pools_accordion">
             <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
               style={{ backgroundColor: colors[1], borderRadius: "10px" }}
             >
               <Typography>Historique des actions</Typography>
@@ -129,6 +131,7 @@ export default function Pools() {
           </Accordion>
           <Accordion TransitionComponent={Collapse} className="pools_accordion">
             <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
               style={{ backgroundColor: colors[2], borderRadius: "10px" }}
             >
               <Typography>Evolution du bassin</Typography>
@@ -141,6 +144,7 @@ export default function Pools() {
           </Accordion>
           <Accordion TransitionComponent={Collapse} className="pools_accordion">
             <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
               style={{ backgroundColor: colors[3], borderRadius: "10px" }}
             >
               <Typography>Représentation graphique</Typography>

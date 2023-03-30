@@ -10,6 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import "./poolChart.css";
 
 ChartJS.register(
@@ -21,6 +22,8 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
+ChartJS.register(ChartDataLabels);
 
 interface IPoolChart {
   datas: IData[];
@@ -41,6 +44,26 @@ export default function PoolChart({
       ? "Évolution du poids moyen"
       : "Évolution de la masse totale";
 
+  const deaths: number[] = [];
+  const sells: number[] = [];
+  const transfers: number[] = [];
+  const weights: number[] = [];
+  for (let i = 0; i < datas.length; i++) {
+    switch (datas[i].actionType) {
+      case "Mortalité":
+        deaths.push(i);
+        break;
+      case "Vente":
+        sells.push(i);
+        break;
+      case "Transfert":
+        transfers.push(i);
+        break;
+      case "Pesée":
+        weights.push(i);
+    }
+  }
+
   const data = {
     labels: datas.map((d) => d.dateFormatted),
     datasets: [
@@ -49,6 +72,12 @@ export default function PoolChart({
         data: datas.map((d) =>
           d[dataType as keyof IData] > 0 ? d[dataType as keyof IData] : null
         ),
+        datalabels: {
+          align: "start",
+          anchor: "start",
+          color: "black",
+          // offset: 10,
+        },
         borderColor: "rgb(50, 205, 50)",
         backgroundColor: "rgba(50, 205, 50, 0.5)",
         tension: 0.5,
@@ -71,6 +100,21 @@ export default function PoolChart({
         },
       },
     },
+    plugins: {
+      datalabels: {
+        font: {
+          family: "FontAwesome",
+          size: 20,
+        },
+        formatter: function (value: any, context: any) {
+          if (deaths.includes(context.dataIndex)) return "\uf54c";
+          if (sells.includes(context.dataIndex)) return "\uf0d6";
+          if (transfers.includes(context.dataIndex)) return "\uf0c1";
+          if (weights.includes(context.dataIndex)) return "\uf24e";
+          else return "";
+        },
+      },
+    },
   };
 
   return (
@@ -84,7 +128,7 @@ export default function PoolChart({
         <option value="totalWeight">Masse totale (kg)</option>
       </select>
       <div>
-        <Line options={options} data={data} />
+        <Line options={options} data={data as any} />
       </div>
     </div>
   );
