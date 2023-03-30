@@ -1,5 +1,7 @@
 .pools_container{
-    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 1em);
 }
 
 .pools_container .pools{
@@ -17,7 +19,7 @@
 }
 
 .pools_titles{
-    margin: 1em;
+    margin: 3em 1em 1em 1em;
     font-weight: 500;
     font-size: larger;
     text-decoration: underline;
@@ -25,4 +27,8 @@
 
 .pools_chart{
     margin: 4em 0 4em 0;
+}
+
+.pools_grid{
+    margin-left: 1em;
 }

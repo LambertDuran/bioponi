@@ -17,16 +17,12 @@ export default function Pools() {
   const [dataType, setDataType] = useState<string>("averageWeight");
 
   const dataGridStyle = {
-    width: "97%",
-    padding: "0 1em 2em 1em",
-    marginTop: "1em",
+    margin: "1em",
     height: `${58 + (datas ? datas.length * 25 : 0)}px`,
   };
 
   const actionGridStyle = {
-    width: "97%",
-    padding: "0 1em 2em 1em",
-    marginTop: "1em",
+    margin: "1em",
     height: `${
       58 +
       (selectedPool?.action?.length ? selectedPool?.action?.length * 25 : 0)
@@ -108,22 +104,24 @@ export default function Pools() {
             ))}
           </select>
         </div>
-        <div style={actionGridStyle}>
-          <div className="pools_titles">Historique des actions : </div>
-          {selectedPool && <ActionsGgrid actions={selectedPool.action!} />}
-        </div>
-        <div style={dataGridStyle}>
-          <div className="pools_titles">Evolution du bassin :</div>
-          {datas && <PoolGrid datas={datas} />}
-        </div>
-        <div className="pools_chart">
-          {datas && (
-            <PoolChart
-              datas={datas}
-              dataType={dataType}
-              setDataType={setDataType}
-            />
-          )}
+        <div className="pools_grid">
+          <div style={actionGridStyle}>
+            <div className="pools_titles">Historique des actions : </div>
+            {selectedPool && <ActionsGgrid actions={selectedPool.action!} />}
+          </div>
+          <div style={dataGridStyle}>
+            <div className="pools_titles">Evolution du bassin :</div>
+            {datas && <PoolGrid datas={datas} />}
+          </div>
+          <div className="pools_chart">
+            {datas && (
+              <PoolChart
+                datas={datas}
+                dataType={dataType}
+                setDataType={setDataType}
+              />
+            )}
+          </div>
         </div>
       </div>
     );
