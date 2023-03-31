@@ -1,5 +1,6 @@
 import IAction from "../../interfaces/action";
 import Food from "../../interfaces/food";
+import IFish from "../../interfaces/fish";
 import moment from "moment";
 import { orderBy } from "lodash";
 
@@ -26,8 +27,9 @@ export class ComputePool {
   data: IData[] = [];
   poolVolume: number = 0;
   food: Food | null = null;
+  fish: IFish | null = null;
 
-  constructor(actions: IAction[], poolVolume: number, food: Food) {
+  constructor(actions: IAction[], poolVolume: number, food: Food, fish: IFish) {
     this.actions = orderBy(actions, ["date"], ["asc"]);
     this.actions.forEach(
       (a) =>
@@ -41,6 +43,7 @@ export class ComputePool {
     );
     this.poolVolume = poolVolume;
     this.food = food;
+    this.fish = fish;
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +82,27 @@ export class ComputePool {
     }
 
     return foodWeight;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Calculer l'âge en semaines des poissons à partir de la date d'entrée des poissons
+  //////////////////////////////////////////////////////////////////////////////////////////
+  getFishAge(date: Date): number {
+    if (!this.fish) return 0;
+    if (this.actions.length === 0) return 0;
+    const action0 = this.actions[0];
+    let nbWeeksAtEntrance = 0;
+
+    for (let i = 0; i < this.fish.weeks.length; i++) {
+      if (action0.averageWeight! < this.fish.weights[i]) {
+        // On prend le milieu de la plage en semaines
+        if (i > 1)
+          nbWeeksAtEntrance = (this.fish.weeks[i] + this.fish.weeks[i - 1]) / 2;
+        else nbWeeksAtEntrance = this.fish.weeks[i] / 2;
+        break;
+      }
+    }
+    return nbWeeksAtEntrance + moment(date).diff(moment(action0.date), "weeks");
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -349,6 +373,16 @@ export class ComputePool {
     // 5. Il ne reste plus de pesée
     // => on doit utiliser la courbe de croissance théorique du poisson
     else {
+      // Âge du poisson en semaines lors de la dernière action
+
+      // Âge du poisson en semaines lors de la prochaine action
+
+      // Récupérer la prochaine action
+      const nextAction: IAction = this.actions[index + 1];
+      const nextData: IData = this.recomputeDataFromAction(
+        lastData,
+        nextAction
+      );
     }
 
     return {

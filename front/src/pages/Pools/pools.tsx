@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllPool } from "../../services/pool";
-import { getFoodFromFish } from "../../services/fish";
+import { getFish, getFoodFromFish } from "../../services/fish";
 import IPool from "../../interfaces/pool";
 import IAction from "../../interfaces/action";
 import { IData, ComputePool } from "./computePool";
@@ -105,16 +105,26 @@ export default function Pools() {
         return;
       }
 
+      const fish = await getFish(actionWithFishId.fishId!);
+      if (!fish || !fish.fish) {
+        toast.error(fish.error);
+        return;
+      }
+
       const compute = new ComputePool(
         selectedPool.action!,
         selectedPool.volume,
-        food.food
+        food.food,
+        fish.fish
       );
 
       const resComputation = compute.computeAllData();
-      if (resComputation.error) toast.error(resComputation.error);
-      else if (resComputation.data) setDatas(resComputation.data as IData[]);
+      if (resComputation.data) {
+        setDatas(resComputation.data as IData[]);
+        return;
+      } else if (resComputation.error) toast.error(resComputation.error);
       else toast.error("Erreur inconnue");
+      setDatas(null);
     }
 
     getDatas();
