@@ -80,6 +80,7 @@ export default function Pools() {
     }
     getPools();
     if (pools.length) setSelectedPool(pools[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

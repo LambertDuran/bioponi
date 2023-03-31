@@ -66,7 +66,7 @@ export default function Diary() {
         setOpenRemove(true);
       }
     }
-  }, [action]);
+  }, [action, openRemove]);
 
   const displayDiary = fishes.length > 0 && pools.length > 0;
 

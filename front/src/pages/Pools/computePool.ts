@@ -21,13 +21,6 @@ interface IComputedData {
   data: IData | IData[] | null;
 }
 
-const fielsWithWeight = [
-  "Vente",
-  "Mortalité",
-  "Transfert",
-  "Sortie définitive",
-];
-
 export class ComputePool {
   actions: IAction[] = [];
   data: IData[] = [];

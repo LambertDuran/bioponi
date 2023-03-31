@@ -96,6 +96,7 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
         }
         toast.success(`Bassin ${pools[i].number} ${createdOrModified}`);
       }
+      return 0;
     });
 
     // 3. Close modal
