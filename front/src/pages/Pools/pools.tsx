@@ -40,7 +40,7 @@ export default function Pools() {
 
   const dataGridStyle = {
     marginBottom: "5em",
-    height: `${58 + (datas ? datas.length * 25 : 0)}px`,
+    height: `${58 + datas?.length! * 25}px`,
   };
 
   const actionGridStyle = {

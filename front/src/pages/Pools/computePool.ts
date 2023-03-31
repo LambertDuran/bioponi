@@ -404,18 +404,10 @@ export class ComputePool {
     };
   }
 
-  computeAllData(): IComputedData {
-    for (let i = 0; i < this.actions.length - 1; i++) {
-      let dataI = this.computeData(i);
-      if (dataI.error || !dataI.data)
-        return {
-          error: dataI.error,
-          data: null,
-        };
-      this.data = this.data.concat(dataI.data as IData[]);
-    }
-
-    // Extrapoler les données sur les 100 prochains jours
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Extrapoler les données sur les 100 prochains jours
+  //////////////////////////////////////////////////////////////////////////////////////////
+  extrapolateData(): void {
     const lastData = this.data[this.data.length - 1];
     const dates = this.getDates(
       lastData.date,
@@ -444,6 +436,20 @@ export class ComputePool {
     });
 
     this.data = this.data.concat(datas);
+  }
+
+  computeAllData(): IComputedData {
+    for (let i = 0; i < this.actions.length - 1; i++) {
+      let dataI = this.computeData(i);
+      if (dataI.error || !dataI.data)
+        return {
+          error: dataI.error,
+          data: null,
+        };
+      this.data = this.data.concat(dataI.data as IData[]);
+    }
+
+    this.extrapolateData();
 
     return {
       error: "",
