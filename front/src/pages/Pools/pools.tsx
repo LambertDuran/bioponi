@@ -51,6 +51,28 @@ export default function Pools() {
     }px`,
   };
 
+  const acordionNames = [
+    "Historique des actions",
+    "Évolution du bassin",
+    "Représentation graphique",
+  ];
+
+  const acordionChildren = [
+    <div style={actionGridStyle}>
+      {selectedPool && <ActionsGgrid actions={selectedPool.action!} />}
+    </div>,
+    <div style={dataGridStyle}>{datas && <PoolGrid datas={datas} />}</div>,
+    <div className="pools_chart">
+      {datas && (
+        <PoolChart
+          datas={datas}
+          dataType={dataType}
+          setDataType={setDataType}
+        />
+      )}
+    </div>,
+  ];
+
   useEffect(() => {
     async function getPools() {
       const allPool = await getAllPool();
@@ -127,59 +149,23 @@ export default function Pools() {
           </select>
         </div>
         <div>
-          <Accordion
-            TransitionComponent={Collapse}
-            className={classes.accordionRoot}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              style={{
-                backgroundColor: colors[1],
-                borderRadius: "20px",
-              }}
+          {acordionNames.map((name, index) => (
+            <Accordion
+              TransitionComponent={Collapse}
+              className={classes.accordionRoot}
             >
-              <Typography>Historique des actions</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div style={actionGridStyle}>
-                {selectedPool && (
-                  <ActionsGgrid actions={selectedPool.action!} />
-                )}
-              </div>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion TransitionComponent={Collapse} className="pools_accordion">
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              style={{ backgroundColor: colors[2], borderRadius: "10px" }}
-            >
-              <Typography>Evolution du bassin</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div style={dataGridStyle}>
-                {datas && <PoolGrid datas={datas} />}
-              </div>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion TransitionComponent={Collapse} className="pools_accordion">
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              style={{ backgroundColor: colors[3], borderRadius: "10px" }}
-            >
-              <Typography>Représentation graphique</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div className="pools_chart">
-                {datas && (
-                  <PoolChart
-                    datas={datas}
-                    dataType={dataType}
-                    setDataType={setDataType}
-                  />
-                )}
-              </div>
-            </AccordionDetails>
-          </Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                style={{
+                  backgroundColor: colors[index + 1],
+                  borderRadius: "20px",
+                }}
+              >
+                <Typography>{name}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>{acordionChildren[index]}</AccordionDetails>
+            </Accordion>
+          ))}
         </div>
       </div>
     );
