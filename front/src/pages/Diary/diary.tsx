@@ -71,7 +71,6 @@ export default function Diary() {
   const displayDiary = fishes.length > 0 && pools.length > 0;
 
   const gridStyle = {
-    width: "97%",
     padding: "0 1em 2em 1em",
     marginTop: "1em",
     height: `${58 + (actions ? actions.length * 25 : 0)}px`,

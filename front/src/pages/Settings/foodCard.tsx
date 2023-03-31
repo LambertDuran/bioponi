@@ -20,7 +20,7 @@ export default function FoodCard({ food, onEditClick }: IFoodCard) {
       </div>
       <div
         className="foodCard_body"
-        style={{ height: `${58 + food.froms.length * 25}px` }}
+        style={{ height: `${90 + food.froms.length * 25}px` }}
       >
         <FoodGrid food={food} editable={false} />
       </div>
