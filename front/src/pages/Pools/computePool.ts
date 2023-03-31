@@ -28,6 +28,7 @@ export class ComputePool {
   poolVolume: number = 0;
   food: Food | null = null;
   fish: IFish | null = null;
+  nbDaysOfExtrapolation = 30;
 
   constructor(actions: IAction[], poolVolume: number, food: Food, fish: IFish) {
     this.actions = orderBy(actions, ["date"], ["asc"]);
@@ -105,6 +106,9 @@ export class ComputePool {
     return nbWeeksAtEntrance + moment(date).diff(moment(action0.date), "weeks");
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Calculer la pente de croissance du poisson à une date donnée
+  //////////////////////////////////////////////////////////////////////////////////////////
   getGrowthRate(date: moment.Moment): number {
     const nbWeeks = this.getFishAge(date);
     if (nbWeeks === 0) return 0;
@@ -112,18 +116,20 @@ export class ComputePool {
     const maxWeeks = this.fish!.weeks.length;
     for (let i = 0; i < maxWeeks; i++) {
       if (nbWeeks < this.fish!.weeks[i]) {
-        if (i > 1)
+        if (i < 1) return this.fish!.weights[i] / this.fish!.weeks[i] / 7;
+        else
           return (
-            (this.fish!.weights[i] + this.fish!.weights[i - 1]) /
-            (this.fish!.weeks[i] - this.fish!.weeks[i - 1])
+            (this.fish!.weights[i] - this.fish!.weights[i - 1]) /
+            (this.fish!.weeks[i] - this.fish!.weeks[i - 1]) /
+            7
           );
-        else return this.fish!.weights[i] / this.fish!.weeks[i];
       }
     }
 
     return (
-      (this.fish!.weights[maxWeeks - 1] + this.fish!.weights[maxWeeks - 2]) /
-      (this.fish!.weeks[maxWeeks - 1] - this.fish!.weeks[maxWeeks - 2])
+      (this.fish!.weights[maxWeeks - 1] - this.fish!.weights[maxWeeks - 2]) /
+      (this.fish!.weeks[maxWeeks - 1] - this.fish!.weeks[maxWeeks - 2]) /
+      7
     );
   }
 
@@ -338,6 +344,10 @@ export class ComputePool {
         ],
       };
 
+    // On ne rajoute pas le premier élément, il a été rajouté sur l'action précédente
+    // En temps que dernière donnée, du coup on enlève la première date
+    dates.shift();
+
     // 3. Récuper la donnée de la dernière action
     // qui va être la première donnée à partir de la quelle on va calculer
     // les autres données sur cette plage de temps
@@ -348,90 +358,46 @@ export class ComputePool {
     // 4. Récupérer le poids moyen sur le bassin lors de la prochaine Pesée
     // puis calculer les poids sur l'intervalle de temps
     let nextWeight = { weight: 0, nbDays: 0 };
-    if (this.getNextWeightAndDuration(index + 1, nextWeight)) {
-      const p0 = lastData.averageWeight;
-      const p1 = nextWeight.weight;
-      // Le nombre de jours entre les deux actions, mais attention, si par exemple il y a Pesée
-      // + Mortalité + Pesée, c'est bien le nombre de jours entre la première et la dernière pesée
-      const nbDays = nextWeight.nbDays;
-      const slope = (p1! - p0!) / nbDays;
+    const bExistNextWeight = this.getNextWeightAndDuration(
+      index + 1,
+      nextWeight
+    );
+    const p0 = lastData.averageWeight;
+    const slope = (nextWeight.weight - p0) / nextWeight.nbDays;
 
-      // On ne rajoute pas le premier élément, il a été rajouté sur l'action précédente
-      // En temps que dernière donnée, du coup on enlève la première date
-      dates.shift();
-
-      const datas: IData[] = dates.map((date) => {
-        const diffDays = date.diff(lastData.date, "days");
-        const averageWeight = p0! + slope * diffDays;
-        const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
-        return {
-          date: date.toDate(),
-          dateFormatted: date.format("DD/MM/YYYY"),
-          fishNumber: lastData.fishNumber!,
-          averageWeight: averageWeight,
-          totalWeight: totalWeight,
-          density: totalWeight / this.poolVolume,
-          actionType: "",
-          actionWeight: 0,
-          lotName: lastData.lotName ?? "",
-          foodWeight: this.getFoodWeight(averageWeight, totalWeight),
-        };
-      });
-
-      // Rajouter la dernière donnée, qui sera utilisée pour la prochaine action
-      datas.push(
-        this.recomputeDataFromAction(
-          datas[datas.length - 1],
-          this.actions[index + 1]
-        )
-      );
-
+    // Recalculer les données sur l'intervalle de temps
+    const datas: IData[] = dates.map((date) => {
+      const diffDays = date.diff(lastData.date, "days");
+      // S'il n'y a pas de prochaine pesée, on utilise la pente de croissance théorique
+      const averageWeight =
+        p0! + (bExistNextWeight ? slope : this.getGrowthRate(date)) * diffDays;
+      const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
       return {
-        error: "",
-        data: datas,
+        date: date.toDate(),
+        dateFormatted: date.format("DD/MM/YYYY"),
+        fishNumber: lastData.fishNumber!,
+        averageWeight: averageWeight,
+        totalWeight: totalWeight,
+        density: totalWeight / this.poolVolume,
+        actionType: "",
+        actionWeight: 0,
+        lotName: lastData.lotName ?? "",
+        foodWeight: this.getFoodWeight(averageWeight, totalWeight),
       };
-    }
+    });
 
-    // 5. Il ne reste plus de pesée
-    // => on doit utiliser la courbe de croissance théorique du poisson
-    else {
-      const p0 = lastData.averageWeight;
+    // Rajouter la dernière donnée, qui sera utilisée pour la prochaine action
+    datas.push(
+      this.recomputeDataFromAction(
+        datas[datas.length - 1],
+        this.actions[index + 1]
+      )
+    );
 
-      // On ne rajoute pas le premier élément, il a été rajouté sur l'action précédente
-      // En temps que dernière donnée, du coup on enlève la première date
-      dates.shift();
-
-      const datas: IData[] = dates.map((date) => {
-        const diffDays = date.diff(lastData.date, "days");
-        const slope = this.getGrowthRate(date);
-        const averageWeight = p0! + slope * diffDays;
-        const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
-        return {
-          date: date.toDate(),
-          dateFormatted: date.format("DD/MM/YYYY"),
-          fishNumber: lastData.fishNumber!,
-          averageWeight: averageWeight,
-          totalWeight: totalWeight,
-          density: totalWeight / this.poolVolume,
-          actionType: "",
-          actionWeight: 0,
-          lotName: lastData.lotName ?? "",
-          foodWeight: this.getFoodWeight(averageWeight, totalWeight),
-        };
-      });
-
-      // Rajouter la dernière donnée, qui sera utilisée pour la prochaine action
-      datas.push(
-        this.recomputeDataFromAction(
-          datas[datas.length - 1],
-          this.actions[index + 1]
-        )
-      );
-      return {
-        error: "",
-        data: datas,
-      };
-    }
+    return {
+      error: "",
+      data: datas,
+    };
   }
 
   computeAllData(): IComputedData {
@@ -444,6 +410,35 @@ export class ComputePool {
         };
       this.data = this.data.concat(dataI.data as IData[]);
     }
+
+    // Extrapoler les données sur les 100 prochains jours
+    const lastData = this.data[this.data.length - 1];
+    const dates = this.getDates(
+      lastData.date,
+      moment(lastData.date).add(this.nbDaysOfExtrapolation, "days").toDate()
+    );
+
+    // Recalculer les données sur l'intervalle de temps
+    const p0 = lastData.averageWeight;
+    const datas: IData[] = dates.map((date, i) => {
+      // S'il n'y a pas de prochaine pesée, on utilise la pente de croissance théorique
+      const averageWeight = p0! + this.getGrowthRate(date) * (i + 1);
+      const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
+      return {
+        date: date.toDate(),
+        dateFormatted: date.format("DD/MM/YYYY"),
+        fishNumber: lastData.fishNumber!,
+        averageWeight: averageWeight,
+        totalWeight: totalWeight,
+        density: totalWeight / this.poolVolume,
+        actionType: "",
+        actionWeight: 0,
+        lotName: lastData.lotName ?? "",
+        foodWeight: this.getFoodWeight(averageWeight, totalWeight),
+      };
+    });
+
+    this.data = this.data.concat(datas);
 
     return {
       error: "",

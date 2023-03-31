@@ -73,8 +73,8 @@ export default function PoolChart({
           d[dataType as keyof IData] > 0 ? d[dataType as keyof IData] : null
         ),
         datalabels: {
-          align: "start",
-          anchor: "start",
+          align: "end",
+          anchor: "end",
           color: "black",
         },
         borderColor: "rgb(50, 205, 50)",
