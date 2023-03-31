@@ -15,15 +15,28 @@ import {
   Typography,
   Collapse,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { colors } from "../../components/button";
 import "./pools.css";
+
+const useStyles = makeStyles((theme) => ({
+  accordionRoot: {
+    margin: "1em",
+    borderRadius: "20px !important",
+    "&.Mui-expanded": {
+      marginLeft: "1em !important",
+    },
+  },
+}));
 
 export default function Pools() {
   const [pools, setPools] = useState<IPool[]>([]);
   const [selectedPool, setSelectedPool] = useState<IPool | null>(null);
   const [datas, setDatas] = useState<IData[] | null>(null);
   const [dataType, setDataType] = useState<string>("averageWeight");
+
+  const classes = useStyles();
 
   const dataGridStyle = {
     marginBottom: "5em",
@@ -113,11 +126,17 @@ export default function Pools() {
             ))}
           </select>
         </div>
-        <div className="pools_grid">
-          <Accordion TransitionComponent={Collapse} className="pools_accordion">
+        <div>
+          <Accordion
+            TransitionComponent={Collapse}
+            className={classes.accordionRoot}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              style={{ backgroundColor: colors[1], borderRadius: "10px" }}
+              style={{
+                backgroundColor: colors[1],
+                borderRadius: "20px",
+              }}
             >
               <Typography>Historique des actions</Typography>
             </AccordionSummary>

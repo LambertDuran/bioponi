@@ -21,11 +21,8 @@
     margin: 4em 0 4em 0;
 }
 
-.pools_grid{
-    margin-left: 1em;
-}
-
 .pools_accordion{
     margin-bottom: 1em;
-    border-radius: 10px;
+    border-radius: 20px;
+    background-color: red;
 }

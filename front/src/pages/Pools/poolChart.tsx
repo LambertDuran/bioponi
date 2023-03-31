@@ -76,7 +76,6 @@ export default function PoolChart({
           align: "start",
           anchor: "start",
           color: "black",
-          // offset: 10,
         },
         borderColor: "rgb(50, 205, 50)",
         backgroundColor: "rgba(50, 205, 50, 0.5)",
