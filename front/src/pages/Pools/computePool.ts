@@ -87,7 +87,7 @@ export class ComputePool {
   //////////////////////////////////////////////////////////////////////////////////////////
   // Calculer l'âge en semaines des poissons à partir de la date d'entrée des poissons
   //////////////////////////////////////////////////////////////////////////////////////////
-  getFishAge(date: Date): number {
+  getFishAge(date: moment.Moment): number {
     if (!this.fish) return 0;
     if (this.actions.length === 0) return 0;
     const action0 = this.actions[0];
@@ -103,6 +103,28 @@ export class ComputePool {
       }
     }
     return nbWeeksAtEntrance + moment(date).diff(moment(action0.date), "weeks");
+  }
+
+  getGrowthRate(date: moment.Moment): number {
+    const nbWeeks = this.getFishAge(date);
+    if (nbWeeks === 0) return 0;
+
+    const maxWeeks = this.fish!.weeks.length;
+    for (let i = 0; i < maxWeeks; i++) {
+      if (nbWeeks < this.fish!.weeks[i]) {
+        if (i > 1)
+          return (
+            (this.fish!.weights[i] + this.fish!.weights[i - 1]) /
+            (this.fish!.weeks[i] - this.fish!.weeks[i - 1])
+          );
+        else return this.fish!.weights[i] / this.fish!.weeks[i];
+      }
+    }
+
+    return (
+      (this.fish!.weights[maxWeeks - 1] + this.fish!.weights[maxWeeks - 2]) /
+      (this.fish!.weeks[maxWeeks - 1] - this.fish!.weeks[maxWeeks - 2])
+    );
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -373,22 +395,43 @@ export class ComputePool {
     // 5. Il ne reste plus de pesée
     // => on doit utiliser la courbe de croissance théorique du poisson
     else {
-      // Âge du poisson en semaines lors de la dernière action
+      const p0 = lastData.averageWeight;
 
-      // Âge du poisson en semaines lors de la prochaine action
+      // On ne rajoute pas le premier élément, il a été rajouté sur l'action précédente
+      // En temps que dernière donnée, du coup on enlève la première date
+      dates.shift();
 
-      // Récupérer la prochaine action
-      const nextAction: IAction = this.actions[index + 1];
-      const nextData: IData = this.recomputeDataFromAction(
-        lastData,
-        nextAction
+      const datas: IData[] = dates.map((date) => {
+        const diffDays = date.diff(lastData.date, "days");
+        const slope = this.getGrowthRate(date);
+        const averageWeight = p0! + slope * diffDays;
+        const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
+        return {
+          date: date.toDate(),
+          dateFormatted: date.format("DD/MM/YYYY"),
+          fishNumber: lastData.fishNumber!,
+          averageWeight: averageWeight,
+          totalWeight: totalWeight,
+          density: totalWeight / this.poolVolume,
+          actionType: "",
+          actionWeight: 0,
+          lotName: lastData.lotName ?? "",
+          foodWeight: this.getFoodWeight(averageWeight, totalWeight),
+        };
+      });
+
+      // Rajouter la dernière donnée, qui sera utilisée pour la prochaine action
+      datas.push(
+        this.recomputeDataFromAction(
+          datas[datas.length - 1],
+          this.actions[index + 1]
+        )
       );
+      return {
+        error: "",
+        data: datas,
+      };
     }
-
-    return {
-      error: "",
-      data: null,
-    };
   }
 
   computeAllData(): IComputedData {
