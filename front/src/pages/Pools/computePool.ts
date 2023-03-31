@@ -28,7 +28,7 @@ export class ComputePool {
   poolVolume: number = 0;
   food: Food | null = null;
   fish: IFish | null = null;
-  nbDaysOfExtrapolation = 30;
+  nbDaysOfExtrapolation = 100;
 
   constructor(actions: IAction[], poolVolume: number, food: Food, fish: IFish) {
     this.actions = orderBy(actions, ["date"], ["asc"]);
@@ -366,17 +366,21 @@ export class ComputePool {
     const slope = (nextWeight.weight - p0) / nextWeight.nbDays;
 
     // Recalculer les données sur l'intervalle de temps
+    let averageWeight = lastData.averageWeight;
     const datas: IData[] = dates.map((date) => {
-      const diffDays = date.diff(lastData.date, "days");
+      if (bExistNextWeight) {
+        const diffDays = date.diff(lastData.date, "days");
+        averageWeight = p0! + slope * diffDays;
+      }
       // S'il n'y a pas de prochaine pesée, on utilise la pente de croissance théorique
-      const averageWeight =
-        p0! + (bExistNextWeight ? slope : this.getGrowthRate(date)) * diffDays;
+      else averageWeight += this.getGrowthRate(date);
+
       const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
       return {
         date: date.toDate(),
         dateFormatted: date.format("DD/MM/YYYY"),
         fishNumber: lastData.fishNumber!,
-        averageWeight: averageWeight,
+        averageWeight: lastData.fishNumber! > 0 ? averageWeight : 0,
         totalWeight: totalWeight,
         density: totalWeight / this.poolVolume,
         actionType: "",
@@ -419,16 +423,17 @@ export class ComputePool {
     );
 
     // Recalculer les données sur l'intervalle de temps
-    const p0 = lastData.averageWeight;
+    let averageWeight = lastData.averageWeight;
     const datas: IData[] = dates.map((date, i) => {
       // S'il n'y a pas de prochaine pesée, on utilise la pente de croissance théorique
-      const averageWeight = p0! + this.getGrowthRate(date) * (i + 1);
+      const slope = this.getGrowthRate(date);
+      averageWeight += slope;
       const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
       return {
         date: date.toDate(),
         dateFormatted: date.format("DD/MM/YYYY"),
         fishNumber: lastData.fishNumber!,
-        averageWeight: averageWeight,
+        averageWeight: lastData.fishNumber! > 0 ? averageWeight : 0,
         totalWeight: totalWeight,
         density: totalWeight / this.poolVolume,
         actionType: "",
