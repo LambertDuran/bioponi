@@ -38,19 +38,6 @@ export default function Pools() {
 
   const classes = useStyles();
 
-  const dataGridStyle = {
-    marginBottom: "5em",
-    height: `${58 + datas?.length! * 25}px`,
-  };
-
-  const actionGridStyle = {
-    marginBottom: "5em",
-    height: `${
-      58 +
-      (selectedPool?.action?.length ? selectedPool?.action?.length * 25 : 0)
-    }px`,
-  };
-
   const acordionNames = [
     "Historique des actions",
     "Évolution du bassin",
@@ -58,10 +45,20 @@ export default function Pools() {
   ];
 
   const acordionChildren = [
-    <div style={actionGridStyle}>
+    <div
+      style={{
+        height: `${58 + selectedPool?.action?.length! * 25}px`,
+      }}
+    >
       {selectedPool && <ActionsGgrid actions={selectedPool.action!} />}
     </div>,
-    <div style={dataGridStyle}>{datas && <PoolGrid datas={datas} />}</div>,
+    <div
+      style={{
+        height: `${datas?.length! < 100 ? 55 + datas?.length! * 25 : 2620}px`,
+      }}
+    >
+      {datas && <PoolGrid datas={datas} />}
+    </div>,
     <div className="pools_chart">
       {datas && (
         <PoolChart

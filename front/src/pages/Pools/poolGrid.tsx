@@ -101,13 +101,6 @@ export default function PoolGrid({ datas }: IPoolGrid) {
   ];
 
   return (
-    <DataGrid
-      rows={muiRows}
-      columns={colHeaders}
-      rowHeight={25}
-      hideFooter={true}
-      autoHeight
-      disableVirtualization
-    />
+    <DataGrid rows={muiRows} columns={colHeaders} rowHeight={25} autoHeight />
   );
 }
