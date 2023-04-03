@@ -8,14 +8,16 @@ const fish = require("./routes/fish");
 const pool = require("./routes/pool");
 const action = require("./routes/action");
 const user = require("./routes/user");
+const auth = require("./routes/auth");
 
 app.use(cors);
 app.use(express.json());
 app.use(logger);
-app.use("/api/user", user);
 app.use("/api/food", food);
 app.use("/api/fish", fish);
 app.use("/api/pool", pool);
 app.use("/api/action", action);
+app.use("/api/user", user);
+app.use("/api/auth", auth);
 
 module.exports = app;
