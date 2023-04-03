@@ -1,4 +1,6 @@
 import Joi from "joi";
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
 const userSchema = Joi.object({
   id: Joi.number().min(0),
@@ -16,7 +18,16 @@ const validate = (user: any) => {
   return { error: null };
 };
 
+const generateAuthToken = (user: any) => {
+  const token = jwt.sign(
+    { id: user.id, isAdmin: user.isAdmin },
+    process.env.JWT_PRIVATE_KEY
+  );
+  return token;
+};
+
 module.exports = {
+  generateAuthToken,
   validate,
   userSchema,
 };

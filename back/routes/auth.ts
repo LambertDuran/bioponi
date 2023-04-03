@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const { generateAuthToken } = require("../controllers/user");
 const { validate } = require("../controllers/auth");
 import { PrismaClient } from "@prisma/client";
 
@@ -21,7 +22,8 @@ router.post("/", async (req: Request, res: Response) => {
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) return res.status(400).send("Invalid email or password!");
 
-  res.send(true);
+  const token = generateAuthToken(user);
+  res.send(token);
 });
 
 module.exports = router;

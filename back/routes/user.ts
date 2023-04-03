@@ -1,4 +1,4 @@
-const { validate } = require("../controllers/user");
+const { validate, generateAuthToken } = require("../controllers/user");
 import { Request, Response } from "express";
 const express = require("express");
 const router = express.Router();
@@ -27,7 +27,9 @@ router.post("/", async (req: Request, res: Response) => {
   });
   if (!user) return res.status(400).send("User failed to be created !");
 
-  res.json(pick(user, ["id", "email", "password", "name", "isAdmin"]));
+  res
+    .header("x-auth-token", generateAuthToken(user))
+    .json(pick(user, ["id", "email", "password", "name", "isAdmin"]));
 });
 
 module.exports = router;
