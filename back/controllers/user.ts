@@ -6,6 +6,7 @@ const userSchema = Joi.object({
   updatedAt: Joi.date(),
   email: Joi.string().min(3).max(50).required(),
   password: Joi.string().min(3).max(255).required(),
+  name: Joi.string().min(3).max(50).required(),
   isAdmin: Joi.boolean(),
 });
 

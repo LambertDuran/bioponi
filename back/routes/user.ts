@@ -1,9 +1,10 @@
+const { validate } = require("../controllers/user");
 import { Request, Response } from "express";
 const express = require("express");
 const router = express.Router();
-import { PrismaClient } from "@prisma/client";
+const bcrypt = require("bcrypt");
 import { pick } from "lodash";
-const { validate } = require("../controllers/user");
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -17,6 +18,9 @@ router.post("/", async (req: Request, res: Response) => {
     },
   });
   if (existingUser) return res.status(400).send("User already registered!");
+
+  const salt = await bcrypt.genSalt(10);
+  req.body.password = await bcrypt.hash(req.body.password, salt);
 
   const user = await prisma.user.create({
     data: pick(req.body, ["email", "password", "name", "isAdmin"]),
