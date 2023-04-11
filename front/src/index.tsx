@@ -9,6 +9,7 @@ import Diary from "./pages/Diary/diary";
 import Balance from "./pages/balance";
 import DailyCard from "./pages/dailyCard";
 import Pools from "./pages/Pools/pools";
+import Login from "./pages/login";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
+      {
+        path: "/",
+        element: <Login />,
+      },
       {
         path: "/bassins",
         element: <Pools />,
@@ -33,7 +38,7 @@ const router = createBrowserRouter([
         element: <Balance />,
       },
       {
-        path: "/fiche-journalière",
+        path: "/fiche-journaliere",
         element: <DailyCard />,
       },
     ],

@@ -8,7 +8,7 @@ const paths = [
   "/journal",
   "/bassins",
   "/bilan",
-  "/fiche-journalière",
+  "/fiche-journaliere",
 ];
 const icons = [
   "fas fa-cog",
