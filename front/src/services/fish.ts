@@ -3,8 +3,17 @@ import http from "./httpServices";
 import apiUrls from "../config.json";
 
 async function getAllFish() {
-  const allFish = await http.get(apiUrls.fishEndpoint);
-  return allFish;
+  let fish: IFish | null = null;
+  let error = "";
+  return http
+    .get(apiUrls.fishEndpoint)
+    .then((res) => {
+      return { fish: res.data, error: error };
+    })
+    .catch((err) => {
+      error = err.response.data;
+      return { fish: fish, error: error };
+    });
 }
 
 async function getFish(id: number) {

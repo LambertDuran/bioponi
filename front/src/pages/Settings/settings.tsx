@@ -11,8 +11,11 @@ import IFish from "../../interfaces/fish";
 import SpeciesCard from "./fishCard";
 import { getAllFish } from "../../services/fish";
 import PoolModalDialog from "./poolModalDialog";
+import { toast } from "react-toastify";
 import emptyList from "../../assets/emptyList.gif";
 import "./settings.css";
+
+const errorMsg = "Erreur de connexion au serveur distant.";
 
 export default function Settings() {
   const [openFood, setOpenFood] = useState(false);
@@ -82,20 +85,29 @@ export default function Settings() {
   };
 
   useEffect(() => {
+    let isFoodsLoaded = false;
+    let isFishesLoaded = false;
+
     async function getFoods() {
       const allFood = await getAllFood();
-      if (allFood && allFood.data) setFoods(allFood.data);
+      if (allFood && allFood.food) {
+        setFoods(allFood.food);
+        isFoodsLoaded = true;
+      }
     }
-    getFoods();
-  }, []);
 
-  useEffect(() => {
     async function getFishes() {
       const allFish = await getAllFish();
-      if (allFish && allFish.data) setFishes(allFish.data);
+      if (allFish && allFish.fish) {
+        setFishes(allFish.fish);
+        isFishesLoaded = true;
+      }
     }
+
     getFishes();
-  }, []);
+    getFoods();
+    if (!isFoodsLoaded || !isFishesLoaded) toast.error(errorMsg);
+  });
 
   useEffect(() => {
     if (selectedFish) {

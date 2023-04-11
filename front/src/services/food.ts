@@ -3,8 +3,17 @@ import http from "./httpServices";
 import apiUrls from "../config.json";
 
 async function getAllFood() {
-  const allFood = await http.get(apiUrls.foodEndpoint);
-  return allFood;
+  let food: IFood | null = null;
+  let error = "";
+  return http
+    .get(apiUrls.foodEndpoint)
+    .then((res) => {
+      return { food: res.data, error: error };
+    })
+    .catch((err) => {
+      error = err.response.data;
+      return { food: food, error: error };
+    });
 }
 
 async function getFood(id: number) {

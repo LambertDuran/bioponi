@@ -41,7 +41,7 @@ export default function Diary() {
   useEffect(() => {
     async function getFishes() {
       const allFish = await getAllFish();
-      if (allFish && allFish.data) setFishes(allFish.data);
+      if (allFish && allFish.fish) setFishes(allFish.fish);
     }
     async function getPools() {
       const allPool = await getAllPool();
