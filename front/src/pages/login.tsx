@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { login } from "./api"; // Import your login API function
+import Button from "../components/button";
+import logo from "../assets/logo.png";
+import { login } from "../services/login";
+import "./login.css";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -11,50 +14,51 @@ function LoginPage() {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    setIsLoading(true);
     setError(null);
-
-    try {
-      //   const response = await login(email, password);
-      //   // Successful login, redirect to home page
-      //   if (response.status === 200) {
-      //     navigate("/");
-      //   } else {
-      //     setIsLoading(false);
-      //     setError("Invalid email or password");
-      //   }
-    } catch (error) {
-      setIsLoading(false);
-      setError("Failed to log in. Please try again.");
+    const response = await login(email, password);
+    if (response.error) {
+      setError(response.error);
+    } else {
+      navigate("/parametrage");
     }
   };
 
   return (
-    <div className="login-page">
-      <h2>Login</h2>
+    <div className="login_container">
+      <img alt="bioponi-logo" src={logo} className="login_logo"></img>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
+        <div className="login_form_container">
+          {error && <div className="login_error">{error}</div>}
+          <div className="login_form_row">
+            <div>Email:</div>
+            <input
+              type="email"
+              id="email"
+              className="login_input_control"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+          </div>
+          <div className="login_form_row">
+            <div>Mot de passe:</div>
+            <input
+              type="password"
+              id="password"
+              className="login_input_control"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </div>
+          <div className="login_button">
+            <Button
+              title="Connection"
+              onClick={() => console.log("test")}
+              color="blue"
+            >
+              <i className="fas fa-arrow-right"></i>
+            </Button>
+          </div>
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </div>
-        {error && <div className="error">{error}</div>}
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Loading..." : "Login"}
-        </button>
       </form>
     </div>
   );

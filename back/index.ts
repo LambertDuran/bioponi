@@ -20,12 +20,12 @@ if (!process.env.JWT_PRIVATE_KEY) {
 app.use(cors);
 app.use(express.json());
 app.use(logger);
+app.use("/api/auth", auth);
 app.use(authMiddleware);
 app.use("/api/food", food);
 app.use("/api/fish", fish);
 app.use("/api/pool", pool);
 app.use("/api/action", action);
 app.use("/api/user", user);
-app.use("/api/auth", auth);
 
 module.exports = app;
