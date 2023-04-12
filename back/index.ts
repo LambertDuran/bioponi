@@ -2,8 +2,8 @@ import { Application } from "express";
 const express = require("express");
 const app: Application = express();
 require("dotenv").config();
-const cors = require("./middlewares/cor");
 const logger = require("./middlewares/logger");
+const cors = require("cors");
 const authMiddleware = require("./middlewares/auth");
 const food = require("./routes/food");
 const fish = require("./routes/fish");
@@ -17,7 +17,7 @@ if (!process.env.JWT_PRIVATE_KEY) {
   process.exit(1);
 }
 
-app.use(cors);
+app.use(cors());
 app.use(express.json());
 app.use(logger);
 app.use("/api/auth", auth);

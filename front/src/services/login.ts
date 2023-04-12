@@ -12,6 +12,7 @@ export async function login(email: string, password: string) {
       return null;
     })
     .catch((err) => {
+      console.log("err.response.data", err.response.data);
       return err.response.data;
     });
 }

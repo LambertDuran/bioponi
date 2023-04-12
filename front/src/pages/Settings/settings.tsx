@@ -90,6 +90,7 @@ export default function Settings() {
 
     async function getFoods() {
       const allFood = await getAllFood();
+      console.log("allFood", allFood);
       if (allFood && allFood.food) {
         setFoods(allFood.food);
         isFoodsLoaded = true;
