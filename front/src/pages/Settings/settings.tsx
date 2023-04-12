@@ -90,7 +90,6 @@ export default function Settings() {
 
     async function getFoods() {
       const allFood = await getAllFood();
-      console.log("allFood", allFood);
       if (allFood && allFood.food) {
         setFoods(allFood.food);
         isFoodsLoaded = true;
@@ -105,10 +104,10 @@ export default function Settings() {
       }
     }
 
-    getFishes();
-    getFoods();
-    if (!isFoodsLoaded || !isFishesLoaded) toast.error(errorMsg);
-  });
+    Promise.all([getFoods(), getFishes()]).then(() => {
+      if (!isFoodsLoaded || !isFishesLoaded) toast.error(errorMsg);
+    });
+  }, []);
 
   useEffect(() => {
     if (selectedFish) {
