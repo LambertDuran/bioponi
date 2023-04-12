@@ -9,21 +9,28 @@ model User {
   isAdmin   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Food      Food[]
+  Pool      Pool[]
+  Fish      Fish[]
 }
 
 model Pool {
   id               Int      @id @default(autoincrement())
-  number           Int      @unique
+  number           Int
   volume           Float
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   action           Action[]
   actionSecondPool Action[] @relation("ActionSecondPool")
+  user             User     @relation(fields: [userId], references: [id])
+  userId           Int      @default(1)
+
+  @@unique([number, userId])
 }
 
 model Food {
   id            Int      @id @default(autoincrement())
-  name          String   @unique
+  name          String
   froms         Int[]
   tos           Int[]
   ranges        String[]
@@ -34,6 +41,10 @@ model Food {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   fish          Fish[]
+  user          User     @relation(fields: [userId], references: [id])
+  userId        Int      @default(1)
+
+  @@unique([name, userId])
 }
 
 model Fish {
@@ -46,6 +57,10 @@ model Fish {
   food      Food     @relation(fields: [foodId], references: [id], onDelete: Cascade)
   foodId    Int
   action    Action[]
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @default(1)
+
+  @@unique([name, userId])
 }
 
 model Action {

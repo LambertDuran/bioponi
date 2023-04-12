@@ -9,11 +9,9 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 router.post("/", async (req: Request, res: Response) => {
-  console.log("auth");
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  console.log("auth2");
   const user = await prisma.user.findFirst({
     where: {
       email: req.body.email,

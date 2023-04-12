@@ -5,8 +5,9 @@ const router = express.Router();
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/", async (req: any, res: Response, next: NextFunction) => {
   const pool = await prisma.pool.findMany({
+    where: { userId: req.user.id },
     include: { action: true },
     orderBy: { number: "asc" },
   });
@@ -27,13 +28,14 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
   res.json(pool);
 });
 
-router.post("/", async (req: Request, res: Response, next: NextFunction) => {
+router.post("/", async (req: any, res: Response, next: NextFunction) => {
   const { error } = validatePool(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   const existingPool = await prisma.pool.findFirst({
     where: {
       number: req.body.number,
+      userId: req.user.id,
     },
   });
   if (existingPool) return res.status(400).send("Bassin déjà existant!");
@@ -42,6 +44,11 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
     data: {
       number: req.body.number,
       volume: req.body.volume,
+      user: {
+        connect: {
+          id: req.user.id,
+        },
+      },
     },
   });
 

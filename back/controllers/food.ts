@@ -18,6 +18,7 @@ const foodSchema = Joi.object({
     .items(Joi.number().min(0).max(20000).required())
     .required(),
   distributions: Joi.array().items(Joi.number().min(0).max(1000)).required(),
+  userId: Joi.number().min(0),
 });
 
 const validateFood = (food: any) => {

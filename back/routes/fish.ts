@@ -5,8 +5,11 @@ const router = express.Router();
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-router.get("/", async (req: Request, res: Response) => {
+router.get("/", async (req: any, res: Response) => {
   const fish = await prisma.fish.findMany({
+    where: {
+      userId: req.user.id,
+    },
     include: {
       food: true,
     },
@@ -28,13 +31,14 @@ router.get("/:id", async (req: Request, res: Response) => {
   res.json(fish);
 });
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", async (req: any, res: Response) => {
   const { error } = validateFish(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   const existingFood = await prisma.food.findFirst({
     where: {
       name: req.body.food.name,
+      userId: req.user.id,
     },
   });
   if (!existingFood) return res.status(400).send("Food doesn't exist!");
@@ -42,6 +46,7 @@ router.post("/", async (req: Request, res: Response) => {
   const existingFish = await prisma.fish.findFirst({
     where: {
       name: req.body.name,
+      userId: req.user.id,
     },
   });
   if (existingFish) return res.status(400).send("Fish already exists!");
@@ -56,6 +61,11 @@ router.post("/", async (req: Request, res: Response) => {
           id: existingFood.id,
         },
       },
+      user: {
+        connect: {
+          id: req.user.id,
+        },
+      },
     },
     include: {
       food: true,
@@ -66,7 +76,7 @@ router.post("/", async (req: Request, res: Response) => {
   res.json(fish);
 });
 
-router.put("/:id", async (req: Request, res: Response) => {
+router.put("/:id", async (req: any, res: Response) => {
   const { error } = validateFish(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -80,6 +90,7 @@ router.put("/:id", async (req: Request, res: Response) => {
   const existingFood = await prisma.food.findFirst({
     where: {
       name: req.body.food.name,
+      userId: req.user.id,
     },
   });
   if (!existingFood) return res.status(400).send("Food doesn't exist!");

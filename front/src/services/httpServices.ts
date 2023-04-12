@@ -12,10 +12,8 @@ axios.interceptors.response.use(null, (error) => {
     error.response.status >= 400 &&
     error.response.status < 500;
 
-  if (!expectedError) {
-    console.log(error);
+  if (!expectedError)
     toast.error("Problème de connexion avec le serveur distant.");
-  }
 
   return Promise.reject(error);
 });
