@@ -1,6 +1,9 @@
+import auth from "./auth";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+axios.defaults.headers.common["x-auth-token"] = auth.getToken();
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError =

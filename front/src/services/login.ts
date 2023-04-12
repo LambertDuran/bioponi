@@ -1,5 +1,6 @@
 import http from "./httpServices";
 import apiUrls from "../config.json";
+import auth from "./auth";
 
 export async function login(email: string, password: string) {
   let user: any = null;
@@ -7,10 +8,10 @@ export async function login(email: string, password: string) {
   return http
     .post(apiUrls.authEndpoint, { email, password })
     .then((res) => {
-      return { user: res.data, error: error };
+      auth.setToken(res.data);
+      return null;
     })
     .catch((err) => {
-      error = err.response.data;
-      return { user: user, error: error };
+      return err.response.data;
     });
 }

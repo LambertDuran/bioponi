@@ -5,22 +5,18 @@ import logo from "../assets/logo.png";
 import { login } from "../services/login";
 import "./login.css";
 
-function LoginPage() {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     setError(null);
-    const response = await login(email, password);
-    if (response.error) {
-      setError(response.error);
-    } else {
-      navigate("/parametrage");
-    }
+    const error = await login(email, password);
+    if (error) setError(error);
+    else navigate("/parametrage");
   };
 
   return (
@@ -64,4 +60,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default Login;
