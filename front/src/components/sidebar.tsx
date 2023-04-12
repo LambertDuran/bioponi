@@ -1,3 +1,4 @@
+import auth from "../services/auth";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
@@ -48,6 +49,8 @@ const Sidebar = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [sidebarStyle, setSidebarStyle] = useState("sidebar");
 
+  const user: any = auth.getCurrentUser();
+
   return (
     <div onBlur={() => setSidebarStyle("sidebar")}>
       <i
@@ -74,6 +77,7 @@ const Sidebar = () => {
               isActive={activeIndex === index}
             />
           ))}
+          <li className="sidebar_name">{user.name}</li>
         </ul>
       </div>
     </div>

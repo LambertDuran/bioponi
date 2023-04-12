@@ -20,7 +20,7 @@ const validate = (user: any) => {
 
 const generateAuthToken = (user: any) => {
   const token = jwt.sign(
-    { id: user.id, isAdmin: user.isAdmin },
+    { id: user.id, isAdmin: user.isAdmin, name: user.name },
     process.env.JWT_PRIVATE_KEY
   );
   return token;

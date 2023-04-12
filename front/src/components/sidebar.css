@@ -23,6 +23,8 @@
   
   .sidebar_show ul,
   .sidebar ul {
+    display: flex;
+    flex-direction: column;
     list-style: none;
     top: 0;
     padding: 0 1em 0 1em;
@@ -63,6 +65,13 @@
     text-decoration: none;
     color: white;
     flex-grow: 1;
+    width: 100%;
+  }
+
+  .sidebar_name{
+    margin-top: auto;
+    background-color: red;
+    color: white;
   }
   
 

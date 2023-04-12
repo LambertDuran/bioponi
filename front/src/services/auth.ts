@@ -12,7 +12,7 @@ export function removeToken() {
   localStorage.removeItem("token");
 }
 
-export function getUser() {
+export function getCurrentUser() {
   try {
     const jwt = localStorage.getItem("token");
     if (!jwt) return null;
@@ -26,6 +26,6 @@ const auth = {
   setToken,
   getToken,
   removeToken,
-  getUser,
+  getCurrentUser,
 };
 export default auth;
