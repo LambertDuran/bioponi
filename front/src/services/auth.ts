@@ -22,9 +22,10 @@ export function getUser() {
   }
 }
 
-export default {
+const auth = {
   setToken,
   getToken,
   removeToken,
   getUser,
 };
+export default auth;
