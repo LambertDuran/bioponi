@@ -12,6 +12,7 @@ model User {
   Food      Food[]
   Pool      Pool[]
   Fish      Fish[]
+  Action    Action[]
 }
 
 model Pool {
@@ -79,6 +80,8 @@ model Action {
   fishId        Int?
   secondPool    Pool?    @relation("ActionSecondPool", fields: [secondPoolId], references: [id], onDelete: Cascade)
   secondPoolId  Int?
+  user          User     @relation(fields: [userId], references: [id])
+  userId        Int      @default(1)
 }
 
 generator client {
