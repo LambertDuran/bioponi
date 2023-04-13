@@ -46,11 +46,7 @@ function Login() {
             />
           </div>
           <div className="login_button">
-            <Button
-              title="Connection"
-              onClick={() => console.log("test")}
-              color="blue"
-            >
+            <Button title="Connexion" onClick={() => {}} color="blue">
               <i className="fas fa-arrow-right"></i>
             </Button>
           </div>

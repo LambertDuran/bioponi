@@ -1,5 +1,6 @@
 import auth from "../services/auth";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import "./sidebar.css";
@@ -46,7 +47,10 @@ const SidebarItem = ({ path, icon, name, onClick, isActive }: ISidebarItem) => {
 };
 
 const Sidebar = () => {
-  const [activeIndex, setActiveIndex] = useState(-1);
+  const activePath = useLocation().pathname;
+  const [activeIndex, setActiveIndex] = useState(
+    paths.findIndex((path) => path === activePath)
+  );
   const [sidebarStyle, setSidebarStyle] = useState("sidebar");
 
   const user: any = auth.getCurrentUser();
@@ -85,7 +89,7 @@ const Sidebar = () => {
             <li>
               <NavLink to={"/"} onClick={() => auth.removeToken()}>
                 <i className="fas fa-arrow-right"></i>
-                Déconnection
+                Déconnexion
               </NavLink>
             </li>
           </div>

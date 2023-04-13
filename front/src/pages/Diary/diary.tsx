@@ -73,7 +73,7 @@ export default function Diary() {
   const gridStyle = {
     padding: "0 1em 2em 1em",
     marginTop: "1em",
-    height: `${58 + (actions.length ? actions.length * 25 : 100)}px`,
+    height: `${90 + (actions.length ? actions.length * 25 : 100)}px`,
   };
 
   return (
