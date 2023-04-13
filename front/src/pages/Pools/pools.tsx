@@ -54,7 +54,9 @@ export default function Pools() {
     </div>,
     <div
       style={{
-        height: `${datas?.length! < 100 ? 55 + datas?.length! * 25 : 2620}px`,
+        height: `${
+          datas ? (datas?.length! < 100 ? 55 + datas?.length! * 25 : 2620) : 50
+        }px`,
       }}
     >
       {datas && <PoolGrid datas={datas} />}
