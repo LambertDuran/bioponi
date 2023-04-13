@@ -77,7 +77,16 @@ const Sidebar = () => {
               isActive={activeIndex === index}
             />
           ))}
-          <li className="sidebar_name">{user.name}</li>
+          <div className="sidebar_name">
+            <li>
+              <i className="fas fa-user"></i>
+              {user.name}
+            </li>
+            <li>
+              <i className="fas fa-arrow-right"></i>
+              Déconnection
+            </li>
+          </div>
         </ul>
       </div>
     </div>

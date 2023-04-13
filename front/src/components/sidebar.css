@@ -79,17 +79,9 @@
 
   .sidebar_name{
     margin-top: auto;
-    display: block;
-    padding: 10px;
-    text-decoration: none;
     color: white;
     margin-bottom: 1em;
-    padding-left: 2em;
-  }
-  .sidebar_name:hover{
-    scale: 1.0;
-    transition: none;
-    background-color: transparent;
+    cursor: pointer;
   }
   
   .content {
