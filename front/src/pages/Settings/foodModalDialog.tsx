@@ -32,7 +32,7 @@ export default function FoodModalDialog({
 
   const gridStyle = {
     padding: "0 1em 2em 1em",
-    height: `${58 + (copyFood ? copyFood.froms.length * 25 : 0)}px`,
+    height: `${90 + (copyFood ? copyFood.froms.length * 25 : 0)}px`,
   };
 
   async function handleSubmit() {
