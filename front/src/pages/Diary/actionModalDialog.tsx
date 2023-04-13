@@ -249,7 +249,9 @@ export default function ActionModalDialog({
         onSubmit={handleSubmit(onSubmit)}
         className="action_modDial_container"
       >
-        <Calendar date={date} setDate={setDate} />
+        <div className="action_calendar">
+          <Calendar date={date} setDate={setDate} />
+        </div>
         <div className="action_modDial_form">
           <div>
             <div className="action_modDial_grid">

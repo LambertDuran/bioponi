@@ -19,7 +19,12 @@
     padding-bottom: 0.5em;
 }
 
+.action_calendar{
+    width: 40%;
+}
+
 .action_modDial_form{
+    width: 60%;
     padding: 1em;
     display: flex;
     flex-direction: column;
@@ -75,4 +80,21 @@
 
 p sub{
     font-size: 0.75em;
+}
+
+@media only screen and (max-width: 768px) {
+    .action_modDial_container{
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .action_calendar{
+        display: flex ;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .action_modDial_form{
+        width: 100%;
+    }
 }
