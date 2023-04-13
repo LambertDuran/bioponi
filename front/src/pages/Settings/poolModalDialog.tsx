@@ -145,7 +145,10 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
               title="Nouveau Bassin"
               color="yellow"
               onClick={() => {
-                const lastPool = pools.slice(-1)[0];
+                const lastPool =
+                  pools.length > 0
+                    ? pools.slice(-1)[0]
+                    : { number: 0, volume: 10 };
                 setPools([
                   ...pools,
                   {
