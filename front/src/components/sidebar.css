@@ -32,6 +32,7 @@
     margin: 0;
   }
   
+  .active_item,
   .inactive_item{
     cursor: pointer;
     margin: 10px 0;
@@ -42,12 +43,6 @@
   }
 
   .active_item{
-    cursor: pointer;
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 3em;
     background-color: #7991bd;
     border-radius: 10px;
   }
@@ -79,8 +74,8 @@
 
   .sidebar_name{
     margin-top: auto;
-    color: white;
     margin-bottom: 1em;
+    color: white;
     cursor: pointer;
   }
   

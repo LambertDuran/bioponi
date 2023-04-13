@@ -60,7 +60,7 @@ const Sidebar = () => {
       <div className={sidebarStyle}>
         <ul>
           <li>
-            <NavLink to={"/tableau-de-bord"}>
+            <NavLink to={"/parametrage"}>
               <img alt="bioponi-logo" src={logo} className="logo"></img>
             </NavLink>
           </li>
@@ -78,13 +78,15 @@ const Sidebar = () => {
             />
           ))}
           <div className="sidebar_name">
-            <li>
+            <li style={{ marginLeft: "10px" }}>
               <i className="fas fa-user"></i>
               {user.name}
             </li>
             <li>
-              <i className="fas fa-arrow-right"></i>
-              Déconnection
+              <NavLink to={"/"} onClick={() => auth.removeToken()}>
+                <i className="fas fa-arrow-right"></i>
+                Déconnection
+              </NavLink>
             </li>
           </div>
         </ul>
