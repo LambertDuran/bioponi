@@ -15,7 +15,8 @@ import { toast } from "react-toastify";
 import emptyList from "../../assets/emptyList.gif";
 import "./settings.css";
 
-const errorMsg = "Erreur de connexion au serveur distant.";
+const errorDefaultMsg = "Erreur de connexion au serveur distant.";
+let errorMsg = errorDefaultMsg;
 
 export default function Settings() {
   const [openFood, setOpenFood] = useState(false);
@@ -93,15 +94,18 @@ export default function Settings() {
       if (allFood && allFood.food) {
         setFoods(allFood.food);
         isFoodsLoaded = true;
-      }
+      } else if (allFood && allFood.error) errorMsg = allFood.error;
+      else errorMsg = errorDefaultMsg;
     }
 
     async function getFishes() {
       const allFish = await getAllFish();
+      console.log("allFish: ", allFish);
       if (allFish && allFish.fish) {
         setFishes(allFish.fish);
         isFishesLoaded = true;
-      }
+      } else if (allFish && allFish.error) errorMsg = allFish.error;
+      else errorMsg = errorDefaultMsg;
     }
 
     Promise.all([getFoods(), getFishes()]).then(() => {
