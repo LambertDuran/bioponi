@@ -6,8 +6,11 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/", async (req: any, res: Response, next: NextFunction) => {
   const actions = await prisma.action.findMany({
+    where: {
+      userId: req.user.id,
+    },
     orderBy: {
       date: "asc",
     },
@@ -31,9 +34,8 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
   res.json(action);
 });
 
-router.post("/", async (req: Request, res: Response, next: NextFunction) => {
+router.post("/", async (req: any, res: Response, next: NextFunction) => {
   const { error } = validateAction(req.body);
-  console.log("error", error);
   if (error) return res.status(400).send(error.details[0].message);
 
   let action;
@@ -56,6 +58,11 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
           fish: {
             connect: {
               id: req.body.fish.id,
+            },
+          },
+          user: {
+            connect: {
+              id: req.user.id,
             },
           },
         },
@@ -81,6 +88,11 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
           pool: {
             connect: {
               id: req.body.pool.id,
+            },
+          },
+          user: {
+            connect: {
+              id: req.user.id,
             },
           },
         },
@@ -117,6 +129,11 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
               id: req.body.secondPool.id,
             },
           },
+          user: {
+            connect: {
+              id: req.user.id,
+            },
+          },
         },
         include: {
           pool: true,
@@ -132,7 +149,7 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   res.json(action);
 });
 
-router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
+router.put("/:id", async (req: any, res: Response, next: NextFunction) => {
   const { error } = validateAction(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -167,6 +184,11 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
               id: req.body.fish.id,
             },
           },
+          user: {
+            connect: {
+              id: req.user.id,
+            },
+          },
         },
         include: {
           pool: true,
@@ -193,6 +215,11 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
           pool: {
             connect: {
               id: req.body.pool.id,
+            },
+          },
+          user: {
+            connect: {
+              id: req.user.id,
             },
           },
         },
@@ -230,6 +257,11 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
           secondPool: {
             connect: {
               id: req.body.secondPool.id,
+            },
+          },
+          user: {
+            connect: {
+              id: req.user.id,
             },
           },
         },
