@@ -7,6 +7,7 @@ export async function login(email: string, password: string) {
     .post(apiUrls.authEndpoint, { email, password })
     .then((res) => {
       auth.setToken(res.data);
+      http.setHeader();
       return null;
     })
     .catch((err) => {

@@ -6,7 +6,6 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 router.get("/", async (req: any, res: Response, next: NextFunction) => {
-  console.log("req.user.id", req.user.id);
   const food = await prisma.food.findMany({
     where: {
       userId: req.user.id,

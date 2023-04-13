@@ -3,8 +3,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const token = auth.getToken();
-axios.defaults.headers.common["x-auth-token"] = token;
+const setHeader = () => {
+  const token = auth.getToken();
+  axios.defaults.headers.common["x-auth-token"] = token;
+};
+setHeader();
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError =
@@ -23,6 +26,7 @@ const http = {
   post: axios.post,
   put: axios.put,
   delete: axios.delete,
+  setHeader: setHeader,
 };
 
 export default http;
