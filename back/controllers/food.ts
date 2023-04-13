@@ -47,6 +47,18 @@ const validateFood = (food: any) => {
         },
       };
 
+  for (let i = 0; i < food.froms.length; i++) {
+    if (i + 1 < food.froms.length) {
+      if (food.tos[i] !== food.froms[i + 1])
+        return {
+          error: {
+            details: [
+              { message: "A from is different thant the previous to!" },
+            ],
+          },
+        };
+    }
+  }
   return { error: null };
 };
 
