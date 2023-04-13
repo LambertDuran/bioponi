@@ -98,18 +98,26 @@ export default function ActionsGgrid({
         else return "";
       },
     },
-    {
-      field: "pool",
-      headerName: "Bassin",
-      flex: 0.5,
-      renderHeader,
-    },
-    {
-      field: "fish",
-      headerName: "Poisson",
-      flex: 0.5,
-      renderHeader,
-    },
+  ]);
+
+  if (setAction && setOpenRemove) {
+    colHeaders = colHeaders.concat([
+      {
+        field: "pool",
+        headerName: "Bassin",
+        flex: 0.5,
+        renderHeader,
+      },
+      {
+        field: "fish",
+        headerName: "Poisson",
+        flex: 0.5,
+        renderHeader,
+      },
+    ]);
+  }
+
+  colHeaders = colHeaders.concat([
     {
       field: "totalWeight",
       headerName: "Masse totale (kg)",
