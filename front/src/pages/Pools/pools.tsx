@@ -59,7 +59,13 @@ export default function Pools() {
         }px`,
       }}
     >
-      {datas && <PoolGrid datas={datas} />}
+      {datas && (
+        <PoolGrid
+          datas={datas}
+          densityMin={selectedPool?.densityMin!}
+          densityMax={selectedPool?.densityMax!}
+        />
+      )}
     </div>,
     <div className="pools_chart">
       {datas && (

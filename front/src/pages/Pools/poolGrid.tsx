@@ -6,6 +6,7 @@ import {
   GridCellParams,
 } from "@mui/x-data-grid";
 import { actionList } from "../Diary/diary";
+import "./poolGrid.css";
 
 const renderHeader = (params: any) => (
   <strong className="colHeaderGrid">{params.colDef.headerName}</strong>
@@ -13,9 +14,11 @@ const renderHeader = (params: any) => (
 
 interface IPoolGrid {
   datas: IData[];
+  densityMin: number;
+  densityMax: number;
 }
 
-export default function PoolGrid({ datas }: IPoolGrid) {
+export default function PoolGrid({ datas, densityMin, densityMax }: IPoolGrid) {
   const muiRows: GridRowsProp = datas.map((d, i) => {
     return {
       id: i,
@@ -97,6 +100,13 @@ export default function PoolGrid({ datas }: IPoolGrid) {
       headerName: "Densité(kg/m³)",
       flex: 1,
       renderHeader,
+      cellClassName: (params: GridCellParams<any>) => {
+        if (parseFloat(params.value as string) < densityMin)
+          return "pool_densityMin";
+        else if (parseFloat(params.value as string) > densityMax)
+          return "pool_densityMax";
+        else return "";
+      },
     },
   ];
 
