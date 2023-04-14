@@ -19,6 +19,8 @@ model Pool {
   id               Int      @id @default(autoincrement())
   number           Int
   volume           Float
+  densityMin       Float    @default(1)
+  densityMax       Float    @default(15)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   action           Action[]

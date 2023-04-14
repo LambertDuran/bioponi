@@ -5,6 +5,8 @@ const poolSchema = Joi.object({
   createdAt: Joi.date(),
   updatedAt: Joi.date(),
   number: Joi.number().required(),
+  densityMin: Joi.number().required().min(0).max(100),
+  densityMax: Joi.number().required().min(0).max(100),
   volume: Joi.number().required(),
   action: Joi.array().items(Joi.object()),
   user: Joi.number().min(0),

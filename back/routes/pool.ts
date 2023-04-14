@@ -74,6 +74,8 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
     data: {
       number: req.body.number,
       volume: req.body.volume,
+      densityMin: req.body.densityMin,
+      densityMax: req.body.densityMax,
     },
   });
 

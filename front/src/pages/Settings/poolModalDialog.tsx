@@ -62,23 +62,26 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
     // 1. Update pools state with form values
     let newPools: IPool[] = [...pools];
     for (const key in data) {
-      if (key.includes("number")) {
-        const index = parseInt(key.replace(/\D/g, ""));
-        const number = parseInt(data[key]);
-        newPools[index].number = number;
-      }
-      if (key.includes("volume")) {
-        const index = parseInt(key.replace(/\D/g, ""));
-        const volume = parseInt(data[key]);
-        newPools[index].volume = volume;
-      }
+      const index = parseInt(key.replace(/\D/g, ""));
+      const val = parseInt(data[key]);
+      if (key.includes("number")) newPools[index].number = val;
+      if (key.includes("volume")) newPools[index].volume = val;
+      if (key.includes("densityMin")) newPools[index].densityMin = val;
+      if (key.includes("densityMax")) newPools[index].densityMax = val;
     }
     setPools(newPools);
 
     // 2. Send pools to server
     const poolPromises = pools.map((p: IPool, i) => {
       if (p.id === 0) return postPool(p);
-      else return putPool({ id: p.id, number: p.number, volume: p.volume });
+      else
+        return putPool({
+          id: p.id,
+          number: p.number,
+          volume: p.volume,
+          densityMin: p.densityMin,
+          densityMax: p.densityMax,
+        });
     });
     const poolResponses = await Promise.all(poolPromises);
     poolResponses.map((res, i) => {
@@ -109,8 +112,10 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
       <form id="pool_form" onSubmit={handleSubmit(onSubmit)}>
         <div className="poolModalDialog_container">
           <div className="poolModalDialog_grid">
-            <p>N° bassin</p>
-            <p>Volume (m³)</p>
+            <div>N° bassin</div>
+            <div>Volume (m³)</div>
+            <div>Densité min</div>
+            <div>Densité max</div>
             {pools.map((pool, i) => (
               <>
                 <div className="poolModalDialog_div">
@@ -137,6 +142,30 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
                     })}
                   ></input>
                 </div>
+                <div className="poolModalDialog_div">
+                  <input
+                    className="poolModalDialog_input"
+                    defaultValue={pool.densityMin}
+                    {...register(`densityMin${i}`, {
+                      required: true,
+                      min: 1,
+                      max: 100,
+                      pattern: /^[0-9]+$/,
+                    })}
+                  />
+                </div>
+                <div className="poolModalDialog_div">
+                  <input
+                    className="poolModalDialog_input"
+                    defaultValue={pool.densityMax}
+                    {...register(`densityMax${i}`, {
+                      required: true,
+                      min: 1,
+                      max: 100,
+                      pattern: /^[0-9]+$/,
+                    })}
+                  />
+                </div>
               </>
             ))}
           </div>
@@ -148,16 +177,19 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
                 const lastPool =
                   pools.length > 0
                     ? pools.slice(-1)[0]
-                    : { number: 0, volume: 10 };
+                    : { number: 0, volume: 10, densityMin: 1, densityMax: 10 };
                 setPools([
                   ...pools,
                   {
                     id: 0,
                     number: lastPool.number + 1,
                     volume: lastPool.volume,
+                    densityMin: lastPool.densityMin,
+                    densityMax: lastPool.densityMax,
                   },
                 ]);
               }}
+              width="8.25em"
               form=""
             />
           </div>
