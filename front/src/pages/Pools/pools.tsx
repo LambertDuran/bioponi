@@ -73,6 +73,9 @@ export default function Pools() {
           datas={datas}
           dataType={dataType}
           setDataType={setDataType}
+          volume={selectedPool?.volume!}
+          densityMin={selectedPool?.densityMin!}
+          densityMax={selectedPool?.densityMax!}
         />
       )}
     </div>,
@@ -94,14 +97,18 @@ export default function Pools() {
 
   useEffect(() => {
     async function getDatas() {
-      if (!selectedPool) return;
+      if (!selectedPool) {
+        setDatas(null);
+        return;
+      }
 
       const actionWithFishId = selectedPool.action!.find(
         (a: IAction) => a.fishId !== null
       );
 
       if (!actionWithFishId) {
-        toast.error("Impossible de récupérer l'aliment utilisé pour ce bassin");
+        toast.error("Aucune donnée pour ce bassin");
+        setSelectedPool(null);
         return;
       }
       const food = await getFoodFromFish(actionWithFishId.fishId!);

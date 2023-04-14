@@ -107,15 +107,15 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
   }
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm">
+    <Dialog open={open} onClose={onClose} maxWidth="md">
       <DialogTitle>{title}</DialogTitle>
       <form id="pool_form" onSubmit={handleSubmit(onSubmit)}>
         <div className="poolModalDialog_container">
           <div className="poolModalDialog_grid">
             <div>N° bassin</div>
             <div>Volume (m³)</div>
-            <div>Densité min</div>
-            <div>Densité max</div>
+            <div>Densité min (kg/m³)</div>
+            <div>Densité max (kg/m³)</div>
             {pools.map((pool, i) => (
               <>
                 <div className="poolModalDialog_div">

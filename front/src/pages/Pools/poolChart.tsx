@@ -29,12 +29,18 @@ interface IPoolChart {
   datas: IData[];
   dataType: string;
   setDataType: (dataType: string) => void;
+  volume: number;
+  densityMin: number;
+  densityMax: number;
 }
 
 export default function PoolChart({
   datas,
   dataType,
   setDataType,
+  volume,
+  densityMin,
+  densityMax,
 }: IPoolChart) {
   const xLegend =
     dataType === "averageWeight" ? "Poids moyen (g)" : "Masse totale (kg)";
@@ -81,6 +87,26 @@ export default function PoolChart({
         backgroundColor: "rgba(50, 205, 50, 0.5)",
         tension: 0.5,
       },
+      {
+        data: datas.map((d) =>
+          dataType === "averageWeight"
+            ? (densityMin * volume * 1000) / d.fishNumber
+            : densityMin * volume
+        ),
+        label: "Densité minimale",
+        borderColor: "rgb(4, 146, 194)",
+        backgroundColor: "rgb(4, 146, 194)",
+      },
+      {
+        data: datas.map((d) =>
+          dataType === "averageWeight"
+            ? (densityMax * volume * 1000) / d.fishNumber
+            : densityMax * volume
+        ),
+        label: "Densité maximale",
+        borderColor: "rgb(248, 1, 45)",
+        backgroundColor: "rgb(248, 1, 45)",
+      },
     ],
   };
   const options = {
@@ -106,6 +132,7 @@ export default function PoolChart({
           size: 20,
         },
         formatter: function (value: any, context: any) {
+          if (context.datasetIndex > 0) return "";
           if (deaths.includes(context.dataIndex)) return "\uf54c";
           if (sells.includes(context.dataIndex)) return "\uf0d6";
           if (transfers.includes(context.dataIndex)) return "\uf0c1";
