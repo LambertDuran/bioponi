@@ -76,7 +76,7 @@ router.post("/", async (req: any, res: Response, next: NextFunction) => {
 
     case "Pesée":
     case "Vente":
-    case "Sortie définitve":
+    case "Sortie définitive":
     case "Mortalité": {
       action = await prisma.action.create({
         data: {

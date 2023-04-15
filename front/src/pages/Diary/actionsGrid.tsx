@@ -142,7 +142,7 @@ export default function ActionsGgrid({
     {
       field: "lotName",
       headerName: "Lot",
-      flex: 0.5,
+      flex: 1,
       renderHeader,
     },
   ]);

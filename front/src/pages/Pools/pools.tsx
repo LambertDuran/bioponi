@@ -85,12 +85,29 @@ export default function Pools() {
   useEffect(() => {
     async function getPools() {
       const allPool = await getAllPool();
-      if (allPool && allPool.data) {
-        allPool.data.forEach((p: any) => {
-          p.action! = orderBy(p.action!, ["date"], ["asc"]);
-        });
-        setPools(allPool.data);
+      if (!allPool || !allPool.data) return;
+
+      let fetchedPools = allPool.data;
+      fetchedPools.forEach((p: any) => {
+        p.action! = orderBy(p.action!, ["date"], ["asc"]);
+      });
+
+      // Ajouter les actions de transferts dans la liste des actions
+      // du bassin de destination
+      for (let pool of fetchedPools) {
+        for (let action of pool.action!) {
+          if (!action.secondPoolId) continue;
+          const secondPoolIndex = fetchedPools.findIndex(
+            (p: any) => p.id === action.secondPoolId
+          );
+          if (secondPoolIndex < 0) continue;
+          action.secondPoolId = null;
+          fetchedPools[secondPoolIndex].action =
+            fetchedPools[secondPoolIndex].action.concat(action);
+        }
       }
+
+      setPools(fetchedPools);
     }
     getPools();
 

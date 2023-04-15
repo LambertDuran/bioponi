@@ -28,7 +28,7 @@ export class ComputePool {
   poolVolume: number = 0;
   food: Food | null = null;
   fish: IFish | null = null;
-  nbDaysOfExtrapolation = 100;
+  nbDaysOfExtrapolation = 60;
 
   constructor(actions: IAction[], poolVolume: number, food: Food, fish: IFish) {
     this.actions = orderBy(actions, ["date"], ["asc"]);
