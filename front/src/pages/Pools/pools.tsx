@@ -56,7 +56,7 @@ export default function Pools() {
     <div
       style={{
         height: `${
-          datas ? (datas?.length! < 100 ? 55 + datas?.length! * 25 : 2620) : 50
+          datas ? (datas?.length! < 100 ? 55 + datas?.length! * 26 : 2620) : 50
         }px`,
       }}
     >

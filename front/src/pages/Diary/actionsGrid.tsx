@@ -16,14 +16,12 @@ const renderHeader = (params: any) => (
 
 interface IActionGrid {
   actions: IAction[];
-  setAction?: (action: IAction | null) => void;
-  setOpenRemove?: (open: boolean) => void;
+  editOrDeleteAction?: (action: IAction, isDeleting: boolean) => void;
 }
 
 export default function ActionsGgrid({
   actions,
-  setAction,
-  setOpenRemove,
+  editOrDeleteAction,
 }: IActionGrid) {
   const muiRows: GridRowsProp = actions.map((a, i) => {
     return {
@@ -41,7 +39,7 @@ export default function ActionsGgrid({
   });
 
   let colHeaders: GridColDef[] = [];
-  if (setOpenRemove)
+  if (editOrDeleteAction)
     colHeaders.push({
       field: "Effacer",
       headerName: "Effacer",
@@ -50,14 +48,16 @@ export default function ActionsGgrid({
       renderCell: (params: GridCellParams<any>) => (
         <i
           className="fas fa-trash actionsGrid_delete"
-          onClick={() => {
-            setOpenRemove!(true);
-            setAction!(actions.find((a) => a.id === params.row.id)!);
-          }}
+          onClick={() =>
+            editOrDeleteAction(
+              actions.find((a) => a.id === params.row.id)!,
+              true
+            )
+          }
         ></i>
       ),
     });
-  if (setAction)
+  if (editOrDeleteAction)
     colHeaders.push({
       field: "Editer",
       headerName: "Editer",
@@ -66,9 +66,12 @@ export default function ActionsGgrid({
       renderCell: (params: GridCellParams<any>) => (
         <i
           className="fas fa-edit actionsGrid_modify"
-          onClick={() => {
-            setAction!(actions.find((a) => a.id === params.row.id)!);
-          }}
+          onClick={() =>
+            editOrDeleteAction(
+              actions.find((a) => a.id === params.row.id)!,
+              false
+            )
+          }
         ></i>
       ),
     });
@@ -100,7 +103,7 @@ export default function ActionsGgrid({
     },
   ]);
 
-  if (setAction && setOpenRemove) {
+  if (editOrDeleteAction) {
     colHeaders = colHeaders.concat([
       {
         field: "pool",

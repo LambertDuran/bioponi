@@ -38,6 +38,16 @@ export default function Diary() {
   const [pools, setPools] = useState<IPool[]>([]);
   const [openRemove, setOpenRemove] = useState(false);
 
+  const editOrDeleteAction = (action: IAction, isDeleting: boolean) => {
+    setAction(action);
+    if (isDeleting) setOpenRemove(true);
+    else {
+      setActionType(action.type);
+      setIsCreation(false);
+      setOpen(true);
+    }
+  };
+
   useEffect(() => {
     async function getFishes() {
       const allFish = await getAllFish();
@@ -55,18 +65,6 @@ export default function Diary() {
     getFishes();
     getPools();
   }, []);
-
-  useEffect(() => {
-    if (action) {
-      if (!openRemove) {
-        setIsCreation(false);
-        setOpen(true);
-        setActionType(action.type);
-      } else {
-        setOpenRemove(true);
-      }
-    }
-  }, [action, openRemove]);
 
   const displayDiary = fishes.length > 0 && pools.length > 0;
 
@@ -123,8 +121,7 @@ export default function Diary() {
           <div style={gridStyle}>
             <ActionsGrid
               actions={actions}
-              setAction={setAction}
-              setOpenRemove={setOpenRemove}
+              editOrDeleteAction={editOrDeleteAction}
             />
           </div>
         </div>
