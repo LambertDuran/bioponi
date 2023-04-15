@@ -32,6 +32,7 @@
     margin: 0;
   }
   
+  .sidebar_disconnect,
   .active_item,
   .inactive_item{
     cursor: pointer;
@@ -45,6 +46,11 @@
   .active_item{
     background-color: #7991bd;
     border-radius: 10px;
+  }
+
+  .sidebar_disconnect{
+    display: flex !important;
+    justify-content: left;
   }
   
   .sidebar_show i,

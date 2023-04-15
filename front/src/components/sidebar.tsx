@@ -86,8 +86,18 @@ const Sidebar = () => {
               <i className="fas fa-user"></i>
               {user.name}
             </li>
+            {user.isAdmin && (
+              <li style={{ marginLeft: "10px" }}>
+                <i className="fas fa-lock"></i>
+                Administrateur
+              </li>
+            )}
             <li>
-              <NavLink to={"/"} onClick={() => auth.removeToken()}>
+              <NavLink
+                className="sidebar_disconnect"
+                to={"/"}
+                onClick={() => auth.removeToken()}
+              >
                 <i className="fas fa-arrow-right"></i>
                 Déconnexion
               </NavLink>
