@@ -138,6 +138,7 @@ export default function Pools() {
       );
 
       const resComputation = compute.computeAllData();
+
       if (resComputation.data) {
         setDatas(resComputation.data as IData[]);
         return;

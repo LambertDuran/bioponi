@@ -333,7 +333,7 @@ export class ComputePool {
     // 2. Si aucun écart entre les dates: par exemple même jour
     // => Pesée + Mortalité
     // => Retourne juste la donnée au jour J
-    if (dates.length === 0)
+    if (dates.length === 0 || dates.length === 1)
       return {
         error: "",
         data: [
