@@ -9,7 +9,7 @@ const poolSchema = Joi.object({
   densityMax: Joi.number().required().min(0).max(100),
   volume: Joi.number().required(),
   action: Joi.array().items(Joi.object()),
-  user: Joi.number().min(0),
+  userId: Joi.number().min(0),
 });
 
 const validatePool = (pool: any) => {

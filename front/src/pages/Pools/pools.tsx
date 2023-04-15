@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { orderBy } from "lodash";
 import { colors } from "../../components/button";
 import "./pools.css";
 
@@ -84,9 +85,15 @@ export default function Pools() {
   useEffect(() => {
     async function getPools() {
       const allPool = await getAllPool();
-      if (allPool && allPool.data) setPools(allPool.data);
+      if (allPool && allPool.data) {
+        allPool.data.forEach((p: any) => {
+          p.action! = orderBy(p.action!, ["date"], ["asc"]);
+        });
+        setPools(allPool.data);
+      }
     }
     getPools();
+
     if (pools.length) setSelectedPool(pools[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
