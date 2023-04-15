@@ -4,9 +4,10 @@ import IPool from "../../interfaces/pool";
 import IFish from "../../interfaces/fish";
 import IAction from "../../interfaces/action";
 import Calendar from "../../components/calendar";
-import { actionList } from "./diary";
 import { colors } from "../../components/button";
+import { actionList } from "./diary";
 import { postAction, putAction } from "../../services/action";
+import { getFishFromPool } from "../../services/pool";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import Chip from "@mui/material/Chip";
@@ -186,9 +187,14 @@ export default function ActionModalDialog({
         newAction.fishNumber = parseInt(data.fish_number);
         break;
       case actionList[3]:
+        const fish = await getFishFromPool(newAction.pool.id);
+        if (!fish) {
+          toast.error("Erreur dans la récupéréation des données du bassin!");
+          return;
+        }
         newAction = {
           ...newAction,
-          fish: fishes.find((f) => f.name === data.fish_name)!,
+          fish: fish,
           totalWeight: parseFloat(data.total_weight),
           averageWeight: parseFloat(data.average_weight),
           fishNumber: parseInt(data.fish_number),

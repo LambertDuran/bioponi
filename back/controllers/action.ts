@@ -3,6 +3,23 @@ const { poolSchema } = require("./pool");
 const { fishSchema } = require("./fish");
 
 export default function validateAction(action: any) {
+  if (
+    action.type === "Transfert" &&
+    (action.poolId === action.secondPool.id ||
+      action.pool.id === action.secondPoolId ||
+      action.pool.id === action.secondPool.id)
+  )
+    return {
+      error: {
+        details: [
+          {
+            message:
+              "Le bassin de départ et d'arrivée ne peuvent pas être les mêmes!",
+          },
+        ],
+      },
+    };
+
   const schema = Joi.object({
     id: Joi.number().min(0),
     createdAt: Joi.date(),

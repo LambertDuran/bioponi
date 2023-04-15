@@ -23,7 +23,7 @@ export default function ActionsGgrid({
   actions,
   editOrDeleteAction,
 }: IActionGrid) {
-  const muiRows: GridRowsProp = actions.map((a, i) => {
+  const muiRows: GridRowsProp = actions.map((a) => {
     return {
       id: a.id,
       action: a.type,
@@ -145,13 +145,18 @@ export default function ActionsGgrid({
       flex: 0.5,
       renderHeader,
     },
-    {
-      field: "secondPool",
-      headerName: "Bassin de transfert",
-      flex: 1,
-      renderHeader,
-    },
   ]);
+
+  if (editOrDeleteAction) {
+    colHeaders = colHeaders.concat([
+      {
+        field: "secondPool",
+        headerName: "Bassin de transfert",
+        flex: 1,
+        renderHeader,
+      },
+    ]);
+  }
 
   return (
     <DataGrid

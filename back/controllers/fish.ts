@@ -12,7 +12,7 @@ const fishSchema = Joi.object({
     .required(),
   foodId: Joi.number().min(0),
   food: foodSchema,
-  user: Joi.number().min(0),
+  userId: Joi.number().min(0),
 });
 
 const validateFish = (fish: any) => {
