@@ -142,21 +142,16 @@ export default function ActionsGgrid({
     {
       field: "lotName",
       headerName: "Lot",
-      flex: 1,
+      flex: 0.5,
+      renderHeader,
+    },
+    {
+      field: "secondPool",
+      headerName: "Second bassin",
+      flex: 0.75,
       renderHeader,
     },
   ]);
-
-  if (editOrDeleteAction) {
-    colHeaders = colHeaders.concat([
-      {
-        field: "secondPool",
-        headerName: "Bassin de transfert",
-        flex: 1,
-        renderHeader,
-      },
-    ]);
-  }
 
   return (
     <DataGrid

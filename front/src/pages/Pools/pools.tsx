@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllPool } from "../../services/pool";
+import { getAllPool, getPool } from "../../services/pool";
 import { getFish, getFoodFromFish } from "../../services/fish";
 import IPool from "../../interfaces/pool";
 import IAction from "../../interfaces/action";
@@ -94,16 +94,23 @@ export default function Pools() {
 
       // Ajouter les actions de transferts dans la liste des actions
       // du bassin de destination
-      for (let pool of fetchedPools) {
-        for (let action of pool.action!) {
+      for (let i = 0; i < fetchedPools.length; i++) {
+        for (let action of fetchedPools[i].action!) {
           if (!action.secondPoolId) continue;
+
+          const secondPool = await getPool(action.secondPoolId);
+          if (!secondPool || !secondPool.data || secondPool.status !== 200)
+            continue;
+          action.secondPool = secondPool.data;
+
           const secondPoolIndex = fetchedPools.findIndex(
             (p: any) => p.id === action.secondPoolId
           );
           if (secondPoolIndex < 0) continue;
-          action.secondPoolId = null;
-          fetchedPools[secondPoolIndex].action =
-            fetchedPools[secondPoolIndex].action.concat(action);
+
+          fetchedPools[secondPoolIndex].action = fetchedPools[
+            secondPoolIndex
+          ].action.concat({ ...action, secondPool: null, secondPoolId: null });
         }
       }
 
