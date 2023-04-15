@@ -436,6 +436,15 @@ export class ComputePool {
     });
 
     this.data = this.data.concat(datas);
+
+    let lastDeletedData: IData | null = null;
+    for (let i = this.data.length - 1; i >= 0; i--) {
+      if (this.data[i].fishNumber === 0) {
+        lastDeletedData = this.data.splice(i, 1)[0];
+      } else break;
+    }
+
+    if (lastDeletedData) this.data.push(lastDeletedData);
   }
 
   computeAllData(): IComputedData {
