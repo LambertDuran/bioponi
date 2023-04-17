@@ -448,6 +448,23 @@ export class ComputePool {
   }
 
   computeAllData(): IComputedData {
+    if (this.actions.length === 0) {
+      return {
+        error: "Aucune actions sur le bassin",
+        data: null,
+      };
+    }
+
+    if (this.actions.length === 1) {
+      const data0: IComputedData = this.getLastData(0);
+      if (data0.error) return data0;
+      this.extrapolateData();
+      return {
+        error: "",
+        data: this.data,
+      };
+    }
+
     for (let i = 0; i < this.actions.length - 1; i++) {
       let dataI = this.computeData(i);
       if (dataI.error || !dataI.data)
@@ -457,6 +474,9 @@ export class ComputePool {
         };
       this.data = this.data.concat(dataI.data as IData[]);
     }
+
+    if (!this.data.length)
+      return { error: "Erreur dans le calcul des données", data: null };
 
     this.extrapolateData();
 
