@@ -87,10 +87,17 @@ const Sidebar = () => {
               {user.name}
             </li>
             {user.isAdmin && (
-              <li style={{ marginLeft: "10px" }}>
-                <i className="fas fa-lock"></i>
-                Administrateur
-              </li>
+              <SidebarItem
+                path={"/admin"}
+                icon={"fas fa-lock"}
+                name={"Administrateur"}
+                key={5}
+                onClick={() => {
+                  setSidebarStyle("sidebar");
+                  setActiveIndex(5);
+                }}
+                isActive={activeIndex === 5}
+              />
             )}
             <li>
               <NavLink

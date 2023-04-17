@@ -10,6 +10,7 @@ import Balance from "./pages/balance";
 import DailyCard from "./pages/dailyCard";
 import Pools from "./pages/Pools/pools";
 import Login from "./pages/login";
+import Admin from "./pages/admin";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/fiche-journaliere",
         element: <DailyCard />,
+      },
+      {
+        path: "/admin",
+        element: <Admin />,
       },
     ],
   },

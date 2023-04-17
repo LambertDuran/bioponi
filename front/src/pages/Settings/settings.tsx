@@ -100,7 +100,6 @@ export default function Settings() {
 
     async function getFishes() {
       const allFish = await getAllFish();
-      console.log("allFish: ", allFish);
       if (allFish && allFish.fish) {
         setFishes(allFish.fish);
         isFishesLoaded = true;
