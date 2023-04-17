@@ -128,10 +128,8 @@ export default function Pools() {
 
   useEffect(() => {
     async function getDatas() {
-      if (!selectedPool) {
-        setDatas(null);
-        return;
-      }
+      setDatas(null);
+      if (!selectedPool) return;
 
       const actionWithFishId = selectedPool.action!.find(
         (a: IAction) => a.fishId !== null
@@ -139,9 +137,9 @@ export default function Pools() {
 
       if (!actionWithFishId) {
         toast.error("Aucune donnée pour ce bassin");
-        setSelectedPool(null);
         return;
       }
+
       const food = await getFoodFromFish(actionWithFishId.fishId!);
       if (!food || !food.food) {
         toast.error(food.error);
@@ -160,7 +158,6 @@ export default function Pools() {
         food.food,
         fish.fish
       );
-
       const resComputation = compute.computeAllData();
 
       if (resComputation.data) {
