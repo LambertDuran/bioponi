@@ -3,5 +3,6 @@
     "fishEndpoint" : "http://localhost:3000/api/fish",
     "poolEndpoint" : "http://localhost:3000/api/pool",
     "actionEndpoint" : "http://localhost:3000/api/action",
-    "authEndpoint" : "http://localhost:3000/api/auth"
+    "authEndpoint" : "http://localhost:3000/api/auth",
+    "userEndpoint" : "http://localhost:3000/api/user"
 }

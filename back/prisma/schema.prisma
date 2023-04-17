@@ -52,7 +52,7 @@ model Food {
 
 model Fish {
   id        Int      @id @default(autoincrement())
-  name      String   @unique
+  name      String
   weeks     Int[]
   weights   Int[]
   createdAt DateTime @default(now())

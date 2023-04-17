@@ -39,7 +39,7 @@ async function putPool(pool: IPool) {
 
 async function getFishFromPool(id: number) {
   const pool = await http.get(apiUrls.poolEndpoint + `/${id}`);
-  if (!pool || !pool.data || pool.status != 200) return null;
+  if (!pool || !pool.data || pool.status !== 200) return null;
 
   let fishId: number | null = null;
   for (let action of pool.data.action) {
@@ -51,7 +51,7 @@ async function getFishFromPool(id: number) {
   if (!fishId) return null;
 
   const fish = await http.get(apiUrls.fishEndpoint + `/${fishId}`);
-  if (!fish || !fish.data || fish.status != 200) return null;
+  if (!fish || !fish.data || fish.status !== 200) return null;
   else return fish.data;
 }
 

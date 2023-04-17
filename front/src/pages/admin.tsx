@@ -1,6 +1,9 @@
+import IUser from "../interfaces/user";
+import { createUser } from "../services/user";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { toast } from "react-toastify";
 import "./admin.css";
 
 const schema = yup
@@ -39,8 +42,18 @@ export default function Admin() {
     );
   };
 
-  function onSubmit(data: any) {
-    console.log(data);
+  async function onSubmit(data: any) {
+    const user: IUser = {
+      id: 0,
+      email: data.email,
+      password: data.password,
+      name: data.name,
+      isAdmin: false,
+    };
+
+    const userCreated = await createUser(user);
+    if (userCreated.error || !userCreated.user) toast.error(userCreated.error);
+    else toast.success("Utilisateur créé avec succès.");
   }
 
   return (
