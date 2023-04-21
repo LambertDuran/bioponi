@@ -109,7 +109,7 @@ export class ComputePool {
   //////////////////////////////////////////////////////////////////////////////////////////
   // Calculer la pente de croissance du poisson à une date donnée
   //////////////////////////////////////////////////////////////////////////////////////////
-  getGrowthRate(date: moment.Moment): number {
+  getTheoricGrowth(date: moment.Moment): number {
     const nbWeeks = this.getFishAge(date);
     if (nbWeeks === 0) return 0;
 
@@ -318,6 +318,25 @@ export class ComputePool {
     };
   }
 
+  pushLastData(datas: IData[], index: number, slope: number) {
+    let data: IData = datas[datas.length - 1];
+    const action = this.actions[index + 1];
+
+    if (action.type === "Mortalité" || action.type === "Transfert") {
+      data = {
+        ...data,
+        averageWeight: data.averageWeight + slope,
+      };
+      data = this.recomputeDataFromAction(data, action);
+    } else
+      data = this.recomputeDataFromAction(
+        datas[datas.length - 1],
+        this.actions[index + 1]
+      );
+
+    datas.push(data);
+  }
+
   //////////////////////////////////////////////////////////////////////////////////////////
   // Calculer les données pour le bassin sur l'intervalle de temps (tous les jours)
   // entre la date de la index-ème action et la date de la (index+1)-ème action
@@ -368,17 +387,17 @@ export class ComputePool {
       nextWeight
     );
     const p0 = lastData.averageWeight;
-    const slope = (nextWeight.weight - p0) / nextWeight.nbDays;
+    const slope = (nextWeight.weight - p0) / (nextWeight.nbDays + 1);
 
     // Recalculer les données sur l'intervalle de temps
     let averageWeight = lastData.averageWeight;
     const datas: IData[] = dates.map((date) => {
       if (bExistNextWeight) {
-        const diffDays = date.diff(lastData.date, "days");
+        const diffDays = date.diff(lastData.date, "days") + 1;
         averageWeight = p0! + slope * diffDays;
       }
       // S'il n'y a pas de prochaine pesée, on utilise la pente de croissance théorique
-      else averageWeight += this.getGrowthRate(date);
+      else averageWeight += this.getTheoricGrowth(date);
 
       const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
       return {
@@ -396,12 +415,7 @@ export class ComputePool {
     });
 
     // Rajouter la dernière donnée, qui sera utilisée pour la prochaine action
-    datas.push(
-      this.recomputeDataFromAction(
-        datas[datas.length - 1],
-        this.actions[index + 1]
-      )
-    );
+    this.pushLastData(datas, index, slope);
 
     return {
       error: "",
@@ -423,7 +437,7 @@ export class ComputePool {
     let averageWeight = lastData.averageWeight;
     const datas: IData[] = dates.map((date, i) => {
       // S'il n'y a pas de prochaine pesée, on utilise la pente de croissance théorique
-      const slope = this.getGrowthRate(date);
+      const slope = this.getTheoricGrowth(date);
       averageWeight += slope;
       const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
       return {
