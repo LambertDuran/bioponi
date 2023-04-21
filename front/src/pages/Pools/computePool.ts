@@ -182,6 +182,7 @@ export class ComputePool {
       case "Mortalité":
         data = {
           ...this.recomputeDataAfterDecrease(lastData, action.fishNumber!),
+          date: action.date,
           dateFormatted: moment(action.date).format("DD/MM/YYYY"),
           actionType: action.type,
           actionWeight: action.totalWeight!,
@@ -191,6 +192,7 @@ export class ComputePool {
         if (action.secondPoolId)
           data = {
             ...this.recomputeDataAfterDecrease(lastData, action.fishNumber!),
+            date: action.date,
             dateFormatted: moment(action.date).format("DD/MM/YYYY"),
             actionType: action.type,
             actionWeight: action.totalWeight!,
@@ -198,6 +200,7 @@ export class ComputePool {
         else
           data = {
             ...this.recomputeDataAfterIncrease(lastData, action.fishNumber!),
+            date: action.date,
             dateFormatted: moment(action.date).format("DD/MM/YYYY"),
             actionType: action.type,
             actionWeight: action.totalWeight!,
@@ -206,6 +209,7 @@ export class ComputePool {
       case "Pesée":
         data = {
           ...lastData,
+          date: action.date,
           dateFormatted: moment(action.date).format("DD/MM/YYYY"),
           actionType: action.type,
           averageWeight: (action.totalWeight! / lastData.fishNumber!) * 1000,
@@ -216,6 +220,7 @@ export class ComputePool {
       case "Entrée du lot":
         data = {
           ...lastData,
+          date: action.date,
           dateFormatted: moment(action.date).format("DD/MM/YYYY"),
           actionType: action.type,
           fishNumber: lastData.fishNumber! + action.fishNumber!,
@@ -238,7 +243,7 @@ export class ComputePool {
   // Récupérer le poids moyen sur le bassin lors de la prochaine action de type "Pesée"
   //////////////////////////////////////////////////////////////////////////////////////////
   getNextWeightAndDuration(index: number, nextWeight: any): boolean {
-    const date0 = this.actions[index].date;
+    const date0 = this.actions[index - 1].date;
     let nextAction: IAction = this.actions[index];
 
     // Appliquer la prochaine action
@@ -257,7 +262,7 @@ export class ComputePool {
     }
 
     nextWeight.weight = lastData.averageWeight;
-    nextWeight.nbDays = this.getDates(lastData.date, date0).length;
+    nextWeight.nbDays = this.getDates(date0, lastData.date).length;
     return nextAction.type === "Pesée";
   }
 
