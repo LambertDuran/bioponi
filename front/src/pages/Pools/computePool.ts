@@ -322,7 +322,12 @@ export class ComputePool {
     let data: IData = datas[datas.length - 1];
     const action = this.actions[index + 1];
 
-    if (action.type === "Mortalité" || action.type === "Transfert") {
+    if (
+      action.type === "Mortalité" ||
+      (action.type === "Transfert" && action.secondPoolId) ||
+      action.type === "Vente" ||
+      action.type === "Sortie définitive"
+    ) {
       data = {
         ...data,
         averageWeight: data.averageWeight + slope,
@@ -354,10 +359,28 @@ export class ComputePool {
       this.actions[index + 1].date
     );
 
-    // 2. Si aucun écart entre les dates: par exemple même jour
+    // 2. Récuper la donnée de la dernière action
+    // qui va être la première donnée à partir de la quelle on va calculer
+    // les autres données sur cette plage de temps
+    const res: IComputedData = this.getLastData(index);
+    if (res.error) return res;
+    const lastData: IData = res.data! as IData;
+
+    // 3. Récupérer le poids moyen sur le bassin lors de la prochaine Pesée
+    // puis calculer les poids sur l'intervalle de temps
+    let nextWeight = { weight: 0, nbDays: 0 };
+    const bExistNextWeight = this.getNextWeightAndDuration(
+      index + 1,
+      nextWeight
+    );
+    const p0 = lastData.averageWeight;
+    const slope = (nextWeight.weight - p0) / nextWeight.nbDays;
+    let averageWeight = 0;
+
+    // 4. Si aucun écart entre les dates: par exemple même jour
     // => Pesée + Mortalité
     // => Retourne juste la donnée au jour J
-    if (dates.length === 0 || dates.length === 1)
+    if (dates.length === 0)
       return {
         error: "",
         data: [
@@ -368,32 +391,32 @@ export class ComputePool {
         ],
       };
 
+    if (dates.length === 1) {
+      const action = this.actions[index + 1];
+      const date = moment(action.date);
+      if (bExistNextWeight) averageWeight = p0! + slope;
+      else averageWeight += this.getTheoricGrowth(date);
+
+      let data = this.recomputeDataFromAction(lastData, action);
+      data = {
+        ...data,
+        averageWeight,
+        totalWeight: (averageWeight * data.fishNumber!) / 1000,
+      };
+      return {
+        error: "",
+        data: [data],
+      };
+    }
+
     // On ne rajoute pas le premier élément, il a été rajouté sur l'action précédente
     // En temps que dernière donnée, du coup on enlève la première date
     dates.shift();
 
-    // 3. Récuper la donnée de la dernière action
-    // qui va être la première donnée à partir de la quelle on va calculer
-    // les autres données sur cette plage de temps
-    const res: IComputedData = this.getLastData(index);
-    if (res.error) return res;
-    const lastData: IData = res.data! as IData;
-
-    // 4. Récupérer le poids moyen sur le bassin lors de la prochaine Pesée
-    // puis calculer les poids sur l'intervalle de temps
-    let nextWeight = { weight: 0, nbDays: 0 };
-    const bExistNextWeight = this.getNextWeightAndDuration(
-      index + 1,
-      nextWeight
-    );
-    const p0 = lastData.averageWeight;
-    const slope = (nextWeight.weight - p0) / (nextWeight.nbDays + 1);
-
     // Recalculer les données sur l'intervalle de temps
-    let averageWeight = lastData.averageWeight;
     const datas: IData[] = dates.map((date) => {
       if (bExistNextWeight) {
-        const diffDays = date.diff(lastData.date, "days") + 1;
+        const diffDays = date.diff(lastData.date, "days");
         averageWeight = p0! + slope * diffDays;
       }
       // S'il n'y a pas de prochaine pesée, on utilise la pente de croissance théorique
