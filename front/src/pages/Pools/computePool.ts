@@ -238,7 +238,9 @@ export class ComputePool {
   // Récupérer le poids moyen sur le bassin lors de la prochaine action de type "Pesée"
   //////////////////////////////////////////////////////////////////////////////////////////
   getNextWeightAndDuration(index: number, nextWeight: any): boolean {
+    // console.log("index", index);
     const date0 = this.actions[index].date;
+    // console.log("date0", date0.toString());
     let nextAction: IAction = this.actions[index];
 
     // Appliquer la prochaine action
@@ -257,6 +259,10 @@ export class ComputePool {
     }
 
     nextWeight.weight = lastData.averageWeight;
+    // console.log("dates");
+    // this.getDates(lastData.date, date0).forEach((date) => {
+    //   console.log(date.format("DD/MM/YYYY"));
+    // });
     nextWeight.nbDays = this.getDates(lastData.date, date0).length;
     return nextAction.type === "Pesée";
   }
@@ -348,6 +354,11 @@ export class ComputePool {
     // En temps que dernière donnée, du coup on enlève la première date
     dates.shift();
 
+    console.log("date");
+    dates.forEach((date) => {
+      console.log(date.format("DD/MM/YYYY"));
+    });
+
     // 3. Récuper la donnée de la dernière action
     // qui va être la première donnée à partir de la quelle on va calculer
     // les autres données sur cette plage de temps
@@ -364,6 +375,12 @@ export class ComputePool {
     );
     const p0 = lastData.averageWeight;
     const slope = (nextWeight.weight - p0) / nextWeight.nbDays;
+
+    // if (bExistNextWeight) {
+    //   console.log("nextWeight", nextWeight);
+    //   console.log("p0", p0);
+    //   console.log("slope", slope);
+    // }
 
     // Recalculer les données sur l'intervalle de temps
     let averageWeight = lastData.averageWeight;
