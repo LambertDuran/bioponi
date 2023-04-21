@@ -329,15 +329,10 @@ export class ComputePool {
       action.type === "Sortie définitive"
     ) {
       data = {
-        ...data,
+        ...this.recomputeDataFromAction(data, action),
         averageWeight: data.averageWeight + slope,
       };
-      data = this.recomputeDataFromAction(data, action);
-    } else
-      data = this.recomputeDataFromAction(
-        datas[datas.length - 1],
-        this.actions[index + 1]
-      );
+    } else data = this.recomputeDataFromAction(datas[datas.length - 1], action);
 
     datas.push(data);
   }
@@ -451,10 +446,11 @@ export class ComputePool {
   //////////////////////////////////////////////////////////////////////////////////////////
   extrapolateData(): void {
     const lastData = this.data[this.data.length - 1];
-    const dates = this.getDates(
+    let dates = this.getDates(
       lastData.date,
       moment(lastData.date).add(this.nbDaysOfExtrapolation, "days").toDate()
     );
+    dates.shift();
 
     // Recalculer les données sur l'intervalle de temps
     let averageWeight = lastData.averageWeight;
