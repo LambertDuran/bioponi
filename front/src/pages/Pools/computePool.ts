@@ -375,7 +375,7 @@ export class ComputePool {
     );
     const p0 = lastData.averageWeight;
     const slope = (nextWeight.weight - p0) / nextWeight.nbDays;
-    let averageWeight = 0;
+    let averageWeight = p0;
 
     // 4. Si aucun écart entre les dates: par exemple même jour
     // => Pesée + Mortalité
