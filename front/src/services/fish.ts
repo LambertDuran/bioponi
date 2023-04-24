@@ -1,12 +1,13 @@
 import IFish from "../interfaces/fish";
 import http from "./httpServices";
-import apiUrls from "../config.json";
+
+const apiEndPoint = process.env.REACT_APP_API_ENDPOINT + "fish";
 
 async function getAllFish() {
   let fish: IFish | null = null;
   let error = "";
   return http
-    .get(apiUrls.fishEndpoint)
+    .get(apiEndPoint)
     .then((res) => {
       return { fish: res.data, error: error };
     })
@@ -20,7 +21,7 @@ async function getFish(id: number) {
   let fish: IFish | null = null;
   let error = "";
   return http
-    .get(apiUrls.fishEndpoint + `/${id}`)
+    .get(apiEndPoint + `/${id}`)
     .then((res) => {
       return { fish: res.data, error: error };
     })
@@ -34,7 +35,7 @@ async function postFish(fish: IFish) {
   let newFish: IFish | null = null;
   let error = "";
   return http
-    .post(apiUrls.fishEndpoint, fish)
+    .post(apiEndPoint, fish)
     .then((res) => {
       return { fish: res.data, error: error };
     })
@@ -48,7 +49,7 @@ async function putFish(fish: IFish) {
   let newFish: IFish | null = null;
   let error = "";
   return http
-    .put(apiUrls.fishEndpoint + `/${fish.id}`, fish)
+    .put(apiEndPoint + `/${fish.id}`, fish)
     .then((res) => {
       return { fish: res.data, error: error };
     })
@@ -62,7 +63,7 @@ async function getFoodFromFish(id: number) {
   let food: IFish | null = null;
   let error = "";
   return http
-    .get(apiUrls.fishEndpoint + `/${id}`)
+    .get(apiEndPoint + `/${id}`)
     .then((res) => {
       return { food: res.data.food, error: error };
     })

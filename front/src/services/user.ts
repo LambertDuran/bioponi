@@ -1,10 +1,11 @@
 import http from "./httpServices";
-import apiUrls from "../config.json";
 import IUser from "../interfaces/user";
+
+const apiEndPoint = process.env.REACT_APP_API_ENDPOINT + "user";
 
 async function createUser(user: IUser) {
   return http
-    .post(apiUrls.userEndpoint, user)
+    .post(apiEndPoint, user)
     .then((res) => {
       return { user: res.data, error: "" };
     })

@@ -1,20 +1,22 @@
 import IPool from "../interfaces/pool";
 import http from "./httpServices";
-import apiUrls from "../config.json";
+
+const apiEndPoint = process.env.REACT_APP_API_ENDPOINT + "pool";
+const fishEndpoint = process.env.REACT_APP_API_ENDPOINT + "fish";
 
 async function getAllPool() {
-  const allPools = await http.get(apiUrls.poolEndpoint);
+  const allPools = await http.get(apiEndPoint);
   return allPools;
 }
 
 async function getPool(id: number) {
-  const pool = await http.get(apiUrls.poolEndpoint + `/${id}`);
+  const pool = await http.get(apiEndPoint + `/${id}`);
   return pool;
 }
 
 async function postPool(pool: IPool) {
   return http
-    .post(apiUrls.poolEndpoint, pool)
+    .post(apiEndPoint, pool)
     .then((res) => {
       return { pool: res.data, error: "" };
     })
@@ -27,7 +29,7 @@ async function putPool(pool: IPool) {
   let newPool: IPool | null = null;
   let error = "";
   return http
-    .put(apiUrls.poolEndpoint + `/${pool.id}`, pool)
+    .put(apiEndPoint + `/${pool.id}`, pool)
     .then((res) => {
       return { pool: res.data, error: error };
     })
@@ -38,7 +40,7 @@ async function putPool(pool: IPool) {
 }
 
 async function getFishFromPool(id: number) {
-  const pool = await http.get(apiUrls.poolEndpoint + `/${id}`);
+  const pool = await http.get(apiEndPoint + `/${id}`);
   if (!pool || !pool.data || pool.status !== 200) return null;
 
   let fishId: number | null = null;
@@ -50,7 +52,7 @@ async function getFishFromPool(id: number) {
   }
   if (!fishId) return null;
 
-  const fish = await http.get(apiUrls.fishEndpoint + `/${fishId}`);
+  const fish = await http.get(fishEndpoint + `/${fishId}`);
   if (!fish || !fish.data || fish.status !== 200) return null;
   else return fish.data;
 }

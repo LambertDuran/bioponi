@@ -1,9 +1,10 @@
 import IAction from "../interfaces/action";
 import http from "./httpServices";
-import apiUrls from "../config.json";
+
+const apiEndPoint = process.env.REACT_APP_API_ENDPOINT + "action";
 
 async function getAllActions() {
-  const allActions = await http.get(apiUrls.actionEndpoint);
+  const allActions = await http.get(apiEndPoint);
   return allActions;
 }
 
@@ -11,7 +12,7 @@ async function postAction(action: IAction) {
   let newAction: IAction | null = null;
   let error = "";
   return http
-    .post(apiUrls.actionEndpoint, action)
+    .post(apiEndPoint, action)
     .then((res) => {
       return {
         action: {
@@ -33,7 +34,7 @@ async function putAction(action: IAction) {
   let newAction: IAction | null = null;
   let error = "";
   return http
-    .put(apiUrls.actionEndpoint + `/${action.id}`, action)
+    .put(apiEndPoint + `/${action.id}`, action)
     .then((res) => {
       return {
         action: {
@@ -55,7 +56,7 @@ async function deleteAction(action: IAction) {
   let newAction: IAction | null = null;
   let error = "";
   return http
-    .delete(apiUrls.actionEndpoint + `/${action.id}`)
+    .delete(apiEndPoint + `/${action.id}`)
     .then((res) => {
       return {
         action: {

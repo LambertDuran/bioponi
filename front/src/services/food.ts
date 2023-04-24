@@ -1,12 +1,13 @@
 import IFood from "../interfaces/food";
 import http from "./httpServices";
-import apiUrls from "../config.json";
+
+const apiEndPoint = process.env.REACT_APP_API_ENDPOINT + "food";
 
 async function getAllFood() {
   let food: IFood | null = null;
   let error = "";
   return http
-    .get(apiUrls.foodEndpoint)
+    .get(apiEndPoint)
     .then((res) => {
       return { food: res.data, error: error };
     })
@@ -20,7 +21,7 @@ async function getFood(id: number) {
   let food: IFood | null = null;
   let error = "";
   return http
-    .get(apiUrls.foodEndpoint + `/${id}`)
+    .get(apiEndPoint + `/${id}`)
     .then((res) => {
       return { food: res.data, error: error };
     })
@@ -34,7 +35,7 @@ async function postFood(food: IFood) {
   let newFood: IFood | null = null;
   let error = "";
   return http
-    .post(apiUrls.foodEndpoint, food)
+    .post(apiEndPoint, food)
     .then((res) => {
       return { food: res.data, error: error };
     })
@@ -48,7 +49,7 @@ async function putFood(food: IFood) {
   let newFood: IFood | null = null;
   let error = "";
   return http
-    .put(apiUrls.foodEndpoint + `/${food.id}`, food)
+    .put(apiEndPoint + `/${food.id}`, food)
     .then((res) => {
       return { food: res.data, error: error };
     })
