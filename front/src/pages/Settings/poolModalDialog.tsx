@@ -138,7 +138,7 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
                       required: true,
                       min: 1,
                       max: 100,
-                      pattern: /^[0-9]+$/,
+                      pattern: /^[0-9]+(\.[0-9]+)?$/,
                     })}
                   ></input>
                 </div>
@@ -150,7 +150,7 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
                       required: true,
                       min: 1,
                       max: 100,
-                      pattern: /^[0-9]+$/,
+                      pattern: /^[0-9]+(\.[0-9]+)?$/,
                     })}
                   />
                 </div>
@@ -162,7 +162,7 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
                       required: true,
                       min: 1,
                       max: 100,
-                      pattern: /^[0-9]+$/,
+                      pattern: /^[0-9]+(\.[0-9]+)?$/,
                     })}
                   />
                 </div>

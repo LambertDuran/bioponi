@@ -9,6 +9,7 @@
 back/prisma/migrations
 back/prisma/bioponi.db
 back/prisma/bioponi.db-journal
+front/build/
 
 # testing
 /coverage

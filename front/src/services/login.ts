@@ -1,10 +1,11 @@
 import http from "./httpServices";
-import apiUrls from "../config.json";
 import auth from "./auth";
+
+const apiEndPoint = process.env.REACT_APP_API_ENDPOINT + "auth";
 
 export async function login(email: string, password: string) {
   return http
-    .post(apiUrls.authEndpoint, { email, password })
+    .post(apiEndPoint, { email, password })
     .then((res) => {
       auth.setToken(res.data);
       http.setHeader();

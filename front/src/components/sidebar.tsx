@@ -81,35 +81,37 @@ const Sidebar = () => {
               isActive={activeIndex === index}
             />
           ))}
-          <div className="sidebar_name">
-            <li style={{ marginLeft: "10px" }}>
-              <i className="fas fa-user"></i>
-              {user.name}
-            </li>
-            {user.isAdmin && (
-              <SidebarItem
-                path={"/admin"}
-                icon={"fas fa-lock"}
-                name={"Administrateur"}
-                key={5}
-                onClick={() => {
-                  setSidebarStyle("sidebar");
-                  setActiveIndex(5);
-                }}
-                isActive={activeIndex === 5}
-              />
-            )}
-            <li>
-              <NavLink
-                className="sidebar_disconnect"
-                to={"/"}
-                onClick={() => auth.removeToken()}
-              >
-                <i className="fas fa-arrow-right"></i>
-                Déconnexion
-              </NavLink>
-            </li>
-          </div>
+          {user && (
+            <div className="sidebar_name">
+              <li style={{ marginLeft: "10px" }}>
+                <i className="fas fa-user"></i>
+                {user.name}
+              </li>
+              {user.isAdmin && (
+                <SidebarItem
+                  path={"/admin"}
+                  icon={"fas fa-lock"}
+                  name={"Administrateur"}
+                  key={5}
+                  onClick={() => {
+                    setSidebarStyle("sidebar");
+                    setActiveIndex(5);
+                  }}
+                  isActive={activeIndex === 5}
+                />
+              )}
+              <li>
+                <NavLink
+                  className="sidebar_disconnect"
+                  to={"/"}
+                  onClick={() => auth.removeToken()}
+                >
+                  <i className="fas fa-arrow-right"></i>
+                  Déconnexion
+                </NavLink>
+              </li>
+            </div>
+          )}
         </ul>
       </div>
     </div>
