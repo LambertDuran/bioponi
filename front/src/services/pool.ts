@@ -57,4 +57,15 @@ async function getFishFromPool(id: number) {
   else return fish.data;
 }
 
-export { getAllPool, getPool, putPool, postPool, getFishFromPool };
+async function deletePool(id: number) {
+  return http
+    .delete(apiEndPoint + `/${id}`)
+    .then((res) => {
+      return { pool: { ...res.data }, error: "" };
+    })
+    .catch((err) => {
+      return { pool: null, error: err.response.data };
+    });
+}
+
+export { getAllPool, getPool, putPool, postPool, getFishFromPool, deletePool };

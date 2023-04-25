@@ -3,9 +3,10 @@ import { useForm } from "react-hook-form";
 import Button from "../../components/button";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
-import { getAllPool, postPool, putPool } from "../../services/pool";
+import { getAllPool, postPool, putPool, deletePool } from "../../services/pool";
 import IPool from "../../interfaces/pool";
 import { toast } from "react-toastify";
+import RemoveModalDialog from "../../components/removeModalDialog";
 import "./poolModalDialog.css";
 
 interface IModal {
@@ -16,6 +17,8 @@ interface IModal {
 
 export default function PoolModalDialog({ title, open, onClose }: IModal) {
   const [pools, setPools] = useState<IPool[]>([]);
+  const [pool, setPool] = useState<IPool | null>(null);
+  const [openRemove, setOpenRemove] = useState(false);
   const {
     register,
     handleSubmit,
@@ -63,6 +66,7 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
     let newPools: IPool[] = [...pools];
     for (const key in data) {
       const index = parseInt(key.replace(/\D/g, ""));
+      if (index < 0 || index >= newPools.length) continue;
       const val = parseInt(data[key]);
       if (key.includes("number")) newPools[index].number = val;
       if (key.includes("volume")) newPools[index].volume = val;
@@ -107,8 +111,18 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
   }
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md">
+    <Dialog open={open} onClose={onClose} maxWidth="lg">
       <DialogTitle>{title}</DialogTitle>
+      <RemoveModalDialog
+        open={openRemove}
+        onClose={() => setOpenRemove(false)}
+        data={pool}
+        datas={pools}
+        setDatas={setPools}
+        deleteData={deletePool}
+        message={`Êtes-vous sûr de vouloir supprimer le bassin ${pool?.number} ?`}
+        successMessage={`Bassin ${pool?.number} supprimé !`}
+      />
       <form id="pool_form" onSubmit={handleSubmit(onSubmit)}>
         <div className="poolModalDialog_container">
           <div className="poolModalDialog_grid">
@@ -116,6 +130,7 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
             <div>Volume (m³)</div>
             <div>Densité min (kg/m³)</div>
             <div>Densité max (kg/m³)</div>
+            <div>Suppression</div>
             {pools.map((pool, i) => (
               <>
                 <div className="poolModalDialog_div">
@@ -166,6 +181,15 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
                     })}
                   />
                 </div>
+                <div
+                  className="poolModalDialog_input"
+                  onClick={() => {
+                    setPool(pool);
+                    setOpenRemove(true);
+                  }}
+                >
+                  <i className="fas fa-trash actionsGrid_delete"></i>
+                </div>
               </>
             ))}
           </div>
@@ -177,15 +201,15 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
                 const lastPool =
                   pools.length > 0
                     ? pools.slice(-1)[0]
-                    : { number: 0, volume: 10, densityMin: 1, densityMax: 10 };
+                    : { number: 0, volume: 10, densityMin: 25, densityMax: 60 };
                 setPools([
                   ...pools,
                   {
                     id: 0,
                     number: lastPool.number + 1,
                     volume: lastPool.volume,
-                    densityMin: lastPool.densityMin,
-                    densityMax: lastPool.densityMax,
+                    densityMin: 25,
+                    densityMax: 60,
                   },
                 ]);
               }}

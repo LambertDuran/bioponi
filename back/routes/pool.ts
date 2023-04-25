@@ -83,4 +83,24 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
   res.json(pool);
 });
 
+router.delete(
+  "/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const existingPool = await prisma.pool.findFirst({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
+    if (!existingPool) return res.status(404).send("Bassin non trouvé!");
+
+    const pool = await prisma.pool.delete({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
+    if (!pool) return res.status(404).send("Bassin non trouvé!");
+    res.json(pool);
+  }
+);
+
 module.exports = router;
