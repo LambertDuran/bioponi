@@ -343,8 +343,7 @@ export class ComputePool {
     if (
       action.type === "Mortalité" ||
       (action.type === "Transfert" && action.secondPoolId) ||
-      action.type === "Vente" ||
-      action.type === "Sortie définitive"
+      action.type === "Vente"
     ) {
       data = {
         ...this.recomputeDataFromAction(data, action),
