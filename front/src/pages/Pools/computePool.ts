@@ -271,6 +271,13 @@ export class ComputePool {
     // jusqu'à tomber sur la prochaine pesée
     while (nextAction.type !== "Pesée" && index <= this.actions.length - 1) {
       nextAction = this.actions[index];
+
+      if (nextAction.type === "Sortie définitive") {
+        nextWeight.weight = 0;
+        nextWeight.nbDays = 1;
+        return false;
+      }
+
       lastData = this.recomputeDataFromAction(lastData, nextAction);
       index++;
     }
@@ -348,9 +355,9 @@ export class ComputePool {
       };
     } else data = this.recomputeDataFromAction(data, action);
 
-    console.log("data", data);
-
     datas.push(data);
+    console.log("slope", slope);
+    console.log("data", data);
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -385,7 +392,9 @@ export class ComputePool {
       nextWeight
     );
     const p0 = lastData.averageWeight;
-    const slope = (nextWeight.weight - p0) / nextWeight.nbDays;
+    let slope = bExistNextWeight
+      ? (nextWeight.weight - p0) / nextWeight.nbDays
+      : 0.0;
     let averageWeight = p0;
 
     // 4. Si aucun écart entre les dates: par exemple même jour
@@ -431,7 +440,12 @@ export class ComputePool {
         averageWeight = p0! + slope * diffDays;
       }
       // S'il n'y a pas de prochaine pesée, on utilise la pente de croissance théorique
-      else averageWeight += this.getTheoricGrowth(date);
+      else {
+        slope = this.getTheoricGrowth(date);
+        averageWeight += slope;
+        // console.log(date.format("DD/MM/YYYY"), "p0", p0);
+        // console.log(date.format("DD/MM/YYYY"), "averageWeight", averageWeight);
+      }
 
       const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
       return {
