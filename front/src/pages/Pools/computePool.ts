@@ -212,8 +212,9 @@ export class ComputePool {
           date: action.date,
           dateFormatted: moment(action.date).format("DD/MM/YYYY"),
           actionType: action.type,
-          averageWeight: (action.totalWeight! / lastData.fishNumber!) * 1000,
-          totalWeight: action.totalWeight!,
+          averageWeight: (action.totalWeight! / action.fishNumber!) * 1000,
+          totalWeight:
+            (action.totalWeight! / action.fishNumber!) * lastData.fishNumber,
           density: action.totalWeight! / this.poolVolume,
         };
         break;
@@ -332,7 +333,9 @@ export class ComputePool {
         ...this.recomputeDataFromAction(data, action),
         averageWeight: data.averageWeight + slope,
       };
-    } else data = this.recomputeDataFromAction(datas[datas.length - 1], action);
+    } else data = this.recomputeDataFromAction(data, action);
+
+    console.log("data", data);
 
     datas.push(data);
   }
