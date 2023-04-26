@@ -146,8 +146,8 @@ export default function Settings() {
       <FoodModalDialog
         title={
           isCreation
-            ? "Création d'un nouvel aliment :"
-            : "Modification d'un aliment :"
+            ? "Création d'un plan d'alimentaion :"
+            : "Modification d'un plan d'alimentaion :"
         }
         open={openFood}
         onClose={() => setOpenFood(false)}
@@ -181,8 +181,8 @@ export default function Settings() {
         setData={setSelectedFood}
         setDatas={setFoods}
         deleteData={deleteFood}
-        message={`Voulez-vous vraiment supprimer l'aliment ${selectedFood?.name} ?`}
-        successMessage={`L'aliment ${selectedFood?.name} a bien été supprimé.`}
+        message={`Voulez-vous vraiment supprimer le plan d'alimentation ${selectedFood?.name} ?`}
+        successMessage={`Le plan d'alimentation ${selectedFood?.name} a bien été supprimé.`}
       />
 
       <RemoveModalDialog
@@ -238,14 +238,14 @@ export default function Settings() {
 
       <div className="itemList_container" style={{ paddingTop: 0 }}>
         <ItemList
-          title={"Aliments :"}
+          title={"Plans d'alimentation :"}
           items={foods}
           selectedItem={selectedFood}
           setSelectedItem={setSelectedFood}
           color="#7991bd"
         />
         <Button
-          title="Nouvel aliment"
+          title="Nouveau plan d'alimentation"
           onClick={() => {
             setSelectedFood(iFood0);
             setSelectedFish(null);

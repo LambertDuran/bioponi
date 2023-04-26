@@ -51,7 +51,9 @@ export default function FoodModalDialog({
     else data = await putFood(copyFood);
     if (data.food) {
       toast.success(
-        `Aliment ${data.food.name} ${isCreation ? " créé" : " modifié"}`
+        `Plan d'alimentaion ${data.food.name} ${
+          isCreation ? " créé" : " modifié"
+        }`
       );
       onFoodModification(data.food);
       setFood(data.food);
