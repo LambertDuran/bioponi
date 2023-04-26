@@ -27,7 +27,7 @@ const propsByActionType = [
   [poolNumber, totalWeight, fishNumber, averageWeight],
   [poolNumber, totalWeight, fishNumber, averageWeight],
   [poolNumber, lotName, totalWeight, fishNumber, averageWeight, newPool],
-  [poolNumber, totalWeight, fishNumber, averageWeight],
+  [poolNumber],
   [poolNumber, totalWeight, fishNumber, averageWeight],
 ];
 
@@ -298,17 +298,23 @@ export default function ActionModalDialog({
                 {displayError("lot_name")}
               </div>
             )}
-            <div>Méthode de saisie du poids :</div>
-            {computeMethods.map((m: string, i) => (
-              <Chip
-                key={m}
-                label={computeMethodsJSX[i]}
-                onClick={() => setComputeMethode(m)}
-                style={
-                  m === computeMethode ? selectedItemStyle : unselectedItemStyle
-                }
-              />
-            ))}
+            {actionType !== actionList[4] && (
+              <div style={{ marginLeft: "1em" }}>
+                <div>Méthode de saisie du poids :</div>
+                {computeMethods.map((m: string, i) => (
+                  <Chip
+                    key={m}
+                    label={computeMethodsJSX[i]}
+                    onClick={() => setComputeMethode(m)}
+                    style={
+                      m === computeMethode
+                        ? selectedItemStyle
+                        : unselectedItemStyle
+                    }
+                  />
+                ))}
+              </div>
+            )}
             {propsToDisplay.includes(totalWeight) && (
               <div className="action_modDial_grid">
                 <div>{totalWeight} :</div>
