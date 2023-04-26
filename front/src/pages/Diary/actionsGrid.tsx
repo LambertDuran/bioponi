@@ -6,6 +6,7 @@ import {
   GridColDef,
   GridCellParams,
 } from "@mui/x-data-grid";
+import { orderBy } from "lodash";
 import moment from "moment";
 import "moment/locale/fr";
 import "./actionsGrid.css";
@@ -23,6 +24,7 @@ export default function ActionsGgrid({
   actions,
   editOrDeleteAction,
 }: IActionGrid) {
+  actions = orderBy(actions, ["date"], ["asc"]);
   const muiRows: GridRowsProp = actions.map((a) => {
     return {
       id: a.id,
