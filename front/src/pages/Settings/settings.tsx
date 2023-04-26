@@ -56,6 +56,10 @@ export default function Settings() {
     foodId: foods.length ? foods[0].id : 0,
   };
 
+  const bAuthorizeFoodDelete = fishes.every(
+    (fish) => fish.foodId !== selectedFood?.id
+  );
+
   const handleFoodModification = (newFood: IFood) => {
     if (isCreation) setFoods([...foods, newFood]);
     else {
@@ -242,6 +246,7 @@ export default function Settings() {
               food={selectedFood}
               onEditClick={handleEditClickFood}
               setOpenDelete={setOpenDeleteFood}
+              authorizeDelete={bAuthorizeFoodDelete}
             />
           )}
         </div>

@@ -6,12 +6,14 @@ import "./foodCard.css";
 interface IFoodCard {
   food: IFood;
   onEditClick: (food: IFood) => void;
+  authorizeDelete: boolean;
   setOpenDelete: (open: boolean) => void;
 }
 
 export default function FoodCard({
   food,
   onEditClick,
+  authorizeDelete,
   setOpenDelete,
 }: IFoodCard) {
   return (
@@ -23,10 +25,12 @@ export default function FoodCard({
             className="fa fa-pen foodCard_modify_but"
             onClick={() => onEditClick(food)}
           />
-          <i
-            className="fa fa-trash foodCard_modify_but"
-            onClick={() => setOpenDelete(true)}
-          />
+          {authorizeDelete && (
+            <i
+              className="fa fa-trash foodCard_modify_but"
+              onClick={() => setOpenDelete(true)}
+            />
+          )}
         </div>
       </div>
       <div
