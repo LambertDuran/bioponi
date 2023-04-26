@@ -85,6 +85,20 @@ export class ComputePool {
     return foodWeight;
   }
 
+  getFoodWeightForDate(date: Date, totalWeight: number): number {
+    let date0 = moment(this.actions[0].date);
+    let weight = this.actions[0].averageWeight!;
+    const momentDate = moment(date);
+
+    while (date0.isBefore(momentDate)) {
+      const growth = this.getTheoricGrowth(date0);
+      weight += growth;
+      date0 = date0.add(1, "days");
+    }
+
+    return this.getFoodWeight(weight, totalWeight);
+  }
+
   //////////////////////////////////////////////////////////////////////////////////////////
   // Calculer l'âge en semaines des poissons à partir de la date d'entrée des poissons
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -149,7 +163,7 @@ export class ComputePool {
       density: (data.density * (data.fishNumber - nbFish)) / data.fishNumber,
       totalWeight: totalWeight,
       averageWeight: averageWeight,
-      foodWeight: this.getFoodWeight(averageWeight, totalWeight),
+      foodWeight: this.getFoodWeightForDate(data.date, totalWeight),
     };
   }
 
@@ -166,7 +180,7 @@ export class ComputePool {
       density: (data.density * (data.fishNumber + nbFish)) / data.fishNumber,
       totalWeight: totalWeight,
       averageWeight: averageWeight,
-      foodWeight: this.getFoodWeight(averageWeight, totalWeight),
+      foodWeight: this.getFoodWeightForDate(data.date, totalWeight),
     };
   }
 
@@ -229,6 +243,10 @@ export class ComputePool {
           totalWeight:
             (action.totalWeight! / action.fishNumber!) * lastData.fishNumber,
           density: action.totalWeight! / this.poolVolume,
+          foodWeight: this.getFoodWeightForDate(
+            action.date,
+            (action.totalWeight! / action.fishNumber!) * lastData.fishNumber
+          ),
         };
         break;
       case "Entrée du lot":
@@ -289,14 +307,15 @@ export class ComputePool {
   //////////////////////////////////////////////////////////////////////////////////////////
   getLastData(index: number): IComputedData {
     const action0: IAction = this.actions[index];
+    const date0 = moment(action0.date)
+      .startOf("day")
+      .startOf("hour")
+      .startOf("minute")
+      .startOf("second")
+      .startOf("millisecond")
+      .toDate();
     const data0: IData = {
-      date: moment(action0.date)
-        .startOf("day")
-        .startOf("hour")
-        .startOf("minute")
-        .startOf("second")
-        .startOf("millisecond")
-        .toDate(),
+      date: date0,
       dateFormatted: moment(action0.date).format("DD/MM/YYYY"),
       averageWeight: action0.averageWeight!,
       totalWeight: action0.totalWeight!,
@@ -304,10 +323,7 @@ export class ComputePool {
       lotName: action0.lotName!,
       actionType: action0.type,
       actionWeight: action0.totalWeight!,
-      foodWeight: this.getFoodWeight(
-        action0.averageWeight!,
-        action0.totalWeight!
-      ),
+      foodWeight: this.getFoodWeightForDate(date0, action0.totalWeight!),
       density: action0.totalWeight! / this.poolVolume,
     };
 
@@ -450,7 +466,7 @@ export class ComputePool {
         actionType: "",
         actionWeight: 0,
         lotName: lastData.lotName ?? "",
-        foodWeight: this.getFoodWeight(averageWeight, totalWeight),
+        foodWeight: this.getFoodWeightForDate(date.toDate(), totalWeight),
       };
     });
 
@@ -491,7 +507,7 @@ export class ComputePool {
         actionType: "",
         actionWeight: 0,
         lotName: lastData.lotName ?? "",
-        foodWeight: this.getFoodWeight(averageWeight, totalWeight),
+        foodWeight: this.getFoodWeightForDate(date.toDate(), totalWeight),
       };
     });
 
