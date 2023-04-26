@@ -180,11 +180,15 @@ export default function ActionModalDialog({
         break;
       case actionList[1]:
       case actionList[2]:
-      case actionList[4]:
       case actionList[5]:
         newAction.totalWeight = parseFloat(data.total_weight);
         newAction.averageWeight = parseFloat(data.average_weight);
         newAction.fishNumber = parseInt(data.fish_number);
+        break;
+      case actionList[4]:
+        newAction.totalWeight = 0.0;
+        newAction.averageWeight = 0.0;
+        newAction.fishNumber = 0;
         break;
       case actionList[3]:
         const fish = await getFishFromPool(newAction.pool.id);

@@ -177,8 +177,21 @@ export class ComputePool {
   recomputeDataFromAction(lastData: IData, action: IAction): IData {
     let data: IData;
     switch (action.type) {
-      case "Vente":
       case "Sortie définitive":
+        data = {
+          date: action.date,
+          dateFormatted: moment(action.date).format("DD/MM/YYYY"),
+          averageWeight: 0,
+          totalWeight: 0,
+          fishNumber: 0,
+          lotName: "",
+          actionType: action.type,
+          actionWeight: 0,
+          foodWeight: 0,
+          density: 0,
+        };
+        break;
+      case "Vente":
       case "Mortalité":
         data = {
           ...this.recomputeDataAfterDecrease(lastData, action.fishNumber!),
