@@ -73,4 +73,18 @@ async function getFoodFromFish(id: number) {
     });
 }
 
-export { getAllFish, getFish, getFoodFromFish, postFish, putFish };
+async function deleteFish(id: number) {
+  let fish: IFish | null = null;
+  let error = "";
+  return http
+    .delete(apiEndPoint + `/${id}`)
+    .then((res) => {
+      return { fish: res.data, error: error };
+    })
+    .catch((err) => {
+      error = err.response.data;
+      return { fish: fish, error: error };
+    });
+}
+
+export { getAllFish, getFish, getFoodFromFish, postFish, putFish, deleteFish };

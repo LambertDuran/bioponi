@@ -8,6 +8,7 @@ interface IRemoveModalDialog {
   onClose: () => void;
   data: any | null;
   datas: any[];
+  setData?: (data: any) => void;
   setDatas: (datas: any[]) => void;
   deleteData: (id: number) => Promise<any>;
   message: string;
@@ -19,6 +20,7 @@ export default function RemoveModalDialog({
   onClose,
   data,
   datas,
+  setData,
   setDatas,
   deleteData,
   message,
@@ -54,6 +56,7 @@ export default function RemoveModalDialog({
             if (dataFromServer.error) toast.error(dataFromServer.error);
             else {
               setDatas(datas.filter((a) => a.id !== data?.id));
+              setData?.(null);
               toast.success(successMessage);
             }
             onClose();

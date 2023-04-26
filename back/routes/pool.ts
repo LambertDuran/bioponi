@@ -98,7 +98,7 @@ router.delete(
         id: parseInt(req.params.id),
       },
     });
-    if (!pool) return res.status(404).send("Bassin non trouvé!");
+    if (!pool) return res.status(404).send("Erreur prisma !");
     res.json(pool);
   }
 );

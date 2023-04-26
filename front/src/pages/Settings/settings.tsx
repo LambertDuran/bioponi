@@ -5,12 +5,13 @@ import ItemList from "./itemList";
 import FoodModalDialog from "./foodModalDialog";
 import IFood from "../../interfaces/food";
 import FoodCard from "./foodCard";
-import { getAllFood } from "../../services/food";
+import { getAllFood, deleteFood } from "../../services/food";
 import FishModalDialog from "./fishModalDialog";
 import IFish from "../../interfaces/fish";
 import SpeciesCard from "./fishCard";
 import { getAllFish } from "../../services/fish";
 import PoolModalDialog from "./poolModalDialog";
+import RemoveModalDialog from "../../components/removeModalDialog";
 import { toast } from "react-toastify";
 import emptyList from "../../assets/emptyList.gif";
 import "./settings.css";
@@ -29,6 +30,8 @@ export default function Settings() {
 
   const [selectedFish, setSelectedFish] = useState<IFish | null>(null);
   const [fishes, setFishes] = useState<IFish[]>([]);
+
+  const [openDeleteFood, setOpenDeleteFood] = useState(false);
 
   // const { push } = useArray<IFood>(foods);
 
@@ -151,6 +154,18 @@ export default function Settings() {
         onClose={() => setOpenPool(false)}
       />
 
+      <RemoveModalDialog
+        open={openDeleteFood}
+        onClose={() => setOpenDeleteFood(false)}
+        data={selectedFood}
+        datas={foods}
+        setData={setSelectedFood}
+        setDatas={setFoods}
+        deleteData={deleteFood}
+        message={`Voulez-vous vraiment supprimer l'aliment ${selectedFood?.name} ?`}
+        successMessage={`L'aliment ${selectedFood?.name} a bien été supprimé.`}
+      />
+
       <div className="bassin_button_container">
         <Button
           title="Gestion bassins"
@@ -223,7 +238,11 @@ export default function Settings() {
         </div>
         <div className="card_body_column">
           {selectedFood && selectedFood.id !== 0 && (
-            <FoodCard food={selectedFood} onEditClick={handleEditClickFood} />
+            <FoodCard
+              food={selectedFood}
+              onEditClick={handleEditClickFood}
+              setOpenDelete={setOpenDeleteFood}
+            />
           )}
         </div>
       </div>

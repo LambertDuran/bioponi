@@ -1,8 +1,7 @@
 .foodCard{
     width: 100%;
-    display: flex;
+    display: inline;
     flex-direction: column;
-    justify-content: flex-start;
     border: 1px solid grey;
     border-radius: 20px;
     box-shadow: 10px 5px 5px #7991bd;

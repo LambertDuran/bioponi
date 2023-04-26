@@ -118,4 +118,22 @@ router.put("/:id", async (req: any, res: Response) => {
   res.json(fish);
 });
 
+router.delete("/:id", async (req: any, res: Response) => {
+  const existingFish = await prisma.fish.findFirst({
+    where: {
+      id: parseInt(req.params.id),
+    },
+  });
+  if (!existingFish) return res.status(404).send("Fish doesn't exist!");
+
+  const fish = await prisma.fish.delete({
+    where: {
+      id: parseInt(req.params.id),
+    },
+  });
+
+  if (!fish) return res.status(400).send("Prisma error delete!");
+  res.json(fish);
+});
+
 module.exports = router;

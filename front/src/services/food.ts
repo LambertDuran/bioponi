@@ -59,4 +59,18 @@ async function putFood(food: IFood) {
     });
 }
 
-export { getAllFood, getFood, postFood, putFood };
+async function deleteFood(id: number) {
+  let food: IFood | null = null;
+  let error = "";
+  return http
+    .delete(apiEndPoint + `/${id}`)
+    .then((res) => {
+      return { food: res.data, error: error };
+    })
+    .catch((err) => {
+      error = err.response.data;
+      return { food: food, error: error };
+    });
+}
+
+export { getAllFood, getFood, postFood, putFood, deleteFood };
