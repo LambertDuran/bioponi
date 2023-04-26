@@ -9,7 +9,9 @@ import { getAllFood, deleteFood } from "../../services/food";
 import FishModalDialog from "./fishModalDialog";
 import IFish from "../../interfaces/fish";
 import SpeciesCard from "./fishCard";
-import { getAllFish } from "../../services/fish";
+import { getAllFish, deleteFish } from "../../services/fish";
+import IAction from "../../interfaces/action";
+import { getAllActions } from "../../services/action";
 import PoolModalDialog from "./poolModalDialog";
 import RemoveModalDialog from "../../components/removeModalDialog";
 import { toast } from "react-toastify";
@@ -31,7 +33,10 @@ export default function Settings() {
   const [selectedFish, setSelectedFish] = useState<IFish | null>(null);
   const [fishes, setFishes] = useState<IFish[]>([]);
 
+  const [actions, setActions] = useState<IAction[]>([]);
+
   const [openDeleteFood, setOpenDeleteFood] = useState(false);
+  const [openDeleteFish, setOpenDeleteFish] = useState(false);
 
   // const { push } = useArray<IFood>(foods);
 
@@ -58,6 +63,10 @@ export default function Settings() {
 
   const bAuthorizeFoodDelete = fishes.every(
     (fish) => fish.foodId !== selectedFood?.id
+  );
+
+  let bAuthorizeFishDelete = actions.every(
+    (action) => action.fishId !== selectedFish?.id
   );
 
   const handleFoodModification = (newFood: IFood) => {
@@ -114,6 +123,12 @@ export default function Settings() {
       else errorMsg = errorDefaultMsg;
     }
 
+    async function getActions() {
+      const allActions = await getAllActions();
+      if (allActions && allActions.data) setActions(allActions.data);
+    }
+
+    getActions();
     Promise.all([getFoods(), getFishes()]).then(() => {
       if (!isFoodsLoaded || !isFishesLoaded) toast.error(errorMsg);
     });
@@ -168,6 +183,18 @@ export default function Settings() {
         deleteData={deleteFood}
         message={`Voulez-vous vraiment supprimer l'aliment ${selectedFood?.name} ?`}
         successMessage={`L'aliment ${selectedFood?.name} a bien été supprimé.`}
+      />
+
+      <RemoveModalDialog
+        open={openDeleteFish}
+        onClose={() => setOpenDeleteFish(false)}
+        data={selectedFish}
+        datas={fishes}
+        setData={setSelectedFish}
+        setDatas={setFishes}
+        deleteData={deleteFish}
+        message={`Voulez-vous vraiment supprimer l'espèce ${selectedFish?.name} ?`}
+        successMessage={`L'espèce ${selectedFish?.name} a bien été supprimée.`}
       />
 
       <div className="bassin_button_container">
@@ -237,6 +264,8 @@ export default function Settings() {
             <SpeciesCard
               fish={selectedFish}
               onEditClick={handleEditClickFish}
+              setOpenDelete={setOpenDeleteFish}
+              authorizeDelete={bAuthorizeFishDelete}
             />
           )}
         </div>

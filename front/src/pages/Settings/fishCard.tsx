@@ -26,9 +26,16 @@ ChartJS.register(
 interface IFishCard {
   fish: IFish;
   onEditClick: (fish: IFish) => void;
+  setOpenDelete: (open: boolean) => void;
+  authorizeDelete: boolean;
 }
 
-export default function SpeciesCard({ fish, onEditClick }: IFishCard) {
+export default function SpeciesCard({
+  fish,
+  onEditClick,
+  setOpenDelete,
+  authorizeDelete,
+}: IFishCard) {
   const data = {
     labels: fish.weeks.map((w) => w.toString()),
     datasets: [
@@ -47,10 +54,18 @@ export default function SpeciesCard({ fish, onEditClick }: IFishCard) {
     <div className="fish_card">
       <div className="fish_card_title">
         <Chip label={fish.name} style={{ backgroundColor: "#fb9b50" }} />
-        <i
-          className="fa fa-pen fish_card_modify_but"
-          onClick={() => onEditClick(fish)}
-        ></i>
+        <div>
+          <i
+            className="fa fa-pen fish_card_modify_but"
+            onClick={() => onEditClick(fish)}
+          />
+          {authorizeDelete && (
+            <i
+              className="fa fa-trash fish_card_modify_but"
+              onClick={() => setOpenDelete(true)}
+            />
+          )}
+        </div>
       </div>
       <div className="fish_card_curve">
         <Line options={options} data={data} />
