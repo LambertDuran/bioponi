@@ -259,6 +259,7 @@ export class ComputePool {
   getNextWeightAndDuration(index: number, nextWeight: any): boolean {
     const date0 = this.actions[index - 1].date;
     let nextAction: IAction = this.actions[index];
+    if (nextAction.type === "Sortie définitive") return false;
 
     // Appliquer la prochaine action
     let lastData: IData = this.recomputeDataFromAction(
@@ -272,11 +273,7 @@ export class ComputePool {
     while (nextAction.type !== "Pesée" && index <= this.actions.length - 1) {
       nextAction = this.actions[index];
 
-      if (nextAction.type === "Sortie définitive") {
-        nextWeight.weight = 0;
-        nextWeight.nbDays = 1;
-        return false;
-      }
+      if (nextAction.type === "Sortie définitive") return false;
 
       lastData = this.recomputeDataFromAction(lastData, nextAction);
       index++;
@@ -356,8 +353,6 @@ export class ComputePool {
     } else data = this.recomputeDataFromAction(data, action);
 
     datas.push(data);
-    console.log("slope", slope);
-    console.log("data", data);
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -443,8 +438,6 @@ export class ComputePool {
       else {
         slope = this.getTheoricGrowth(date);
         averageWeight += slope;
-        // console.log(date.format("DD/MM/YYYY"), "p0", p0);
-        // console.log(date.format("DD/MM/YYYY"), "averageWeight", averageWeight);
       }
 
       const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
