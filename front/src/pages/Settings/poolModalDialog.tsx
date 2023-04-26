@@ -5,6 +5,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import { getAllPool, postPool, putPool, deletePool } from "../../services/pool";
 import IPool from "../../interfaces/pool";
+import IAction from "../../interfaces/action";
 import { toast } from "react-toastify";
 import RemoveModalDialog from "../../components/removeModalDialog";
 import "./poolModalDialog.css";
@@ -13,9 +14,15 @@ interface IModal {
   title: string;
   open: boolean;
   onClose: () => void;
+  actions: IAction[];
 }
 
-export default function PoolModalDialog({ title, open, onClose }: IModal) {
+export default function PoolModalDialog({
+  title,
+  open,
+  onClose,
+  actions,
+}: IModal) {
   const [pools, setPools] = useState<IPool[]>([]);
   const [pool, setPool] = useState<IPool | null>(null);
   const [openRemove, setOpenRemove] = useState(false);
@@ -181,14 +188,16 @@ export default function PoolModalDialog({ title, open, onClose }: IModal) {
                     })}
                   />
                 </div>
-                <div
-                  className="poolModalDialog_input"
-                  onClick={() => {
-                    setPool(pool);
-                    setOpenRemove(true);
-                  }}
-                >
-                  <i className="fas fa-trash actionsGrid_delete"></i>
+                <div className="poolModalDialog_input">
+                  {actions?.every((a) => a.poolId !== pool.id) && (
+                    <i
+                      className="fas fa-trash actionsGrid_delete"
+                      onClick={() => {
+                        setPool(pool);
+                        setOpenRemove(true);
+                      }}
+                    ></i>
+                  )}
                 </div>
               </>
             ))}

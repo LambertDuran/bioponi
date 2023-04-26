@@ -171,6 +171,7 @@ export default function Settings() {
         title={"Gestion des bassins :"}
         open={openPool}
         onClose={() => setOpenPool(false)}
+        actions={actions}
       />
 
       <RemoveModalDialog
