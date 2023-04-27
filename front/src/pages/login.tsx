@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/button";
-import logo from "../assets/logo.svg";
+import loginLogo from "../assets/loginLogo.png";
 import { login } from "../services/login";
 import "./login.css";
 
@@ -21,7 +21,7 @@ function Login() {
 
   return (
     <div className="login_container">
-      <img alt="bioponi-logo" src={logo} className="login_logo"></img>
+      <img alt="bioponi-logo" src={loginLogo} className="login_logo"></img>
       <form onSubmit={handleSubmit}>
         <div className="login_form_container">
           {error && <div className="login_error">{error}</div>}

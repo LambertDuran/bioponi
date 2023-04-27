@@ -189,7 +189,9 @@ export default function PoolModalDialog({
                   />
                 </div>
                 <div className="poolModalDialog_input">
-                  {actions?.every((a) => a.poolId !== pool.id) && (
+                  {actions?.every(
+                    (a) => a.poolId !== pool.id && a.secondPoolId !== pool.id
+                  ) && (
                     <i
                       className="fas fa-trash actionsGrid_delete"
                       onClick={() => {
