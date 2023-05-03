@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import IPool from "../interfaces/pool";
 import IAction from "../interfaces/action";
-import { getFish, getFoodFromFish } from "../services/fish";
+import { getFish } from "../services/fish";
 import { IComputedData } from "../interfaces/data";
 import ComputePool from "../pages/Pools/computePool";
 
@@ -25,15 +25,6 @@ function useDatas(selectedPool: IPool | null): IComputedData {
         return;
       }
 
-      const food = await getFoodFromFish(actionWithFishId.fishId!);
-      if (!food || !food.food) {
-        setResult({
-          error: "Aucun aliment associé au poisson du bassin",
-          data: null,
-        });
-        return;
-      }
-
       const fish = await getFish(actionWithFishId.fishId!);
       if (!fish || !fish.fish) {
         setResult({
@@ -43,19 +34,22 @@ function useDatas(selectedPool: IPool | null): IComputedData {
         return;
       }
 
+      if (!fish.fish.food) {
+        setResult({
+          error: "Aucun aliment associé au poisson du bassin",
+          data: null,
+        });
+        return;
+      }
+
       const compute = new ComputePool(
         selectedPool.action!,
         selectedPool.volume,
-        food.food,
+        fish.fish.food,
         fish.fish
       );
-      const resComputation = compute.computeAllData();
 
-      if (resComputation.data) {
-        setResult({ error: "", data: resComputation.data });
-      } else if (resComputation.error)
-        setResult({ error: resComputation.error, data: null });
-      else setResult({ error: "Erreur inconnue", data: null });
+      setResult(compute.computeAllData());
     }
     fetchDatas();
   }, [selectedPool]);

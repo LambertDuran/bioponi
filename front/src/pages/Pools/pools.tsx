@@ -33,12 +33,9 @@ export default function Pools() {
   const pools: IPool[] = usePools();
   const [selectedPool, setSelectedPool] = useState<IPool | null>(null);
   const [dataType, setDataType] = useState<string>("averageWeight");
-
   const classes = useStyles();
 
   const computedData: IComputedData = useDatas(selectedPool);
-  console.log("computedData", computedData);
-  // console.log("selectedPool", selectedPool);
   let datas: IData[] | null = null;
   if (computedData.data && !computedData.error)
     datas = computedData.data as IData[] | null;
@@ -86,11 +83,6 @@ export default function Pools() {
       )}
     </div>,
   ];
-
-  // useEffect(() => {
-  //   if (pools.length) setSelectedPool(pools[0]);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   useEffect(() => {
     if (pools.length) setSelectedPool(pools[0]);
