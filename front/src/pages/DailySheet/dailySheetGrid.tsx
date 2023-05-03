@@ -1,6 +1,7 @@
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import IPool from "../../interfaces/pool";
 import useDatas from "../../hooks/useDatas";
+import ComputePool from "../Pools/computePool";
 
 const renderHeader = (params: any) => (
   <strong className="colHeaderGrid">{params.colDef.headerName}</strong>
@@ -12,6 +13,12 @@ interface IDailySheetGrid {
 }
 
 export default function PoolGrid({ pools, date }: IDailySheetGrid) {
+  //   let computers: ComputePool[] = [];
+  //   for (let i = 0; i < pools.length; i++) {
+  //     const { computer } = useDatas(pools[i]);
+  //     computers.push(computer);
+  //   }
+
   const muiRows: GridRowsProp = pools.map((p, i) => {
     return {
       id: i,

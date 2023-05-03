@@ -4,6 +4,9 @@ import IAction from "../interfaces/action";
 import { getFish } from "../services/fish";
 import { IComputedData } from "../interfaces/data";
 import ComputePool from "../pages/Pools/computePool";
+import { findLast } from "lodash";
+
+// async function getComputer(selectedPool: IPool | null): ComputePool {}
 
 function useDatas(selectedPool: IPool | null): IComputedData {
   const [result, setResult] = useState<IComputedData>({
@@ -16,7 +19,8 @@ function useDatas(selectedPool: IPool | null): IComputedData {
       if (!selectedPool)
         return { error: "Aucun bassin sélectionné", data: null };
 
-      const actionWithFishId = selectedPool.action!.find(
+      const actionWithFishId = findLast(
+        selectedPool.action!,
         (a: IAction) => a.fishId !== null
       );
 
@@ -42,14 +46,14 @@ function useDatas(selectedPool: IPool | null): IComputedData {
         return;
       }
 
-      const compute = new ComputePool(
+      const computer = new ComputePool(
         selectedPool.action!,
         selectedPool.volume,
         fish.fish.food,
         fish.fish
       );
 
-      setResult(compute.computeAllData());
+      setResult(computer.computeAllData());
     }
     fetchDatas();
   }, [selectedPool]);
