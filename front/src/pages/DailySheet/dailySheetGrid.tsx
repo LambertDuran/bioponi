@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { toInteger } from "lodash";
 
-const errMsg = "erreur";
+const errMsg = "No Data";
 
 const renderHeader = (params: any) => (
   <strong className="colHeaderGrid">{params.colDef.headerName}</strong>

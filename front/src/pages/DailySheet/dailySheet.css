@@ -1,3 +1,10 @@
 .dailySheet{
-    padding: 2em;
+    padding: 1em;
+    width: 100%;
+}
+
+.dailySheetContainer{
+    padding: 1em;
+    display: flex;
+    flex-direction: row;
 }
