@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { getFish, getFoodFromFish } from "../../services/fish";
 import IPool from "../../interfaces/pool";
-import IAction from "../../interfaces/action";
-import { IData } from "../../interfaces/data";
-import ComputePool from "./computePool";
+import { IData, IComputedData } from "../../interfaces/data";
 import PoolGrid from "./poolGrid";
 import PoolChart from "./poolChart";
 import usePools from "../../hooks/usePools";
+import useDatas from "../../hooks/useDatas";
 import ActionsGgrid from "../Diary/actionsGrid";
 import { toast } from "react-toastify";
 import {
@@ -34,10 +32,17 @@ const useStyles = makeStyles((theme) => ({
 export default function Pools() {
   const pools: IPool[] = usePools();
   const [selectedPool, setSelectedPool] = useState<IPool | null>(null);
-  const [datas, setDatas] = useState<IData[] | null>(null);
   const [dataType, setDataType] = useState<string>("averageWeight");
 
   const classes = useStyles();
+
+  const computedData: IComputedData = useDatas(selectedPool);
+  console.log("computedData", computedData);
+  // console.log("selectedPool", selectedPool);
+  let datas: IData[] | null = null;
+  if (computedData.data && !computedData.error)
+    datas = computedData.data as IData[] | null;
+  else if (computedData.error) toast.error(computedData.error);
 
   const acordionNames = [
     "Historique des actions",
@@ -82,59 +87,14 @@ export default function Pools() {
     </div>,
   ];
 
-  useEffect(() => {
-    if (pools.length) setSelectedPool(pools[0]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   if (pools.length) setSelectedPool(pools[0]);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   useEffect(() => {
     if (pools.length) setSelectedPool(pools[0]);
   }, [pools]);
-
-  useEffect(() => {
-    async function getDatas() {
-      setDatas(null);
-      if (!selectedPool) return;
-
-      const actionWithFishId = selectedPool.action!.find(
-        (a: IAction) => a.fishId !== null
-      );
-
-      if (!actionWithFishId) {
-        toast.error("Aucune donnée pour ce bassin");
-        return;
-      }
-
-      const food = await getFoodFromFish(actionWithFishId.fishId!);
-      if (!food || !food.food) {
-        toast.error(food.error);
-        return;
-      }
-
-      const fish = await getFish(actionWithFishId.fishId!);
-      if (!fish || !fish.fish) {
-        toast.error(fish.error);
-        return;
-      }
-
-      const compute = new ComputePool(
-        selectedPool.action!,
-        selectedPool.volume,
-        food.food,
-        fish.fish
-      );
-      const resComputation = compute.computeAllData();
-
-      if (resComputation.data) {
-        setDatas(resComputation.data as IData[]);
-        return;
-      } else if (resComputation.error) toast.error(resComputation.error);
-      else toast.error("Erreur inconnue");
-      setDatas(null);
-    }
-
-    getDatas();
-  }, [selectedPool]);
 
   if (!pools.length)
     return (
