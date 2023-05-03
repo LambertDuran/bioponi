@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { getAllPool, getPool } from "../../services/pool";
 import { getFish, getFoodFromFish } from "../../services/fish";
 import IPool from "../../interfaces/pool";
 import IAction from "../../interfaces/action";
 import { IData, ComputePool } from "./computePool";
 import PoolGrid from "./poolGrid";
 import PoolChart from "./poolChart";
+import usePools from "../../hooks/usePools";
 import ActionsGgrid from "../Diary/actionsGrid";
 import { toast } from "react-toastify";
 import {
@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { orderBy } from "lodash";
 import { colors } from "../../components/button";
 import "./pools.css";
 
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Pools() {
-  const [pools, setPools] = useState<IPool[]>([]);
+  const pools: IPool[] = usePools();
   const [selectedPool, setSelectedPool] = useState<IPool | null>(null);
   const [datas, setDatas] = useState<IData[] | null>(null);
   const [dataType, setDataType] = useState<string>("averageWeight");
@@ -83,41 +82,6 @@ export default function Pools() {
   ];
 
   useEffect(() => {
-    async function getPools() {
-      const allPool = await getAllPool();
-      if (!allPool || !allPool.data) return;
-
-      let fetchedPools = allPool.data;
-      fetchedPools.forEach((p: any) => {
-        p.action! = orderBy(p.action!, ["date"], ["asc"]);
-      });
-
-      // Ajouter les actions de transferts dans la liste des actions
-      // du bassin de destination
-      for (let i = 0; i < fetchedPools.length; i++) {
-        for (let action of fetchedPools[i].action!) {
-          if (!action.secondPoolId) continue;
-
-          const secondPool = await getPool(action.secondPoolId);
-          if (!secondPool || !secondPool.data || secondPool.status !== 200)
-            continue;
-          action.secondPool = secondPool.data;
-
-          const secondPoolIndex = fetchedPools.findIndex(
-            (p: any) => p.id === action.secondPoolId
-          );
-          if (secondPoolIndex < 0) continue;
-
-          fetchedPools[secondPoolIndex].action = fetchedPools[
-            secondPoolIndex
-          ].action.concat({ ...action, secondPool: null, secondPoolId: null });
-        }
-      }
-
-      setPools(fetchedPools);
-    }
-    getPools();
-
     if (pools.length) setSelectedPool(pools[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
