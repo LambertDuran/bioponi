@@ -1,28 +1,11 @@
 import IAction from "../../interfaces/action";
 import Food from "../../interfaces/food";
 import IFish from "../../interfaces/fish";
+import { IData, IComputedData } from "../../interfaces/data";
 import moment from "moment";
 import { orderBy } from "lodash";
 
-export interface IData {
-  date: Date;
-  dateFormatted: string;
-  averageWeight: number;
-  totalWeight: number;
-  fishNumber: number;
-  lotName: string;
-  actionType: string;
-  actionWeight: number;
-  foodWeight: number;
-  density: number;
-}
-
-interface IComputedData {
-  error: string;
-  data: IData | IData[] | null;
-}
-
-export class ComputePool {
+export default class ComputePool {
   actions: IAction[] = [];
   data: IData[] = [];
   poolVolume: number = 0;

@@ -1,4 +1,4 @@
-import { IData } from "./computePool";
+import { IData } from "../../interfaces/data";
 import {
   Chart as ChartJS,
   CategoryScale,
