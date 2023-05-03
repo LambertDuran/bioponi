@@ -76,8 +76,6 @@ export default function PoolGrid({ pools, date }: IDailySheetGrid) {
       };
     });
 
-  //   console.log("muiRows", muiRows);
-
   const colHeaders: GridColDef[] = [
     {
       field: "numero",
@@ -113,7 +111,13 @@ export default function PoolGrid({ pools, date }: IDailySheetGrid) {
 
   return (
     muiRows && (
-      <DataGrid rows={muiRows} columns={colHeaders} rowHeight={25} autoHeight />
+      <DataGrid
+        rows={muiRows}
+        columns={colHeaders}
+        rowHeight={25}
+        autoHeight
+        hideFooter
+      />
     )
   );
 }

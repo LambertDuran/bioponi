@@ -10,14 +10,16 @@ export default function DailySheet() {
   const [date, setDate] = useState<Date>(new Date());
 
   return (
-    <div className="dailySheetContainer">
+    <div>
       <div>
-        <Calendar date={date} setDate={setDate} />
+        <div className="dailySheet_calendar">
+          <h1 className="dailySheet_title">
+            Fiche Journalière du {moment(date).format("DD/MM/YYYY")}
+          </h1>
+          <Calendar date={date} setDate={setDate} />
+        </div>
       </div>
-      <div className="dailySheet">
-        <h1 className="dailySheet">
-          Fiche Journalière du {moment(date).format("DD/MM/YYY")}
-        </h1>
+      <div className="dailySheet_grid">
         <DailySheetGrid date={date} pools={pools} />
       </div>
     </div>

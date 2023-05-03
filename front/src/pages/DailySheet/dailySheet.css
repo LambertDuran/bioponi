@@ -1,10 +1,18 @@
-.dailySheet{
+.dailySheet_grid{
     padding: 1em;
-    width: 100%;
+}
+.dailySheet_title{
+    padding: 1em 1em 0 1em;
 }
 
 .dailySheetContainer{
     padding: 1em;
     display: flex;
     flex-direction: row;
+}
+
+.dailySheet_calendar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
