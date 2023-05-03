@@ -1,7 +1,13 @@
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import IPool from "../../interfaces/pool";
-import useDatas from "../../hooks/useDatas";
+import { IData } from "../../interfaces/data";
+import { getComputer } from "../../hooks/useDatas";
 import ComputePool from "../Pools/computePool";
+import { useEffect, useState } from "react";
+import moment from "moment";
+import { toInteger } from "lodash";
+
+const errMsg = "erreur";
 
 const renderHeader = (params: any) => (
   <strong className="colHeaderGrid">{params.colDef.headerName}</strong>
@@ -9,26 +15,68 @@ const renderHeader = (params: any) => (
 
 interface IDailySheetGrid {
   pools: IPool[];
-  date: string;
+  date: Date;
 }
 
 export default function PoolGrid({ pools, date }: IDailySheetGrid) {
-  //   let computers: ComputePool[] = [];
-  //   for (let i = 0; i < pools.length; i++) {
-  //     const { computer } = useDatas(pools[i]);
-  //     computers.push(computer);
-  //   }
+  const [computers, setComputers] = useState<ComputePool[]>([]);
+  useEffect(() => {
+    async function getComputers() {
+      let newComputers = [];
+      for (let i = 0; i < pools.length; i++) {
+        const computer = await getComputer(pools[i]);
+        if (computer) {
+          computer.computeAllData();
+          newComputers.push(computer);
+        }
+      }
+      setComputers(newComputers);
+    }
+    getComputers();
+  }, [pools]);
 
-  const muiRows: GridRowsProp = pools.map((p, i) => {
-    return {
-      id: i,
-      numero: p.number,
-      aliment: "aliment",
-      foodRate: "foodRate",
-      foodWeight: "foodWeight",
-      time: "time",
-    };
-  });
+  let muiRows: GridRowsProp | null = null;
+  if (computers.length)
+    muiRows = pools.map((p, i) => {
+      const data: IData | undefined = computers[i].data.find(
+        (d) => d.dateFormatted === moment(date).format("DD/MM/YYYY")
+      );
+
+      if (!data)
+        return {
+          id: i,
+          numero: p.number,
+          aliment: errMsg,
+          foodRate: errMsg,
+          foodWeight: errMsg,
+          time: errMsg,
+        };
+
+      const foodRate = computers[i].getFoodRate(data.averageWeight);
+      const foodWeight = computers[i].getFoodWeightForDate(
+        date,
+        data.totalWeight
+      );
+      const distributionRate = computers[i].getDistributionRate(
+        data.averageWeight
+      );
+      const time = (foodWeight * 1000) / distributionRate;
+
+      return {
+        id: i,
+        numero: p.number,
+        aliment: computers[i].food?.name,
+        foodRate: foodRate,
+        foodWeight: foodWeight.toFixed(2),
+        time:
+          time.toFixed(0) +
+          " min " +
+          ((time - toInteger(time)) * 60).toFixed(0) +
+          " sec",
+      };
+    });
+
+  //   console.log("muiRows", muiRows);
 
   const colHeaders: GridColDef[] = [
     {
@@ -64,6 +112,8 @@ export default function PoolGrid({ pools, date }: IDailySheetGrid) {
   ];
 
   return (
-    <DataGrid rows={muiRows} columns={colHeaders} rowHeight={25} autoHeight />
+    muiRows && (
+      <DataGrid rows={muiRows} columns={colHeaders} rowHeight={25} autoHeight />
+    )
   );
 }

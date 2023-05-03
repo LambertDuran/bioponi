@@ -3,7 +3,7 @@ import Food from "../../interfaces/food";
 import IFish from "../../interfaces/fish";
 import { IData, IComputedData } from "../../interfaces/data";
 import moment from "moment";
-import { orderBy } from "lodash";
+import { orderBy, findLast } from "lodash";
 
 export default class ComputePool {
   actions: IAction[] = [];
@@ -68,6 +68,11 @@ export default class ComputePool {
     return foodWeight;
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Caculer le poids de la nourriture en fonction de la masse totale des poissons
+  // ATTENTION: On utilise la croissance théorique des poissons et non la croissance
+  // observée !
+  //////////////////////////////////////////////////////////////////////////////////////////
   getFoodWeightForDate(date: Date, totalWeight: number): number {
     let date0 = moment(this.actions[0].date);
     let weight = this.actions[0].averageWeight!;
@@ -101,6 +106,24 @@ export default class ComputePool {
       }
     }
     return nbWeeksAtEntrance + moment(date).diff(moment(action0.date), "weeks");
+  }
+
+  getFoodRate(averageWeight: number) {
+    if (!this.food) return 0;
+
+    for (let i = 0; i < this.food?.foodRates.length; i++)
+      if (averageWeight < this.food.tos[i]) return this.food.foodRates[i];
+
+    return this.food.foodRates[this.food.foodRates.length - 1];
+  }
+
+  getDistributionRate(averageWeight: number) {
+    if (!this.food) return 0;
+
+    for (let i = 0; i < this.food?.distributions.length; i++)
+      if (averageWeight < this.food.tos[i]) return this.food.distributions[i];
+
+    return this.food.distributions[this.food.distributions.length - 1];
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////

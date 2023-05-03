@@ -4,7 +4,7 @@ import { IData, IComputedData } from "../../interfaces/data";
 import PoolGrid from "./poolGrid";
 import PoolChart from "./poolChart";
 import usePools from "../../hooks/usePools";
-import useDatas from "../../hooks/useDatas";
+import { useDatas } from "../../hooks/useDatas";
 import ActionsGgrid from "../Diary/actionsGrid";
 import { toast } from "react-toastify";
 import {
@@ -35,6 +35,7 @@ export default function Pools() {
   const [dataType, setDataType] = useState<string>("averageWeight");
   const classes = useStyles();
 
+  // Calculer les données du bassin sélectionné
   const computedData: IComputedData = useDatas(selectedPool);
   let datas: IData[] | null = null;
   if (computedData.data && !computedData.error)

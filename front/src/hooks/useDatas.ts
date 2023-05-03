@@ -71,4 +71,4 @@ function useDatas(selectedPool: IPool | null): IComputedData {
   return result;
 }
 
-export default useDatas;
+export { useDatas, getComputer };
