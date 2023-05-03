@@ -69,11 +69,10 @@ export default class ComputePool {
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
-  // Caculer le poids de la nourriture en fonction de la masse totale des poissons
-  // ATTENTION: On utilise la croissance théorique des poissons et non la croissance
-  // observée !
+  // Retourne le poids moyen des poissons du bassin selon le modèle théorique (sans les
+  // corrections liées aux pesées)
   //////////////////////////////////////////////////////////////////////////////////////////
-  getFoodWeightForDate(date: Date, totalWeight: number): number {
+  getTheoricWeight(date: Date) {
     let date0 = moment(this.actions[0].date);
     let weight = this.actions[0].averageWeight!;
     const momentDate = moment(date);
@@ -84,7 +83,16 @@ export default class ComputePool {
       date0 = date0.add(1, "days");
     }
 
-    return this.getFoodWeight(weight, totalWeight);
+    return weight;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Caculer le poids de la nourriture en fonction de la masse totale des poissons
+  // ATTENTION: On utilise la croissance théorique des poissons et non la croissance
+  // observée !
+  //////////////////////////////////////////////////////////////////////////////////////////
+  getFoodWeightForDate(date: Date, totalWeight: number): number {
+    return this.getFoodWeight(this.getTheoricWeight(date), totalWeight);
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -108,8 +116,13 @@ export default class ComputePool {
     return nbWeeksAtEntrance + moment(date).diff(moment(action0.date), "weeks");
   }
 
-  getFoodRate(averageWeight: number) {
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Retourner le taux de rationnement des poissons (en faisant évoluer le poids selon le
+  // modèle théorique)
+  //////////////////////////////////////////////////////////////////////////////////////////
+  getFoodRate(date: Date) {
     if (!this.food) return 0;
+    const averageWeight = this.getTheoricWeight(date);
 
     for (let i = 0; i < this.food?.foodRates.length; i++)
       if (averageWeight < this.food.tos[i]) return this.food.foodRates[i];
@@ -117,8 +130,13 @@ export default class ComputePool {
     return this.food.foodRates[this.food.foodRates.length - 1];
   }
 
-  getDistributionRate(averageWeight: number) {
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Retourner la fréquence de distribution de nourriture (en faisant évoluer le poids selon le
+  // modèle théorique)
+  //////////////////////////////////////////////////////////////////////////////////////////
+  getDistributionRate(date: Date) {
     if (!this.food) return 0;
+    const averageWeight = this.getTheoricWeight(date);
 
     for (let i = 0; i < this.food?.distributions.length; i++)
       if (averageWeight < this.food.tos[i]) return this.food.distributions[i];

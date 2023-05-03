@@ -52,14 +52,12 @@ export default function PoolGrid({ pools, date }: IDailySheetGrid) {
           time: errMsg,
         };
 
-      const foodRate = computers[i].getFoodRate(data.averageWeight);
+      const foodRate = computers[i].getFoodRate(date);
       const foodWeight = computers[i].getFoodWeightForDate(
         date,
         data.totalWeight
       );
-      const distributionRate = computers[i].getDistributionRate(
-        data.averageWeight
-      );
+      const distributionRate = computers[i].getDistributionRate(date);
       const time = (foodWeight * 1000) / distributionRate;
 
       return {
