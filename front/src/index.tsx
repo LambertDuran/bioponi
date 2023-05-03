@@ -7,7 +7,7 @@ import ErrorPage from "./pages/error-page";
 import Settings from "./pages/Settings/settings";
 import Diary from "./pages/Diary/diary";
 import Balance from "./pages/balance";
-import DailyCard from "./pages/dailyCard";
+import DailySheet from "./pages/DailySheet/dailySheet";
 import Pools from "./pages/Pools/pools";
 import Login from "./pages/login";
 import Admin from "./pages/admin";
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/fiche-journaliere",
-        element: <DailyCard />,
+        element: <DailySheet />,
       },
       {
         path: "/admin",
