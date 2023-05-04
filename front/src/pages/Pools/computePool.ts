@@ -69,30 +69,53 @@ export default class ComputePool {
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
-  // Retourne le poids moyen des poissons du bassin selon le modèle théorique (sans les
-  // corrections liées aux pesées)
-  //////////////////////////////////////////////////////////////////////////////////////////
-  getTheoricWeight(date: Date) {
-    let date0 = moment(this.actions[0].date);
-    let weight = this.actions[0].averageWeight!;
-    const momentDate = moment(date);
-
-    while (date0.isBefore(momentDate)) {
-      const growth = this.getTheoricGrowth(date0);
-      weight += growth;
-      date0 = date0.add(1, "days");
-    }
-
-    return weight;
-  }
-
-  //////////////////////////////////////////////////////////////////////////////////////////
   // Caculer le poids de la nourriture en fonction de la masse totale des poissons
   // ATTENTION: On utilise la croissance théorique des poissons et non la croissance
   // observée !
   //////////////////////////////////////////////////////////////////////////////////////////
   getFoodWeightForDate(date: Date, totalWeight: number): number {
     return this.getFoodWeight(this.getTheoricWeight(date), totalWeight);
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Récupérer le poids et la date de la dernière pesée juste avant la date en param
+  // Si pas de dernière pesée => retourne les infos pour l'entrée du lot
+  //////////////////////////////////////////////////////////////////////////////////////////
+  getLastWeightAndDate(date: Date): { weight: number; date: Date } {
+    const lastAction = findLast(this.actions, (a) => {
+      return a.type === "Pesée" && a.date <= date;
+    });
+    if (!lastAction)
+      return {
+        weight: this.actions[0].averageWeight!,
+        date: this.actions[0].date,
+      };
+
+    return {
+      weight: lastAction.averageWeight!,
+      date: lastAction.date,
+    };
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // Retourne le poids moyen des poissons du bassin selon le modèle théorique, si une pesée
+  // a eu lieu avant la date donnée, on applique l'évolution théorique du poids du poisson
+  // à partir du poids observé lors de la dernière pesée
+  //////////////////////////////////////////////////////////////////////////////////////////
+  getTheoricWeight(date: Date) {
+    if (this.actions.length === 0) return 0;
+
+    let { weight, date: dateWeight } = this.getLastWeightAndDate(date);
+    let date0 = moment(dateWeight);
+    const momentDate = moment(date);
+
+    while (date0.isBefore(momentDate)) {
+      const growth = this.getTheoricGrowthRate(date0);
+      weight += growth;
+      date0 = date0.add(1, "days");
+    }
+
+    return weight;
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -147,7 +170,7 @@ export default class ComputePool {
   //////////////////////////////////////////////////////////////////////////////////////////
   // Calculer la pente de croissance du poisson à une date donnée
   //////////////////////////////////////////////////////////////////////////////////////////
-  getTheoricGrowth(date: moment.Moment): number {
+  getTheoricGrowthRate(date: moment.Moment): number {
     const nbWeeks = this.getFishAge(date);
     if (nbWeeks === 0) return 0;
 
@@ -449,7 +472,7 @@ export default class ComputePool {
       const action = this.actions[index + 1];
       const date = moment(action.date);
       if (bExistNextWeight) averageWeight = p0! + slope;
-      else averageWeight += this.getTheoricGrowth(date);
+      else averageWeight += this.getTheoricGrowthRate(date);
 
       let data = this.recomputeDataFromAction(lastData, action);
       data = {
@@ -475,7 +498,7 @@ export default class ComputePool {
       }
       // S'il n'y a pas de prochaine pesée, on utilise la pente de croissance théorique
       else {
-        slope = this.getTheoricGrowth(date);
+        slope = this.getTheoricGrowthRate(date);
         averageWeight += slope;
       }
 
@@ -518,7 +541,7 @@ export default class ComputePool {
     let averageWeight = lastData.averageWeight;
     const datas: IData[] = dates.map((date, i) => {
       // S'il n'y a pas de prochaine pesée, on utilise la pente de croissance théorique
-      const slope = this.getTheoricGrowth(date);
+      const slope = this.getTheoricGrowthRate(date);
       averageWeight += slope;
       const totalWeight = (averageWeight * lastData.fishNumber!) / 1000;
       return {

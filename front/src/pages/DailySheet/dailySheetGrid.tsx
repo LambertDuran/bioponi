@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { toInteger } from "lodash";
 
-const errMsg = "No Data";
+const errMsg = "";
 
 const renderHeader = (params: any) => (
   <strong className="colHeaderGrid">{params.colDef.headerName}</strong>
@@ -38,9 +38,11 @@ export default function PoolGrid({ pools, date }: IDailySheetGrid) {
   let muiRows: GridRowsProp | null = null;
   if (computers.length)
     muiRows = pools.map((p, i) => {
-      const data: IData | undefined = computers[i].data.find(
-        (d) => d.dateFormatted === moment(date).format("DD/MM/YYYY")
-      );
+      let data: IData | undefined = undefined;
+      if (i < computers.length)
+        data = computers[i].data.find(
+          (d) => d.dateFormatted === moment(date).format("DD/MM/YYYY")
+        );
 
       if (!data)
         return {
