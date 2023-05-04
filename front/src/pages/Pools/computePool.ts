@@ -3,7 +3,7 @@ import Food from "../../interfaces/food";
 import IFish from "../../interfaces/fish";
 import { IData, IComputedData } from "../../interfaces/data";
 import moment from "moment";
-import { orderBy, findLast } from "lodash";
+import { orderBy, findLast, findLastIndex } from "lodash";
 
 export default class ComputePool {
   actions: IAction[] = [];
@@ -119,14 +119,35 @@ export default class ComputePool {
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
+  // Première action sur le bassin
+  //////////////////////////////////////////////////////////////////////////////////////////
+  getFirstAction(date: moment.Moment): IAction | null {
+    if (this.actions.length === 0) return null;
+
+    const finalOutIndex = findLastIndex(this.actions, (a) => {
+      return a.type === "Sortie définitive" && moment(a.date).isBefore(date);
+    });
+    if (finalOutIndex < 0 || finalOutIndex === this.actions.length - 1)
+      return this.actions[0];
+
+    if (
+      this.actions[finalOutIndex + 1].type !== "Entrée du lot" &&
+      this.actions[finalOutIndex + 1].type !== "Transfert"
+    )
+      return this.actions[0];
+
+    return this.actions[finalOutIndex + 1];
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////
   // Calculer l'âge en semaines des poissons à partir de la date d'entrée des poissons
   //////////////////////////////////////////////////////////////////////////////////////////
   getFishAge(date: moment.Moment): number {
     if (!this.fish) return 0;
-    if (this.actions.length === 0) return 0;
-    const action0 = this.actions[0];
-    let nbWeeksAtEntrance = 0;
+    const action0 = this.getFirstAction(date);
+    if (!action0) return 0;
 
+    let nbWeeksAtEntrance = 0;
     for (let i = 0; i < this.fish.weeks.length; i++) {
       if (action0.averageWeight! < this.fish.weights[i]) {
         // On prend le milieu de la plage en semaines
