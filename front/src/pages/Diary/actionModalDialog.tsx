@@ -102,12 +102,12 @@ export default function ActionModalDialog({
 
   useEffect(() => {
     if (!total_weight) return;
-    if (computeMethode === "Masse tot ET Nb poissons" && fishNumber)
+    if (computeMethode === computeMethods[0] && fishNumber)
       setValue(
         "average_weight",
         ((total_weight / fish_number) * 1000).toFixed(2)
       );
-    else if (computeMethode === "Masse tot ET Poids moyen" && averageWeight)
+    else if (computeMethode === computeMethods[1] && averageWeight)
       setValue(
         "fish_number",
         Math.round((total_weight / average_weight) * 1000)
@@ -117,12 +117,12 @@ export default function ActionModalDialog({
 
   useEffect(() => {
     if (!fish_number) return;
-    if (computeMethode === "Nb poissons ET Poids moyen" && averageWeight)
+    if (computeMethode === computeMethods[2] && averageWeight)
       setValue(
         "total_weight",
         ((fish_number * average_weight) / 1000).toFixed(2)
       );
-    else if (computeMethode === "Masse tot ET Nb poissons" && total_weight)
+    else if (computeMethode === computeMethods[0] && total_weight)
       setValue(
         "average_weight",
         ((total_weight / fish_number) * 1000).toFixed(2)
@@ -132,12 +132,12 @@ export default function ActionModalDialog({
 
   useEffect(() => {
     if (!average_weight) return;
-    if (computeMethode === "Masse tot ET Poids moyen" && total_weight)
+    if (computeMethode === computeMethods[1] && total_weight)
       setValue(
         "fish_number",
         Math.round((total_weight / average_weight) * 1000)
       );
-    else if (computeMethode === "Nb poissons ET Poids moyen" && fish_number)
+    else if (computeMethode === computeMethods[2] && fish_number)
       setValue(
         "total_weight",
         ((fish_number * average_weight) / 1000).toFixed(2)
@@ -323,6 +323,7 @@ export default function ActionModalDialog({
               <div className="action_modDial_grid">
                 <div>{totalWeight} :</div>
                 <input
+                  disabled={computeMethode === computeMethods[2]}
                   className="action_modial_select"
                   placeholder="Masse totale(kg)"
                   style={{ "--color": color } as React.CSSProperties}
@@ -342,6 +343,7 @@ export default function ActionModalDialog({
                 <input
                   className="action_modial_select"
                   placeholder="nb poissons"
+                  disabled={computeMethode === computeMethods[1]}
                   style={{ "--color": color } as React.CSSProperties}
                   {...register("fish_number", {
                     required: true,
@@ -359,6 +361,7 @@ export default function ActionModalDialog({
                 <input
                   className="action_modial_select"
                   placeholder="poids moyen"
+                  disabled={computeMethode === computeMethods[0]}
                   style={{ "--color": color } as React.CSSProperties}
                   {...register("average_weight", {
                     required: true,
