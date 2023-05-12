@@ -72,13 +72,15 @@ export default function PoolModalDialog({
     // 1. Update pools state with form values
     let newPools: IPool[] = [...pools];
     for (const key in data) {
-      const index = parseInt(key.replace(/\D/g, ""));
-      if (index < 0 || index >= newPools.length) continue;
+      const number = parseInt(key.replace(/\D/g, ""));
+      if (number < 0 || number >= newPools.length) continue;
       const val = parseInt(data[key]);
-      if (key.includes("number")) newPools[index].number = val;
-      if (key.includes("volume")) newPools[index].volume = val;
-      if (key.includes("densityMin")) newPools[index].densityMin = val;
-      if (key.includes("densityMax")) newPools[index].densityMax = val;
+      let pool = newPools.find((p) => p.number === number);
+      if (!pool) continue;
+      if (key.includes("number")) pool.number = val;
+      if (key.includes("volume")) pool.volume = val;
+      if (key.includes("densityMin")) pool.densityMin = val;
+      if (key.includes("densityMax")) pool.densityMax = val;
     }
     setPools(newPools);
 
@@ -138,13 +140,13 @@ export default function PoolModalDialog({
             <div>Densité min (kg/m³)</div>
             <div>Densité max (kg/m³)</div>
             <div>Suppression</div>
-            {pools.map((pool, i) => (
+            {pools.map((pool: IPool) => (
               <>
                 <div className="poolModalDialog_div">
                   <input
                     className="poolModalDialog_input"
                     defaultValue={pool.number}
-                    {...register(`number${i}`, {
+                    {...register(`number${pool.number}`, {
                       required: true,
                       min: 1,
                       max: 100,
@@ -156,7 +158,7 @@ export default function PoolModalDialog({
                   <input
                     className="poolModalDialog_input"
                     defaultValue={pool.volume}
-                    {...register(`volume${i}`, {
+                    {...register(`volume${pool.number}`, {
                       required: true,
                       min: 1,
                       max: 100,
@@ -168,7 +170,7 @@ export default function PoolModalDialog({
                   <input
                     className="poolModalDialog_input"
                     defaultValue={pool.densityMin}
-                    {...register(`densityMin${i}`, {
+                    {...register(`densityMin${pool.number}`, {
                       required: true,
                       min: 1,
                       max: 100,
@@ -180,7 +182,7 @@ export default function PoolModalDialog({
                   <input
                     className="poolModalDialog_input"
                     defaultValue={pool.densityMax}
-                    {...register(`densityMax${i}`, {
+                    {...register(`densityMax${pool.number}`, {
                       required: true,
                       min: 1,
                       max: 100,
