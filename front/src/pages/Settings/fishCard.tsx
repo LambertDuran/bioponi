@@ -48,7 +48,24 @@ export default function SpeciesCard({
       },
     ],
   };
-  const options = { responsive: true };
+  const options = {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Semaines",
+        },
+        type: "linear",
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Poids (g)",
+        },
+      },
+    },
+    responsive: true,
+  };
 
   return (
     <div className="fish_card">
@@ -68,7 +85,7 @@ export default function SpeciesCard({
         </div>
       </div>
       <div className="fish_card_curve">
-        <Line options={options} data={data} />
+        <Line options={options as any} data={data} />
       </div>
     </div>
   );
