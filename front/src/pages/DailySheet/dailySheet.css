@@ -16,3 +16,9 @@
     flex-direction: column;
     align-items: center;
 }
+
+.dailySheet_date{
+    background-color: #b9c6d7;
+    display: flex;
+    justify-content: center;
+}

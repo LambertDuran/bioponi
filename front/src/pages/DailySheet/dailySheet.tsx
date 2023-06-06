@@ -14,7 +14,10 @@ export default function DailySheet() {
       <div>
         <div className="dailySheet_calendar">
           <h1 className="dailySheet_title">
-            Fiche Journalière du {moment(date).format("DD/MM/YYYY")}
+            Fiche Journalière du{" "}
+            <div className="dailySheet_date">
+              {moment(date).format("DD/MM/YYYY")}
+            </div>
           </h1>
           <Calendar date={date} setDate={setDate} />
         </div>
