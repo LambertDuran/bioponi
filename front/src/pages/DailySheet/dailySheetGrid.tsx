@@ -72,6 +72,16 @@ export default function PoolGrid({ pools, date }: IDailySheetGrid) {
       const distributionRate = computers[i].getDistributionRate(date);
       const time = (foodWeight * 1000) / distributionRate;
 
+      if (foodWeight == 0)
+        return {
+          id: i,
+          numero: p.number,
+          aliment: "",
+          foodRate: "",
+          foodWeight: "",
+          time: "",
+        };
+
       return {
         id: i,
         numero: p.number,
