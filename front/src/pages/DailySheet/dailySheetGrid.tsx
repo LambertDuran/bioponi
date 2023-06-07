@@ -38,6 +38,16 @@ export default function PoolGrid({ pools, date }: IDailySheetGrid) {
   let muiRows: GridRowsProp | null = null;
   if (computers.length)
     muiRows = pools.map((p, i) => {
+      if (pools[i].action?.length === 0)
+        return {
+          id: "",
+          numero: "",
+          aliment: "",
+          foodRate: "",
+          foodWeight: "",
+          time: "",
+        };
+
       let data: IData | undefined = undefined;
       if (i < computers.length)
         data = computers[i].data.find(
