@@ -40,8 +40,8 @@ export default function PoolGrid({ pools, date }: IDailySheetGrid) {
     muiRows = pools.map((p, i) => {
       if (pools[i].action?.length === 0)
         return {
-          id: "",
-          numero: "",
+          id: i,
+          numero: p.number,
           aliment: "",
           foodRate: "",
           foodWeight: "",
