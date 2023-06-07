@@ -1,6 +1,5 @@
 .dailySheet_grid{
-    /* padding: 1em; */
-    padding-left: 1em;
+    padding: 1em 0 1em 1em;
     width: 99%;
 }
 .dailySheet_title{

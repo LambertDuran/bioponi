@@ -9,6 +9,7 @@ import IPool from "../../interfaces/pool";
 import IFish from "../../interfaces/fish";
 import IAction from "../../interfaces/action";
 import ActionsGrid from "./actionsGrid";
+import { orderBy } from "lodash";
 import "./diary.css";
 
 const actionList = [
@@ -59,7 +60,10 @@ export default function Diary() {
     }
     async function getActions() {
       const allActions = await getAllActions();
-      if (allActions && allActions.data) setActions(allActions.data);
+      if (allActions && allActions.data) {
+        allActions.data = orderBy(allActions.data, ["pool.number"], ["asc"]);
+        setActions(allActions.data);
+      }
     }
     getActions();
     getFishes();
