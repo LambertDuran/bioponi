@@ -21,7 +21,8 @@ npx prisma generate
 
 - Créer un utilisateur: il faut utiliser **Postman** et envoyer une requête POST avec comme paramètres: name, email, password.
 Ensuite il faut récupérer le token comme réponse de la requête et sur les prochaines requêtes il faudra définir
-un header appelé **x-auth** avec comme valeur le token reçu.
+un header appelé **x-auth** avec comme valeur le token reçu.  
+La création d'un utilisateur crée aussi un bassin par défaut, quelques espèces de poissons de base (TAEC, saumon, Tilapia etc ..), et un aliment de base.
 
 ## Frontend
 
