@@ -9,7 +9,7 @@
 - Avant de lancer le webserver, il faut exécuter **Docker** qui permet de faire tourner la bdd de l'application. Les paramètres de Docker sont enregistrés
 dans le fichier docker-compose.yml. La base de données utilise PostgreSQL.
 
-- Lancer le web server:
+- Lancer le web server, se placer dans le dossier /back:
 ```
 npx nodemon server
 ```
@@ -30,5 +30,5 @@ un header appelé **x-auth** avec comme valeur le token reçu.
 **material-ui** pour afficher des grilles, des dialogue modaux, et d'autres composants.  
 **react-chartJS** pour afficher les données sous forme de courbe.  
 
-Pour installer les dépendances du projet:  ```npm instal```.  
+Pour installer les dépendances du projet, se placer dans le dossier /front:  ```npm instal```.  
 Il peut arriver qu'il y ait des problèmes de dépendance avec material-ui, dans ce cas il faut utiliser la commande npm install ```npm i --legacy-peer-deps```.
